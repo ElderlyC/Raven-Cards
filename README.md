@@ -1,46 +1,83 @@
-# Getting Started with Create React App
+# Flashcard Mini Project - Translations and Definitions
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### _A work in progress!_
 
-## Available Scripts
+This project has yet to be completed and this readme is just a placeholder for now!
+Try out this project here: https://elderlyc.github.io/Flashcard-Mini-Project/
 
-In the project directory, you can run:
+## Introduction
 
-### `npm start`
+kiloJoules was my first major project after having spent time learning JavaScript, HTML, CSS, and finally React basics.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The application features 6 self-contained pages with varying functions, from a calorie calculator to a meal generator.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Creating this project was a way for me to learn as I went about implementing various functionality and designs.
 
-### `npm test`
+I was able to become familiar with the use of RESTful APIs by fetching food data from the Edamam database.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+I also utilised localStorage, dealing with JSON and nested objects in the process, to store various data across sessions.
 
-### `npm run build`
+Custom components and hooks were applied for various elements of the application. Implementing routing allowed me to achieve a Single-Page Application.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Although visually basic, this was intentional as I wished to focus mostly on functionality over form.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Wireframes to Pages
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+At first I used Paint to sketch out my ideas for the various sections of my application. Later Figma helped me understand visually what I wanted to accomplish.
+Below are some screenshots from my application in use.
 
-### `npm run eject`
+### Home page
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+![paintsketch](./src/screenshots/fitness%20app%20paint.png) ![figma](./src/screenshots/Fitness%20App%20figma.png)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+I managed to follow my sketches for the home page almost exactly, except for some minor aesthetic changes. Below is the finished application:
+![homepage](./src/screenshots/homepage.png)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Maintenance calories calculator
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+![maintenance calculator](./src/screenshots/maintenance.PNG)
 
-## Learn More
+### Weight tracker
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![weight tracker sketch](./src/screenshots/weight-tracker-blueprint.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Some functions from the planning stage were canned, others added as I worked out what would be most useful.
+![weight tracker](./src/screenshots/weighttracker.PNG)
+
+### BMI calculator
+
+![bmi calculator](./src/screenshots/bmi.PNG)
+
+### Calorie calculator
+
+![calorie calculator sketch](./src/screenshots/daily-calories-blueprint%20v2.png)
+
+Again, I narrowed the scope of the application's functions to make it less cluttered and focused.
+![calorie calculator](./src/screenshots/calorie%20calc.PNG)
+
+### Random meal generator
+
+![random meal generator](./src/screenshots/randommeal.PNG)
+
+### Keto checker
+
+![keto checker sketch](./src/screenshots/keto-checker-blueprint.png)
+
+Another example where more features were added later in production:
+![keto checker](./src/screenshots/ketochecker.PNG)
+
+## The Programmer
+
+Hi. I study programming by myself through online resources and am looking for a web development job. I have experience with React (JS, HTML, CSS), Git, and Firebase, and am studying TypeScript and Node.js.
+
+I am always striving to learn about the seemingly endless world of programming, and try to program every day.
+
+## My Other Projects
+
+My most recently completed project _**Meetup Mannaja**_ is something I use with my friends to organise gatherings.
+
+You can try it out here: https://elderlyc.github.io/meetup-app
+
+## Special Thanks
+
+To Mike and Baker for giving me ideas and helping test out my application, and everyone else for trying it out.
