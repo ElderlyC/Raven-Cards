@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
+import TranslationPair from "./Components/TranslationPair";
+import Test from "./Components/test";
 
 function App() {
   interface Word {
@@ -7,10 +9,14 @@ function App() {
     target: string;
   }
 
+  const wordlistString = localStorage.getItem("wordlist");
   const [words, setWords] = useState(["", ""]);
-  const [mode, setMode] = useState(["en", "ko"]);
+  const [mode, setMode] = useState(["ko", "en"]);
   const [loading, setLoading] = useState(false);
-  const [wordList, setWordlist] = useState<Word[]>([]);
+  const [wordList, setWordlist] = useState<Word[]>(
+    wordlistString ? JSON.parse(wordlistString) : []
+  );
+
   const [imageLink, setImage] = useState("");
   const [counter, setCounter] = useState(0);
 
@@ -40,14 +46,21 @@ function App() {
         .then((data) => {
           setLoading(false);
 
-          // Create a new object representing the word and its translation
-          const newWord = {
-            source: currentWords[0],
-            target: data.message.result.translatedText,
-          };
+          const splitWords = currentWords[0].split("\n");
+          const splitTranslation =
+            data.message.result.translatedText.split("\n");
+          const newWordsTuples = splitWords.map((element, index) => [
+            element,
+            splitTranslation[index],
+          ]);
+          // Create an array of new word objects
+          const newWordsArray = newWordsTuples.map(([word, trans]) => ({
+            source: word?.trim(), // Trim to remove any leading or trailing spaces
+            target: trans?.trim(),
+          }));
 
-          // Append the new word object to the wordList state
-          setWordlist((prevWordList) => [...prevWordList, newWord]);
+          // Append the new word objects to the wordList state
+          setWordlist((prevWordList) => [...prevWordList, ...newWordsArray]);
 
           // Clear the input field
           setWords(["", ""]);
@@ -65,55 +78,70 @@ function App() {
     event.preventDefault();
   };
 
-  const getImage = () => {
-    if (counter > 10) setCounter(0);
-
-    fetch(`http://localhost:3001/api/searchImage?query=${words[0]}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setImage(data.items[counter]?.link);
-        setCounter((p) => p + 1);
-      });
+  const handleRemovePair = (source: string) => {
+    setWordlist((wordlist) =>
+      wordlist.filter((element) => element.source !== source)
+    );
   };
+
+  const handleImageGenerate = (link: string) => {
+    console.log(counter);
+    setImage(link[counter]?.link);
+    counter > 10 ? setCounter(0) : setCounter((p) => p + 1);
+  };
+
+  useEffect(() => {
+    localStorage.setItem("wordlist", JSON.stringify(wordList));
+  }, [wordList]);
 
   return (
     <div className="App">
       <header className="App-header">
-        {/* <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p> */}
-        <p>
-          {mode[0]} to {mode[1]}
-        </p>
-        <button onClick={handleSwap}>Swap!</button>
-        <form onSubmit={handleSubmit}>
-          <input
-            id="source"
-            placeholder="enter a word here"
-            value={words[0]}
-            onChange={(e) => {
-              setWords(([a, b]) => [e.target.value, b]);
-              setCounter(0);
-            }}
-          />
-          <button onClick={getTranslation}>
-            {loading ? "Loading" : "Translate and Add!"}
-          </button>
-          <button onClick={getImage}>
-            {counter === 0 ? "Get Image Defintion" : "Generate New Definition"}
-          </button>
-        </form>
+        <Test />
+        <div>
+          <p>
+            {mode[0]} to {mode[1]}
+          </p>
+          <button onClick={handleSwap}>Swap!</button>
+          <form onSubmit={handleSubmit}>
+            <textarea
+              rows={5}
+              cols={20}
+              id="source"
+              placeholder="enter words/phrases here, separated by line"
+              value={words[0]}
+              onChange={(e) => {
+                setWords(([a, b]) => [e.target.value, b]);
+                setCounter(0);
+              }}
+            />
+            <button onClick={getTranslation}>
+              {loading ? "Loading" : "Translate and Add!"}
+            </button>
+          </form>
+        </div>
 
-        <ul>
-          {wordList &&
-            wordList.map((obj) => (
-              <li key={obj.source}>
-                {obj.source} {obj.target}
-              </li>
-            ))}
-        </ul>
-        <img src={imageLink} alt="defintion" style={{ maxHeight: 400 }} />
+        <div style={{ flexDirection: "row", display: "flex" }}>
+          <ul>
+            {wordList &&
+              wordList.map((obj) => (
+                <TranslationPair
+                  key={obj.source + Math.random() * 10000}
+                  source={obj.source}
+                  target={obj.target}
+                  onDelete={handleRemovePair}
+                  onGenerate={handleImageGenerate}
+                />
+              ))}
+          </ul>
+        </div>
+        {imageLink && (
+          <img
+            src={imageLink}
+            alt="definition"
+            style={{ maxHeight: 600, maxWidth: 600 }}
+          />
+        )}
       </header>
     </div>
   );

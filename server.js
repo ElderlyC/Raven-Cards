@@ -1,7 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-// const { MongoClient } = require("mongodb");
 
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
@@ -11,11 +10,6 @@ const PORT = 3001;
 
 app.use(bodyParser.json());
 app.use(cors());
-
-// const url = "mongodb://localhost:27017";
-// const dbName = "yourDatabaseName";
-// const client = new MongoClient(url, { useNewUrlParser: true });
-// client.connect();
 
 app.post("/api/translate", async (req, res) => {
   const { source, target, text } = req.body;
