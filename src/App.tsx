@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import TranslationPair from "./Components/TranslationPair";
-import Test from "./Components/test";
+import TestComponent from "./Components/TestComponent";
 
 function App() {
   interface Word {
@@ -97,7 +97,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Test />
+        <TestComponent />
         <div>
           <p>
             {mode[0]} to {mode[1]}
