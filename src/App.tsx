@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import TranslationPair from "./Components/TranslationPair";
-import TestComponent from "./Components/TestComponent";
+import TranslationPair from "./Components/Translation/TranslationPair";
+import TestComponent from "./Components/Translation/TranslationForm";
 
 function App() {
   interface Word {

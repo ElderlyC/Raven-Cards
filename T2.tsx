@@ -4,7 +4,6 @@ const { Papago } = require("papago-translate");
 const client = new Papago();
 
 const app = express();
-const port = 3001;
 
 app.use(cors());
 app.use(express.json());
@@ -33,8 +32,16 @@ app.post("/translate", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+client
+  .define({
+    to: "ko",
+    text: "antisemitism",
+  })
+  .then((res) => console.log(res.result.items[0].pos[0].meanings[0]))
+  .catch(console.error);

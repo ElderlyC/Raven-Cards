@@ -1,0 +1,40 @@
+Minify Tasks
+
+TranslationForm:
+-Swap lang button
+-Material Textfield
+--separate by line data
+-Translate and Add button
+
+
+Keep server.js image search function.
+-> Convert to tsx
+
+Convert T2.tsx translate and define to fit other components
+
+
+Structure:
+App
+-Translator
+-Wordlist
+-Make Flashcard
+-Review Cards
+--Based on timings and settings, a set number of cards are tested/reviewed in a row. (SRS) 
+-Settings
+-View Deck
+--Table displaying all relevant data for all cards (next review date, data, level)
+-NavButton (all the buttons and stylings)
+
+
+Functions:
+-Translate words, separated by line  [adjust Papago package server code]
+--(auto get added to wordlist) [existing code]
+-Display a wordlist with make flashcard, delete buttons
+-Make flashcards from wordlist words, overlay module
+--Word/translation, generate definition [papago],  optional image button [existing]
+--(auto get added to review list) (SRS)
+-Review cards button: SRS of words due now
+--Display cards to review number 
+-Settings button: change timings/number of cards/SRS style
+-View Deck button: shows all cards
+--Cards are displayed in table format Word / Translation / Definition / Next Review Date / Level / ImageLink etc. 

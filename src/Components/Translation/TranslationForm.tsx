@@ -1,17 +1,20 @@
-import React, { useState, FormEventHandler } from "react";
+import React, { useState, FormEvent } from "react";
 import axios from "axios";
 
-const TranslationForm = () => {
+const TranslationForm: React.FC = () => {
   const [text, setText] = useState("");
   const [translatedText, setTranslatedText] = useState("");
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3001/translate", {
-        text: text,
-      });
+      const response = await axios.post<{ translation: string }>(
+        "http://localhost:3002/translate",
+        {
+          text: text,
+        }
+      );
 
       setTranslatedText(response.data.translation);
     } catch (error) {
