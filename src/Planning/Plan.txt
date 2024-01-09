@@ -1,7 +1,6 @@
 Minify Tasks
 
 TranslationForm:
--Swap lang button
 -Material Textfield
 --separate by line data
 -Translate and Add button

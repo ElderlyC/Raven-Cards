@@ -1,7 +1,16 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import TranslationPair from "./Components/Translation/TranslationPair";
-import TestComponent from "./Components/Translation/TranslationForm";
+import TranslationForm from "./Components/Translation/TranslationForm";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Button from "@mui/material/Button";
+
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
 function App() {
   interface Word {
@@ -95,55 +104,64 @@ function App() {
   }, [wordList]);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <TestComponent />
-        <div>
-          <p>
-            {mode[0]} to {mode[1]}
-          </p>
-          <button onClick={handleSwap}>Swap!</button>
-          <form onSubmit={handleSubmit}>
-            <textarea
-              rows={5}
-              cols={20}
-              id="source"
-              placeholder="enter words/phrases here, separated by line"
-              value={words[0]}
-              onChange={(e) => {
-                setWords(([a, b]) => [e.target.value, b]);
-                setCounter(0);
-              }}
-            />
-            <button onClick={getTranslation}>
-              {loading ? "Loading" : "Translate and Add!"}
-            </button>
-          </form>
-        </div>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <div className="App">
+        <header className="App-header">
+          <TranslationForm />
+          <Button variant="contained" color="primary">
+            Hello World
+          </Button>
+          <Button variant="contained" color="secondary">
+            secondary
+          </Button>
+          <div>
+            <p>
+              {mode[0]} to {mode[1]}
+            </p>
+            <button onClick={handleSwap}>Swap!</button>
+            <form onSubmit={handleSubmit}>
+              <textarea
+                rows={5}
+                cols={20}
+                id="source"
+                placeholder="enter words/phrases here, separated by line"
+                value={words[0]}
+                onChange={(e) => {
+                  setWords(([a, b]) => [e.target.value, b]);
+                  setCounter(0);
+                }}
+              />
+              <button onClick={getTranslation}>
+                {loading ? "Loading" : "Translate and Add!"}
+              </button>
+            </form>
+          </div>
 
-        <div style={{ flexDirection: "row", display: "flex" }}>
-          <ul>
-            {wordList &&
-              wordList.map((obj) => (
-                <TranslationPair
-                  key={obj.source + Math.random() * 10000}
-                  source={obj.source}
-                  target={obj.target}
-                  onDelete={handleRemovePair}
-                  onGenerate={handleImageGenerate}
-                />
-              ))}
-          </ul>
-        </div>
-        {imageLink && (
-          <img
-            src={imageLink}
-            alt="definition"
-            style={{ maxHeight: 600, maxWidth: 600 }}
-          />
-        )}
-      </header>
-    </div>
+          <div style={{ flexDirection: "row", display: "flex" }}>
+            <ul>
+              {wordList &&
+                wordList.map((obj) => (
+                  <TranslationPair
+                    key={obj.source + Math.random() * 10000}
+                    source={obj.source}
+                    target={obj.target}
+                    onDelete={handleRemovePair}
+                    onGenerate={handleImageGenerate}
+                  />
+                ))}
+            </ul>
+          </div>
+          {imageLink && (
+            <img
+              src={imageLink}
+              alt="definition"
+              style={{ maxHeight: 600, maxWidth: 600 }}
+            />
+          )}
+        </header>
+      </div>
+    </ThemeProvider>
   );
 }
 

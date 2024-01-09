@@ -15,11 +15,11 @@ app.post("/translate", async (req, res) => {
     "Origin, X-Requested-With, Content-Type, Accept"
   );
   try {
-    const { text } = req.body;
+    const { source, target, text } = req.body;
 
     const result = await client.translate({
-      from: "ko",
-      to: "en",
+      from: source,
+      to: target,
       text: text,
     });
 
