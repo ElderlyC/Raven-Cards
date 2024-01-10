@@ -43,3 +43,7 @@ button {
   font-size: 1rem;
   margin: 8px;
 }
+
+iframe#webpack-dev-server-client-overlay {
+  display: none !important;
+}

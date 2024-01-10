@@ -14,6 +14,7 @@ app.post("/translate", async (req, res) => {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
+
   try {
     const { source, target, text } = req.body;
 
@@ -23,7 +24,16 @@ app.post("/translate", async (req, res) => {
       text: text,
     });
 
-    res.status(200).json({ translation: result.result.translation });
+    // const definition = await client.define({
+    //   to: target,
+    //   text: text,
+    // });
+
+    res.status(200).json({
+      translation: result.result.translation,
+      // meaning: definition.result.items[0].pos[0].meanings[0].meaning,
+      // examples: definition.result.items[0].pos[0].meanings[0].examples,
+    });
   } catch (error) {
     console.error(error);
     res
@@ -38,10 +48,10 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-client
-  .define({
-    to: "ko",
-    text: "antisemitism",
-  })
-  .then((res) => console.log(res.result.items[0].pos[0].meanings[0]))
-  .catch(console.error);
+// client
+//   .define({
+//     to: "ko",
+//     text: "antisemitism",
+//   })
+//   .then((res) => console.log(res.result.items[0].pos[0].meanings[0]))
+//   .catch(console.error);

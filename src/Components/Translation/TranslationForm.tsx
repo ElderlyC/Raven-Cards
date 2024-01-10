@@ -1,29 +1,34 @@
 import React, { useState, FormEvent } from "react";
+import { WordPair } from "../../types";
 import { TextField, Button } from "@mui/material";
 import axios from "axios";
 
-const TranslationForm: React.FC = () => {
+type TranslationFormTypes = {
+  onTranslation: ({ source, target }: WordPair) => void;
+};
+
+const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
   const [text, setText] = useState("");
-  const [translatedText, setTranslatedText] = useState("");
   const [langs, setLangs] = useState(["ko", "en"]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    if (!text) return;
     try {
-      const response = await axios.post<{ translation: string }>(
-        "http://localhost:3002/translate",
-        {
-          source: langs[0],
-          target: langs[1],
-          text: text,
-        }
-      );
+      const response = await axios.post<{
+        translation: string;
+        meaning: string;
+      }>("http://localhost:3002/translate", {
+        source: langs[0],
+        target: langs[1],
+        text: text,
+      });
 
-      setTranslatedText(response.data.translation);
+      onTranslation({ source: text, target: response.data.translation });
     } catch (error) {
       console.error(error);
     }
+    setText("");
   };
 
   const handleSwap = () => {
@@ -48,6 +53,8 @@ const TranslationForm: React.FC = () => {
             color="primary"
             multiline
             value={text}
+            minRows={3}
+            maxRows={5}
             onChange={(e) => setText(e.target.value)}
           />
         </div>
@@ -55,11 +62,6 @@ const TranslationForm: React.FC = () => {
           Translate
         </Button>
       </form>
-      {translatedText && (
-        <p>
-          Translated text: <span>{translatedText}</span>
-        </p>
-      )}
     </div>
   );
 };

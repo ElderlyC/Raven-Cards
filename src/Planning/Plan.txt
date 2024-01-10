@@ -1,20 +1,19 @@
 Minify Tasks
 
-TranslationForm:
--Material Textfield
---separate by line data
--Translate and Add button
+Wordlist
+-materialise
+-new flashcard button
+-extract code from TranslationPair, delete it
 
+Convert T2.tsx translate and define to fit other components
 
 Keep server.js image search function.
 -> Convert to tsx
 
-Convert T2.tsx translate and define to fit other components
-
 
 Structure:
 App
--Translator
+-Translator Done
 -Wordlist
 -Make Flashcard
 -Review Cards
