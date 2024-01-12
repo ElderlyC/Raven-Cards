@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import TranslationPair from "./Components/Translation/TranslationPair";
 import TranslationForm from "./Components/Translation/TranslationForm";
 import Wordlist from "./Components/Translation/Wordlist";
+import AddFlashcard from "./Components/AddFlashcard/AddFlashcard";
 import { WordPair } from "./types";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -16,14 +16,14 @@ const darkTheme = createTheme({
 
 function App() {
   const wordlistString = localStorage.getItem("wordlist");
-  const [words, setWords] = useState(["", ""]);
-  const [mode, setMode] = useState(["ko", "en"]);
-  const [loading, setLoading] = useState(false);
+  //const [words, setWords] = useState(["", ""]);
+  //const [loading, setLoading] = useState(false);
   const [wordList, setWordlist] = useState<WordPair[]>(
     wordlistString ? JSON.parse(wordlistString) : []
   );
+  const [cardPair, setPair] = useState<WordPair>({ source: "", target: "" });
 
-  const [imageLink, setImage] = useState("");
+  //const [imageLink, setImage] = useState("");
   const [counter, setCounter] = useState(0);
 
   //setLoading(true);
@@ -37,11 +37,11 @@ function App() {
     );
   };
 
-  const handleImageGenerate = (link: string) => {
-    console.log(counter);
-    setImage(link[counter]?.link);
-    counter > 10 ? setCounter(0) : setCounter((p) => p + 1);
-  };
+  // const handleImageGenerate = (link: string) => {
+  //   console.log(counter);
+  //   setImage(link[counter]?.link);
+  //   counter > 10 ? setCounter(0) : setCounter((p) => p + 1);
+  // };
 
   const handleAddToWordlist = (wordPair: WordPair) => {
     const sourceArray = wordPair.source.split("\n");
@@ -51,10 +51,14 @@ function App() {
       targetArray[index],
     ]);
     const newPairsArray = newWordsTuples.map(([source, target]) => ({
-      source: source?.trim(), // Trim to remove any leading or trailing spaces
+      source: source?.trim(),
       target: target?.trim(),
     }));
     setWordlist((prev) => [...prev, ...newPairsArray]);
+  };
+
+  const handleAddCard = (pair: WordPair) => {
+    setPair(pair);
   };
 
   useEffect(() => {
@@ -67,7 +71,14 @@ function App() {
       <div className="App">
         <header className="App-header">
           <TranslationForm onTranslation={handleAddToWordlist} />
-          <Wordlist wordlist={wordList} handleRemovePair={handleRemovePair} />
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <Wordlist
+              wordlist={wordList}
+              onRemovePair={handleRemovePair}
+              onAddCard={handleAddCard}
+            />
+            <AddFlashcard pair={cardPair} />
+          </div>
 
           {/* setCounter(0); */}
 
@@ -78,13 +89,13 @@ function App() {
                     onDelete={handleRemovePair}
                     onGenerate={handleImageGenerate}
                   /> */}
-          {imageLink && (
+          {/* {imageLink && (
             <img
               src={imageLink}
               alt="definition"
               style={{ maxHeight: 600, maxWidth: 600 }}
             />
-          )}
+          )} */}
         </header>
       </div>
     </ThemeProvider>

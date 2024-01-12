@@ -1,8 +1,16 @@
 Minify Tasks
 
+Translator
+-prettify: align titles, enlarge textarea, spacing
+
 Wordlist
--materialise
 -new flashcard button
+--opens a modal (grey out other bg components, all in App.tsx)
+
+AddFlashCard
+--auto generates a meaning/examples
+--optional image generator button
+
 -extract code from TranslationPair, delete it
 
 Convert T2.tsx translate and define to fit other components
@@ -13,7 +21,7 @@ Keep server.js image search function.
 
 Structure:
 App
--Translator Done
+-Translator
 -Wordlist
 -Make Flashcard
 -Review Cards
@@ -28,7 +36,7 @@ Functions:
 -Translate words, separated by line  [adjust Papago package server code]
 --(auto get added to wordlist) [existing code]
 -Display a wordlist with make flashcard, delete buttons
--Make flashcards from wordlist words, overlay module
+-Make flashcards from wordlist words, overlay modal
 --Word/translation, generate definition [papago],  optional image button [existing]
 --(auto get added to review list) (SRS)
 -Review cards button: SRS of words due now

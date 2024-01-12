@@ -38,9 +38,10 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
   };
 
   return (
-    <div>
+    <div style={{ minWidth: "30%" }}>
+      <Typography variant="h2">Translate</Typography>
       <Box sx={{ margin: "30px" }}>
-        <Typography variant="h4">
+        <Typography variant="h6" fontWeight={"bold"}>
           {langNames[langs[0] as keyof typeof langNames]} to{" "}
           {langNames[langs[1] as keyof typeof langNames]}
         </Typography>
@@ -61,7 +62,10 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
             rows={5}
             onChange={(e) => setText(e.target.value)}
             InputProps={{
-              sx: { textarea: { fontSize: "1.5rem" }, lineHeight: "2rem" },
+              sx: {
+                textarea: { fontSize: "1.5rem" },
+                lineHeight: "2rem",
+              },
             }}
           />
         </Box>

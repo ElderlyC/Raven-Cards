@@ -66,6 +66,15 @@ app.get("/api/searchImage", async (req, res) => {
   }
 });
 
+fetch(`https://openapi.naver.com/v1/search/image?query=${"석가모니불"}+뜻`, {
+  headers: {
+    "X-Naver-Client-Id": "K36XW4vqHWjCWRFaXw9G",
+    "X-Naver-Client-Secret": "fblttEcVtD",
+  },
+})
+  .then((response) => response.json())
+  .then((data) => console.log(data.items));
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

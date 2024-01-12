@@ -14,12 +14,22 @@ import { WordPair } from "../../types";
 
 type WordListProps = {
   wordlist: WordPair[];
-  handleRemovePair: (source: string) => void;
+  onRemovePair: (source: string) => void;
+  onAddCard: (pair: WordPair) => void;
 };
 
-const Wordlist: React.FC<WordListProps> = ({ wordlist, handleRemovePair }) => {
+const Wordlist: React.FC<WordListProps> = ({
+  wordlist,
+  onRemovePair,
+  onAddCard,
+}) => {
   const handleDeletePair = (source: string) => {
-    handleRemovePair(source);
+    onRemovePair(source);
+  };
+
+  const handleAddFlashcard = (pair: WordPair) => {
+    onAddCard(pair);
+    console.log(pair);
   };
 
   const StyledScrollbar = styled("div")({
@@ -40,6 +50,7 @@ const Wordlist: React.FC<WordListProps> = ({ wordlist, handleRemovePair }) => {
     <Box
       sx={{
         margin: "15px",
+        minWidth: "45%",
       }}
     >
       <Typography variant="h2">Word List</Typography>
@@ -60,7 +71,7 @@ const Wordlist: React.FC<WordListProps> = ({ wordlist, handleRemovePair }) => {
           {wordlist.map((pair) => (
             <Paper
               key={pair.source + Math.random() * 10000}
-              style={{ marginBottom: "5px", padding: "5px" }}
+              sx={{ marginBottom: "5px", padding: "5px" }}
             >
               <Grid container spacing={2} alignItems="center">
                 <Grid item xs={4}>
@@ -75,7 +86,9 @@ const Wordlist: React.FC<WordListProps> = ({ wordlist, handleRemovePair }) => {
                   </Button>
                 </Grid>
                 <Grid item xs={3}>
-                  <Button>Add Flashcard!</Button>
+                  <Button onClick={() => handleAddFlashcard(pair)}>
+                    Add Flashcard!
+                  </Button>
                 </Grid>
               </Grid>
             </Paper>
