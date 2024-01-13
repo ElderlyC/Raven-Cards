@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import "./App.css";
 import TranslationForm from "./Components/Translation/TranslationForm";
 import Wordlist from "./Components/Translation/Wordlist";
@@ -22,6 +23,10 @@ function App() {
     wordlistString ? JSON.parse(wordlistString) : []
   );
   const [cardPair, setPair] = useState<WordPair>({ source: "", target: "" });
+  const [meaning, setMeaning] = useState("");
+  const [examples, setExamples] = useState<
+    { text: string; translatedText: string }[]
+  >([]);
 
   //const [imageLink, setImage] = useState("");
   const [counter, setCounter] = useState(0);
@@ -57,8 +62,23 @@ function App() {
     setWordlist((prev) => [...prev, ...newPairsArray]);
   };
 
-  const handleAddCard = (pair: WordPair) => {
+  const handleAddCard = async (pair: WordPair) => {
     setPair(pair);
+    try {
+      const response = await axios.get<{
+        meaning: string;
+        examples: { text: string; translatedText: string }[];
+      }>("http://localhost:3002/define", {
+        // add 'to' lang to params to change translating lang
+        params: { text: pair.source },
+      });
+      console.log("Meaning:", response.data.meaning);
+      setMeaning(response.data.meaning);
+      console.log("Examples:", response.data.examples);
+      response.data.examples && setExamples(response.data.examples);
+    } catch (error) {
+      console.error("Error fetching definition:", error);
+    }
   };
 
   useEffect(() => {
@@ -71,13 +91,23 @@ function App() {
       <div className="App">
         <header className="App-header">
           <TranslationForm onTranslation={handleAddToWordlist} />
-          <div style={{ display: "flex", flexDirection: "column" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              minWidth: "45%",
+            }}
+          >
             <Wordlist
               wordlist={wordList}
               onRemovePair={handleRemovePair}
               onAddCard={handleAddCard}
             />
-            <AddFlashcard pair={cardPair} />
+            <AddFlashcard
+              pair={cardPair}
+              meaning={meaning}
+              examples={examples}
+            />
           </div>
 
           {/* setCounter(0); */}

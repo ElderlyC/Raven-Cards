@@ -50,7 +50,6 @@ const Wordlist: React.FC<WordListProps> = ({
     <Box
       sx={{
         margin: "15px",
-        minWidth: "45%",
       }}
     >
       <Typography variant="h2">Word List</Typography>

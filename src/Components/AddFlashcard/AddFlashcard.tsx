@@ -12,9 +12,11 @@ import { useState, useEffect } from "react";
 
 type AddCardProps = {
   pair: WordPair;
+  meaning: string;
+  examples: { text: string; translatedText: string }[];
 };
 
-const AddFlashcard: React.FC<AddCardProps> = ({ pair }) => {
+const AddFlashcard: React.FC<AddCardProps> = ({ pair, meaning, examples }) => {
   const [input1, setInput1] = useState(pair.source);
   const [input2, setInput2] = useState(pair.target);
 
@@ -35,6 +37,12 @@ const AddFlashcard: React.FC<AddCardProps> = ({ pair }) => {
       <Box>
         <TextField id="source" variant="outlined" value={input1} />
         <TextField id="target" variant="outlined" value={input2} />
+      </Box>
+      <Box>
+        <Typography>Meaning: {meaning}</Typography>
+        {examples && (
+          <Typography>Examples: {examples[0]?.translatedText}</Typography>
+        )}
       </Box>
       <Button onClick={handleSwap}>Swap Inputs</Button>
       <Button>Generate Image</Button>
