@@ -7,7 +7,7 @@ import AddFlashcard from "./Components/AddFlashcard/AddFlashcard";
 import { WordPair } from "./types";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import Button from "@mui/material/Button";
+import { Typography } from "@mui/material";
 
 const darkTheme = createTheme({
   palette: {
@@ -27,6 +27,7 @@ function App() {
   const [examples, setExamples] = useState<
     { text: string; translatedText: string }[]
   >([]);
+  const [toLang, setToLang] = useState("en");
 
   //const [imageLink, setImage] = useState("");
   const [counter, setCounter] = useState(0);
@@ -62,23 +63,26 @@ function App() {
     setWordlist((prev) => [...prev, ...newPairsArray]);
   };
 
-  const handleAddCard = async (pair: WordPair) => {
-    setPair(pair);
+  const handleGenerateDefinition = async (searchWord: string) => {
+    /[a-zA-Z+]/.test(searchWord) ? setToLang("ko") : setToLang("en");
+    const updatedToLang = /[a-zA-Z+]/.test(searchWord) ? "ko" : "en";
     try {
       const response = await axios.get<{
         meaning: string;
         examples: { text: string; translatedText: string }[];
       }>("http://localhost:3002/define", {
-        // add 'to' lang to params to change translating lang
-        params: { text: pair.source },
+        params: { text: searchWord, to: updatedToLang },
       });
-      console.log("Meaning:", response.data.meaning);
       setMeaning(response.data.meaning);
-      console.log("Examples:", response.data.examples);
       response.data.examples && setExamples(response.data.examples);
     } catch (error) {
       console.error("Error fetching definition:", error);
     }
+  };
+
+  const handleAddCard = async (pair: WordPair) => {
+    setPair(pair);
+    handleGenerateDefinition(pair.source);
   };
 
   useEffect(() => {
@@ -107,7 +111,9 @@ function App() {
               pair={cardPair}
               meaning={meaning}
               examples={examples}
+              onSearchDefinition={handleGenerateDefinition}
             />
+            <Typography>Search Language: {toLang}</Typography>
           </div>
 
           {/* setCounter(0); */}

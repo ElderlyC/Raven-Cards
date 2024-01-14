@@ -39,10 +39,10 @@ app.post("/translate", async (req, res) => {
 
 app.get("/define", async (req, res) => {
   try {
-    const { text } = req.query;
+    const { text, to } = req.query;
     const definition = await client.define({
       // control button for language: get definition in en or kr
-      to: "en",
+      to: to,
       text: text,
     });
     res.status(200).json({

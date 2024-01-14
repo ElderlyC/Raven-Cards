@@ -8,7 +8,7 @@ Wordlist
 --opens a modal (grey out other bg components, all in App.tsx)
 
 AddFlashCard
---auto generates a meaning/examples
+--handle meaning/examples
 --optional image generator button
 
 -extract code from TranslationPair, delete it
