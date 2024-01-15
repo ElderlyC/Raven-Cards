@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 // papago define used when a new card is created (attempt to get definition =meaning+examples)
 // -new flashcard button
 // --opens a modal (hide other components, all in App.tsx)
-// --optional image generator button
-// -extract code from TranslationPair, delete it
+// -optional image generator button
+// --extract code from TranslationPair, delete it (IMAGE generation)
+// -add button, cancel button
 
 type AddCardProps = {
   pair: WordPair;
@@ -31,6 +32,11 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   const handleSearchDefinition = (word: string) => {
     onSearchDefinition(word);
   };
+
+  useEffect(() => {
+    setInput1(pair.source);
+    setInput2(pair.target);
+  }, [pair]);
 
   useEffect(() => {
     setInput1(pair.source);
@@ -68,13 +74,17 @@ const AddFlashcard: React.FC<AddCardProps> = ({
         </Box>
       </Box>
       <Box>
-        <Typography>Meaning: {meaning}</Typography>
-        {examples && (
+        {meaning && <Typography>Meaning: {meaning}</Typography>}
+        {examples[0]?.translatedText && (
           <Typography>Examples: {examples[0]?.translatedText}</Typography>
         )}
       </Box>
       <Button onClick={handleSwapInputs}>Swap Inputs</Button>
       <Button>Generate Image</Button>
+      <Box>
+        <Button>Add New Card</Button>
+        <Button>Cancel</Button>
+      </Box>
     </div>
   );
 };

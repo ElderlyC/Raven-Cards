@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, useEffect, useRef, FormEvent } from "react";
 import { WordPair } from "../../types";
 import { TextField, Button, Typography, Box } from "@mui/material";
 import axios from "axios";
@@ -53,6 +53,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
       <form onSubmit={handleSubmit}>
         <Box>
           <TextField
+            autoFocus
             label="Text to translate"
             placeholder="Enter words/phrases here, separated by line"
             variant="outlined"

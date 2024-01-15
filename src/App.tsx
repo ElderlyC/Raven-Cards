@@ -27,6 +27,7 @@ function App() {
   const [examples, setExamples] = useState<
     { text: string; translatedText: string }[]
   >([]);
+
   const [toLang, setToLang] = useState("en");
 
   //const [imageLink, setImage] = useState("");
@@ -64,6 +65,8 @@ function App() {
   };
 
   const handleGenerateDefinition = async (searchWord: string) => {
+    setMeaning("");
+    setExamples([{ translatedText: "", text: "" }]);
     /[a-zA-Z+]/.test(searchWord) ? setToLang("ko") : setToLang("en");
     const updatedToLang = /[a-zA-Z+]/.test(searchWord) ? "ko" : "en";
     try {
@@ -113,7 +116,6 @@ function App() {
               examples={examples}
               onSearchDefinition={handleGenerateDefinition}
             />
-            <Typography>Search Language: {toLang}</Typography>
           </div>
 
           {/* setCounter(0); */}

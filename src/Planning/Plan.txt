@@ -1,9 +1,13 @@
 Minify Tasks
 
+Auto focus translator
+
 Translator
+-focus input?
 -prettify: align titles, enlarge textarea, spacing
 
 Wordlist
+-stuck on scrolling
 -new flashcard button
 --opens a modal (grey out other bg components, all in App.tsx)
 
