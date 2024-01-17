@@ -1,9 +1,7 @@
 import { Button, Typography, TextField, Box } from "@mui/material";
 import { WordPair } from "../../types";
 import { useState, useEffect } from "react";
-// papago define used when a new card is created (attempt to get definition =meaning+examples)
-// -new flashcard button
-// --opens a modal (hide other components, all in App.tsx)
+// -opens a modal (hide other components, all in App.tsx)
 // -optional image generator button
 // --extract code from TranslationPair, delete it (IMAGE generation)
 // -add button, cancel button
@@ -13,6 +11,7 @@ type AddCardProps = {
   meaning: string;
   examples: { text: string; translatedText: string }[];
   onSearchDefinition: (input1: string) => void;
+  onCardSubmit: () => void;
 };
 
 const AddFlashcard: React.FC<AddCardProps> = ({
@@ -20,6 +19,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   meaning,
   examples,
   onSearchDefinition,
+  onCardSubmit,
 }) => {
   const [input1, setInput1] = useState(pair.source);
   const [input2, setInput2] = useState(pair.target);
@@ -31,6 +31,28 @@ const AddFlashcard: React.FC<AddCardProps> = ({
 
   const handleSearchDefinition = (word: string) => {
     onSearchDefinition(word);
+  };
+
+  const handleSubmitCard = (cancel: boolean) => {
+    // save card data somewhere (local?)
+    if (!cancel) {
+      const newCard = [
+        {
+          front: input1,
+          back: input2,
+          created: new Date(),
+          nextReview: "in 1hr",
+          level: 0,
+          example: examples[0]?.translatedText,
+          meaning,
+        },
+      ];
+      const stringDeck = localStorage.getItem("deck");
+      const deck = stringDeck ? JSON.parse(stringDeck) : [];
+      localStorage.setItem("deck", JSON.stringify([...deck, ...newCard]));
+      console.log(deck);
+    }
+    onCardSubmit();
   };
 
   useEffect(() => {
@@ -45,8 +67,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
 
   return (
     <div>
-      AddFlashcardModal
-      <Typography>New Card</Typography>
+      <Typography variant={"h2"}>New Card</Typography>
       <Box>
         <Box>
           <Typography>Front:</Typography>
@@ -82,8 +103,8 @@ const AddFlashcard: React.FC<AddCardProps> = ({
       <Button onClick={handleSwapInputs}>Swap Inputs</Button>
       <Button>Generate Image</Button>
       <Box>
-        <Button>Add New Card</Button>
-        <Button>Cancel</Button>
+        <Button onClick={() => handleSubmitCard(false)}>Add New Card</Button>
+        <Button onClick={() => handleSubmitCard(true)}>Cancel</Button>
       </Box>
     </div>
   );

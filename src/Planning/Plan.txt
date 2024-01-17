@@ -7,13 +7,11 @@ Translator
 -prettify: align titles, enlarge textarea, spacing
 
 Wordlist
--stuck on scrolling
--new flashcard button
---opens a modal (grey out other bg components, all in App.tsx)
+-prettify
 
 AddFlashCard
---handle meaning/examples
---optional image generator button
+-prettify
+-optional image generator button
 
 -extract code from TranslationPair, delete it
 
@@ -47,4 +45,4 @@ Functions:
 --Display cards to review number 
 -Settings button: change timings/number of cards/SRS style
 -View Deck button: shows all cards
---Cards are displayed in table format Word / Translation / Definition / Next Review Date / Level / ImageLink etc. 
+--Cards are displayed in table format Word / Translation / Definition / Example / Next Review Date / Level / ImageLink etc. 

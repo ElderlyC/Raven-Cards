@@ -27,6 +27,7 @@ function App() {
   const [examples, setExamples] = useState<
     { text: string; translatedText: string }[]
   >([]);
+  const [view, setView] = useState("home");
 
   const [toLang, setToLang] = useState("en");
 
@@ -61,7 +62,7 @@ function App() {
       source: source?.trim(),
       target: target?.trim(),
     }));
-    setWordlist((prev) => [...prev, ...newPairsArray]);
+    setWordlist((prev) => [...newPairsArray, ...prev]);
   };
 
   const handleGenerateDefinition = async (searchWord: string) => {
@@ -85,6 +86,7 @@ function App() {
 
   const handleAddCard = async (pair: WordPair) => {
     setPair(pair);
+    setView("newcard");
     handleGenerateDefinition(pair.source);
   };
 
@@ -97,26 +99,27 @@ function App() {
       <CssBaseline />
       <div className="App">
         <header className="App-header">
-          <TranslationForm onTranslation={handleAddToWordlist} />
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              minWidth: "45%",
-            }}
-          >
-            <Wordlist
-              wordlist={wordList}
-              onRemovePair={handleRemovePair}
-              onAddCard={handleAddCard}
-            />
+          {view === "home" ? (
+            <div style={{ display: "flex" }}>
+              <TranslationForm onTranslation={handleAddToWordlist} />
+
+              <Wordlist
+                wordlist={wordList}
+                onRemovePair={handleRemovePair}
+                onAddCard={handleAddCard}
+              />
+            </div>
+          ) : view === "newcard" ? (
             <AddFlashcard
               pair={cardPair}
               meaning={meaning}
               examples={examples}
               onSearchDefinition={handleGenerateDefinition}
+              onCardSubmit={() => setView("home")}
             />
-          </div>
+          ) : (
+            <div>view not set</div>
+          )}
 
           {/* setCounter(0); */}
 

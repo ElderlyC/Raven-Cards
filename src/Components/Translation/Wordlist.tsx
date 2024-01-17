@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Paper,
   Grid,
@@ -12,7 +12,7 @@ import { WordPair } from "../../types";
 // list is saved in localStorage, added cards in a separate localStorage var.
 // structure: added cards: [ {card1data}, {card2data} ]
 
-// scrolling: fixed except for after meaning/def are updated
+// scrolling: testing
 
 type WordListProps = {
   wordlist: WordPair[];
@@ -25,9 +25,11 @@ const Wordlist: React.FC<WordListProps> = ({
   onRemovePair,
   onAddCard,
 }) => {
-  const listRef = useRef<HTMLDivElement>(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const scrollbarRef = useRef<HTMLDivElement>(null);
 
   const handleDeletePair = (source: string) => {
+    setScrollPosition(scrollbarRef?.current?.scrollTop || 0);
     onRemovePair(source);
   };
 
@@ -49,9 +51,9 @@ const Wordlist: React.FC<WordListProps> = ({
     },
   });
 
-  // useEffect(() => {
-  //   console.log("listRef changed");
-  // }, [listRef]);
+  useEffect(() => {
+    scrollbarRef?.current?.scrollTo(0, scrollPosition);
+  }, [wordlist, scrollPosition]);
 
   return (
     <Box
@@ -72,9 +74,7 @@ const Wordlist: React.FC<WordListProps> = ({
             fontSize: "1.2rem",
             maxHeight: "400px",
           }}
-          // onAnimationEnd={() => console.log("changed")}
-          // onTransitionEnd={() => console.log("changed")}
-          onWheel={() => console.log("save the scroll pos")}
+          ref={scrollbarRef}
         >
           <div>
             {wordlist.map((pair) => (
