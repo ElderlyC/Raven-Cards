@@ -26,8 +26,6 @@ app.post("/translate", async (req, res) => {
 
     res.status(200).json({
       translation: result.result.translation,
-      // meaning: definition.result.items[0].pos[0].meanings[0].meaning,
-      // examples: definition.result.items[0].pos[0].meanings[0].examples,
     });
   } catch (error) {
     console.error(error);
@@ -41,7 +39,6 @@ app.get("/define", async (req, res) => {
   try {
     const { text, to } = req.query;
     const definition = await client.define({
-      // control button for language: get definition in en or kr
       to: to,
       text: text,
     });
@@ -70,3 +67,11 @@ app.listen(PORT, () => {
 //   })
 //   .then((res) => console.log(res.result.items[0].pos[0].meanings[0]))
 //   .catch(console.error);
+
+// client
+//   .translate({
+//     from: "ko",
+//     to: "en",
+//     text: "취지",
+//   })
+//   .then((res) => console.log(res.result.translation));

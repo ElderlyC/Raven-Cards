@@ -7,7 +7,8 @@ import AddFlashcard from "./Components/AddFlashcard/AddFlashcard";
 import { WordPair } from "./types";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Typography } from "@mui/material";
+import { Button } from "@mui/material";
+import ReviewCards from "./Components/ReviewCards/ReviewCards";
 
 const darkTheme = createTheme({
   palette: {
@@ -102,12 +103,14 @@ function App() {
           {view === "home" ? (
             <div style={{ display: "flex" }}>
               <TranslationForm onTranslation={handleAddToWordlist} />
-
-              <Wordlist
-                wordlist={wordList}
-                onRemovePair={handleRemovePair}
-                onAddCard={handleAddCard}
-              />
+              <div>
+                <Wordlist
+                  wordlist={wordList}
+                  onRemovePair={handleRemovePair}
+                  onAddCard={handleAddCard}
+                />
+                <Button onClick={() => setView("review")}>Review!</Button>
+              </div>
             </div>
           ) : view === "newcard" ? (
             <AddFlashcard
@@ -117,6 +120,8 @@ function App() {
               onSearchDefinition={handleGenerateDefinition}
               onCardSubmit={() => setView("home")}
             />
+          ) : view === "review" ? (
+            <ReviewCards onEndReview={() => setView("home")} />
           ) : (
             <div>view not set</div>
           )}
