@@ -13,9 +13,21 @@ AddFlashCard
 -prettify
 -optional image generator button
 
--extract code from TranslationPair, delete it
+Review Cards
+-add in SRS timings
+-prettify
 
-Convert T2.tsx translate and define to fit other components
+Settings
+-SRS timing: 4h 8h 1d 2d 4d 1wk 2wk 4wk 16wk / other option?
+-Max Cards: 10-50
+-Testing style: ? 
+
+View Deck 
+-button: shows all cards
+--Cards are displayed in table format Word / Translation / Definition / Example / Next Review Date / Level / ImageLink etc. 
+
+
+-extract code from TranslationPair, delete it
 
 Keep server.js image search function.
 -> Convert to tsx
