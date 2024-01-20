@@ -1,21 +1,25 @@
 Minify Tasks
 
-Auto focus translator
-
 Translator
 -focus input?
 -prettify: align titles, enlarge textarea, spacing
 
-Wordlist
+Wordlist 
+-change translation text via input
 -prettify
 
 AddFlashCard
 -prettify
+-card generation: next review timing = now!
 -optional image generator button
 
 Review Cards
 -add in SRS timings
+--modify next review after card has been tested
+---switch case based on card level: 0: immediate, 1:now+4h, 2:now+8h etc.
 -prettify
+
+Ideas: add a naver dictionary link to search words
 
 Settings
 -SRS timing: 4h 8h 1d 2d 4d 1wk 2wk 4wk 16wk / other option?
@@ -40,10 +44,10 @@ App
 -Make Flashcard
 -Review Cards
 --Based on timings and settings, a set number of cards are tested/reviewed in a row. (SRS) 
--Settings
 -View Deck
 --Table displaying all relevant data for all cards (next review date, data, level)
--NavButton (all the buttons and stylings)
+-Settings [?]
+-NavButton (all the buttons and stylings) [?]
 
 
 Functions:

@@ -1,10 +1,8 @@
 import { Button, Typography, TextField, Box } from "@mui/material";
 import { WordPair } from "../../types";
 import { useState, useEffect } from "react";
-// -opens a modal (hide other components, all in App.tsx)
 // -optional image generator button
 // --extract code from TranslationPair, delete it (IMAGE generation)
-// -add button, cancel button
 
 type AddCardProps = {
   pair: WordPair;
@@ -23,6 +21,8 @@ const AddFlashcard: React.FC<AddCardProps> = ({
 }) => {
   const [input1, setInput1] = useState(pair.source);
   const [input2, setInput2] = useState(pair.target);
+  const minWidth1 = 28 + input1.length * 33;
+  const minWidth2 = 28 + input2.length * 15;
 
   const handleSwapInputs = () => {
     setInput1(input2);
@@ -34,14 +34,13 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   };
 
   const handleSubmitCard = (cancel: boolean) => {
-    // save card data somewhere (local?)
     if (!cancel) {
       const newCard = [
         {
           front: input1,
           back: input2,
           created: new Date(),
-          nextReview: "in 1hr",
+          nextReview: new Date(),
           level: 0,
           example: examples[0]?.translatedText,
           meaning,
@@ -50,7 +49,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
       const stringDeck = localStorage.getItem("deck");
       const deck = stringDeck ? JSON.parse(stringDeck) : [];
       localStorage.setItem("deck", JSON.stringify([...deck, ...newCard]));
-      console.log(deck);
     }
     onCardSubmit();
   };
@@ -69,9 +67,23 @@ const AddFlashcard: React.FC<AddCardProps> = ({
     <div>
       <Typography variant={"h2"}>New Card</Typography>
       <Box>
-        <Box>
-          <Typography>Front:</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            margin: "20px",
+          }}
+        >
+          <Typography variant={"h4"}>Front:</Typography>
           <TextField
+            InputProps={{
+              style: {
+                fontSize: "2rem",
+                minWidth: "60px",
+                width: `${minWidth1}px`,
+              },
+            }}
             id="source"
             variant="outlined"
             value={input1}
@@ -81,9 +93,23 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             Search Definition
           </Button>
         </Box>
-        <Box>
-          <Typography>Back:</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            margin: "20px",
+          }}
+        >
+          <Typography variant={"h4"}>Back:</Typography>
           <TextField
+            InputProps={{
+              style: {
+                fontSize: "2rem",
+                width: `${minWidth2}px`,
+                minWidth: "120px",
+              },
+            }}
             id="target"
             variant="outlined"
             value={input2}

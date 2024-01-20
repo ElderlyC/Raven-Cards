@@ -8,23 +8,15 @@ type ReviewCardsProps = {
 // incorrect gives some indication?
 // later: SRS timings
 const ReviewCards: React.FC<ReviewCardsProps> = ({ onEndReview }) => {
-  type Card = {
-    front: string;
-    back: string;
-    created: string;
-    nextReview: string;
-    level: number;
-    example: string;
-    meaning: string;
-  };
   const localDeck = localStorage.getItem("deck");
   const initialDeck = localDeck ? JSON.parse(localDeck) : [];
   // sorting logic here (select all cards up for review)
   const [reviewDeck, setDeck] = useState(initialDeck);
   const [hint, setHint] = useState(false);
-  const [card, setCard] = useState<Card>(reviewDeck[0]);
+  const [card, setCard] = useState(reviewDeck[0]);
   const [score, setScore] = useState(0);
   const [answer, setAnswer] = useState("");
+  const widthback = 28 + card.back.length * 15;
 
   const currentIndex = reviewDeck.indexOf(card);
 
@@ -52,20 +44,35 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({ onEndReview }) => {
 
   return (
     <div>
-      <Box>Score:{score}</Box>
-      <Box key={card.created}>
-        <Typography>{card.front}</Typography>
-        {/* <Typography>{card.back}</Typography> */}
-        <TextField
-          onKeyDown={handleKeyDown}
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
-          autoFocus
-        />
-      </Box>
-      <Button onClick={() => setHint((p) => !p)}>Toggle Hint</Button>
-      <Button onClick={handleSkipCard}>Skip Card</Button>
-      {hint && <Typography>{card.example}</Typography>}
+      {reviewDeck.length === 0 ? (
+        <div>
+          <Typography>No cards to review, go back</Typography>
+          <Button onClick={() => onEndReview()}>Go Back</Button>
+        </div>
+      ) : (
+        <div>
+          <Box>Score:{score}</Box>
+          <Box key={card.created}>
+            <Typography variant={"h3"}>{card.front}</Typography>
+            <TextField
+              InputProps={{
+                style: {
+                  fontSize: "2rem",
+                  minWidth: "160px",
+                  width: widthback,
+                },
+              }}
+              onKeyDown={handleKeyDown}
+              value={answer}
+              onChange={(e) => setAnswer(e.target.value)}
+              autoFocus
+            />
+          </Box>
+          <Button onClick={() => setHint((p) => !p)}>Toggle Hint</Button>
+          <Button onClick={handleSkipCard}>Skip Card</Button>
+          {hint && <Typography>{card.example}</Typography>}
+        </div>
+      )}
     </div>
   );
 };
