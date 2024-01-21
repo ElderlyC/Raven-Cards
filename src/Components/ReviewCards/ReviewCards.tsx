@@ -1,12 +1,24 @@
-import React, { useState, KeyboardEventHandler } from "react";
+import React, { useState, useEffect, KeyboardEventHandler } from "react";
 import { Button, Typography, TextField, Box } from "@mui/material";
 
 type ReviewCardsProps = {
   onEndReview: () => void;
 };
+
+type Card = {
+  front: string;
+  back: string;
+  created: string;
+  nextReview: string;
+  level: number;
+  example: string;
+  meaning: string;
+};
 // show front, input the back, correct adds 1 to score, level on card
 // incorrect gives some indication?
 // later: SRS timings
+// toLowerCase Culling/culling both correct
+// Card type from App.tsx
 const ReviewCards: React.FC<ReviewCardsProps> = ({ onEndReview }) => {
   const localDeck = localStorage.getItem("deck");
   const initialDeck = localDeck ? JSON.parse(localDeck) : [];
@@ -19,6 +31,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({ onEndReview }) => {
   const widthback = 28 + card.back.length * 15;
 
   const currentIndex = reviewDeck.indexOf(card);
+  console.log(reviewDeck[currentIndex]);
 
   const handleSkipCard = () => {
     if (currentIndex === reviewDeck.length - 1) onEndReview();
@@ -37,10 +50,22 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({ onEndReview }) => {
         event.preventDefault();
         onEndReview();
       }
+      // levelling up twice on accident? double update
+      console.log("here");
+      setDeck((prev: Card[]) => {
+        const updatedDeck = [...prev];
+        //problem here
+        updatedDeck[currentIndex].level++;
+        return updatedDeck;
+      });
       setCard(reviewDeck[currentIndex + 1]);
       setScore((p) => p + 1);
     }
   };
+
+  useEffect(() => {
+    localStorage.setItem("deck", JSON.stringify(reviewDeck));
+  }, [reviewDeck]);
 
   return (
     <div>
@@ -51,6 +76,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({ onEndReview }) => {
         </div>
       ) : (
         <div>
+          <div>Card Level: {card.level}</div>
           <Box>Score:{score}</Box>
           <Box key={card.created}>
             <Typography variant={"h3"}>{card.front}</Typography>
