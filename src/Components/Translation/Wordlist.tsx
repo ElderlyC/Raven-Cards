@@ -80,23 +80,23 @@ const Wordlist: React.FC<WordListProps> = ({
             {wordlist.map((pair) => (
               <Paper
                 key={pair.source + Math.random() * 10000}
-                sx={{ marginBottom: "5px", padding: "5px" }}
+                sx={{ marginBottom: "5px", padding: "5px", minWidth: "600px" }}
               >
                 <Grid container spacing={2} alignItems="center">
-                  <Grid item xs={4}>
+                  <Grid item xs={3.5}>
                     <span>{pair.source}</span>
                   </Grid>
-                  <Grid item xs={4}>
-                    <Input defaultValue={pair.target} />
+                  <Grid item xs={4.5}>
+                    <Input defaultValue={pair.target} sx={{ width: "100%" }} />
                   </Grid>
-                  <Grid item xs={1}>
+                  <Grid item xs={1.5}>
                     <Button onClick={() => handleDeletePair(pair.source)}>
                       Delete
                     </Button>
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={2.5}>
                     <Button onClick={() => handleAddFlashcard(pair)}>
-                      Add Flashcard!
+                      Make Card!
                     </Button>
                   </Grid>
                 </Grid>

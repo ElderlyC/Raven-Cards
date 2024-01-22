@@ -16,17 +16,17 @@ const darkTheme = createTheme({
   },
 });
 
-function App() {
-  type Card = {
-    front: string;
-    back: string;
-    created: string;
-    nextReview: string;
-    level: number;
-    example: string;
-    meaning: string;
-  };
+export type Card = {
+  front: string;
+  back: string;
+  created: string;
+  nextReview: string;
+  level: number;
+  example: string;
+  meaning: string;
+};
 
+function App() {
   const now = new Date();
   const wordlistString = localStorage.getItem("wordlist");
   //const [words, setWords] = useState(["", ""]);
@@ -46,8 +46,6 @@ function App() {
   const reviewCards = initialDeck.filter(
     (card: Card) => new Date(card.nextReview) < now
   );
-
-  console.log(reviewCards);
 
   const [toLang, setToLang] = useState("en");
 

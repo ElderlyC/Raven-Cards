@@ -1,6 +1,7 @@
 import { Button, Typography, TextField, Box } from "@mui/material";
 import { WordPair } from "../../types";
 import { useState, useEffect } from "react";
+// wait for define call to finish
 // -optional image generator button
 // --extract code from TranslationPair, delete it (IMAGE generation)
 
@@ -22,7 +23,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   const [input1, setInput1] = useState(pair.source);
   const [input2, setInput2] = useState(pair.target);
   const minWidth1 = 28 + input1.length * 33;
-  const minWidth2 = 28 + input2.length * 15;
+  const minWidth2 = 28 + input2.length * 16;
 
   const handleSwapInputs = () => {
     setInput1(input2);
@@ -77,11 +78,12 @@ const AddFlashcard: React.FC<AddCardProps> = ({
         >
           <Typography variant={"h4"}>Front:</Typography>
           <TextField
-            InputProps={{
+            inputProps={{
               style: {
                 fontSize: "2rem",
                 minWidth: "60px",
                 width: `${minWidth1}px`,
+                textAlign: "center",
               },
             }}
             id="source"
@@ -103,11 +105,12 @@ const AddFlashcard: React.FC<AddCardProps> = ({
         >
           <Typography variant={"h4"}>Back:</Typography>
           <TextField
-            InputProps={{
+            inputProps={{
               style: {
                 fontSize: "2rem",
                 width: `${minWidth2}px`,
                 minWidth: "120px",
+                textAlign: "center",
               },
             }}
             id="target"
