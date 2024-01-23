@@ -9,6 +9,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Button } from "@mui/material";
 import ReviewCards from "./Components/ReviewCards/ReviewCards";
+import ViewDeck from "./Components/ViewDeck/ViewDeck";
 
 const darkTheme = createTheme({
   palette: {
@@ -25,6 +26,8 @@ export type Card = {
   example: string;
   meaning: string;
 };
+
+export type Deck = Card[];
 
 function App() {
   const now = new Date();
@@ -121,6 +124,7 @@ function App() {
             <div style={{ display: "flex" }}>
               <TranslationForm onTranslation={handleAddToWordlist} />
               <div>
+                <Button onClick={() => setView("view")}>Browse Cards</Button>
                 <Wordlist
                   wordlist={wordList}
                   onRemovePair={handleRemovePair}
@@ -139,6 +143,11 @@ function App() {
             />
           ) : view === "review" ? (
             <ReviewCards onEndReview={() => setView("home")} />
+          ) : view === "view" ? (
+            <ViewDeck
+              deck={initialDeck}
+              onLeaveBrowser={() => setView("home")}
+            />
           ) : (
             <div>view not set</div>
           )}

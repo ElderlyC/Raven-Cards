@@ -9,14 +9,13 @@ type ReviewCardsProps = {
 // show front, input the back, correct adds 1 to score, level on card
 // incorrect gives some indication?
 // later: SRS timings
-// toLowerCase Culling/culling both correct
-// Card type from App.tsx
 const ReviewCards: React.FC<ReviewCardsProps> = ({ onEndReview }) => {
   const localDeck = localStorage.getItem("deck");
   const initialDeck = localDeck ? JSON.parse(localDeck) : [];
   // sorting logic here (select all cards up for review)
   const [reviewDeck, setDeck] = useState(initialDeck);
   const [hint, setHint] = useState(false);
+  const [score, setScore] = useState(0);
   const [card, setCard] = useState(reviewDeck[0]);
   const [answer, setAnswer] = useState("");
   const widthback = 28 + card?.back.length * 15;
@@ -32,11 +31,13 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({ onEndReview }) => {
   const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.key === "Enter") {
       setAnswer("");
-      if (answer !== card.back) {
+      if (answer.toLowerCase() !== card.back.toLowerCase()) {
+        // do smth when incorrect
         console.log(card.back);
         return;
       }
       const newLevel = card.level + 1;
+      setScore((p) => p + 1);
       setDeck((prev: Card[]) => {
         const updatedDeck = [...prev];
         updatedDeck[currentIndex].level = newLevel;
@@ -85,11 +86,14 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({ onEndReview }) => {
               autoFocus
             />
           </Box>
-          <Button onClick={() => setHint((p) => !p)}>Toggle Hint</Button>
+          <Button onClick={() => setHint((p) => !p)}>
+            {hint ? "Hints Off" : "Hints On"}
+          </Button>
           <Button onClick={handleSkipCard}>Skip Card</Button>
           {hint && <Typography>{card.example}</Typography>}
         </div>
       )}
+      <Typography variant={"h4"}>Score: {score}</Typography>
     </div>
   );
 };

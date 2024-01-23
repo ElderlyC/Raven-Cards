@@ -9,10 +9,6 @@ import {
   Box,
 } from "@mui/material";
 import { WordPair } from "../../types";
-// list is saved in localStorage, added cards in a separate localStorage var.
-// structure: added cards: [ {card1data}, {card2data} ]
-
-// scrolling: testing
 
 type WordListProps = {
   wordlist: WordPair[];
