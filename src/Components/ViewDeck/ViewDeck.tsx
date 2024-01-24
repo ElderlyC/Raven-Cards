@@ -38,7 +38,7 @@ const ViewDeck: React.FC<ViewDeckProps> = ({ onLeaveBrowser, deck }) => {
 
   return (
     <div style={{ width: "80%", maxWidth: "1000px" }}>
-      <Typography variant={"h2"}>Flashcard Deck</Typography>
+      <Typography variant={"h2"}>Browse Deck</Typography>
       <TableContainer component={Paper} sx={{ maxHeight: "600px" }}>
         <Table>
           <TableHead>

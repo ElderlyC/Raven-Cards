@@ -1,7 +1,9 @@
 import { Button, Typography, TextField, Box } from "@mui/material";
 import { WordPair } from "../../types";
 import { useState, useEffect } from "react";
-// wait for define call to finish
+import { Deck } from "../../App";
+// back search useless?, front search useless, backend lang check code obsolete
+// refactor: file too BIG
 // -optional image generator button
 // --extract code from TranslationPair, delete it (IMAGE generation)
 
@@ -11,6 +13,7 @@ type AddCardProps = {
   examples: { text: string; translatedText: string }[];
   onSearchDefinition: (input1: string) => void;
   onCardSubmit: () => void;
+  deck: Deck;
 };
 
 const AddFlashcard: React.FC<AddCardProps> = ({
@@ -19,12 +22,14 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   examples,
   onSearchDefinition,
   onCardSubmit,
+  deck,
 }) => {
   const [input1, setInput1] = useState(pair.source);
   const [input2, setInput2] = useState(pair.target);
+  const [disableButton, setDisable] = useState(true);
   const minWidth1 = 28 + input1.length * 33;
   const minWidth2 = 28 + input2.length * 16;
-
+  const existingCard = deck.findIndex((card) => card.front === input1) !== -1;
   const handleSwapInputs = () => {
     setInput1(input2);
     setInput2(input1);
@@ -47,8 +52,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
           meaning,
         },
       ];
-      const stringDeck = localStorage.getItem("deck");
-      const deck = stringDeck ? JSON.parse(stringDeck) : [];
       localStorage.setItem("deck", JSON.stringify([...deck, ...newCard]));
     }
     onCardSubmit();
@@ -60,9 +63,10 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   }, [pair]);
 
   useEffect(() => {
-    setInput1(pair.source);
-    setInput2(pair.target);
-  }, [pair]);
+    setTimeout(() => {
+      setDisable(false);
+    }, 2500);
+  }, []);
 
   return (
     <div>
@@ -78,6 +82,8 @@ const AddFlashcard: React.FC<AddCardProps> = ({
         >
           <Typography variant={"h4"}>Front:</Typography>
           <TextField
+            error={existingCard}
+            helperText={existingCard && "Card already in deck."}
             inputProps={{
               style: {
                 fontSize: "2rem",
@@ -124,7 +130,15 @@ const AddFlashcard: React.FC<AddCardProps> = ({
         </Box>
       </Box>
       <Box>
-        {meaning && <Typography>Meaning: {meaning}</Typography>}
+        {
+          <Typography>
+            {meaning
+              ? `Meaning: ${meaning}`
+              : disableButton
+              ? "Searching for Definition..."
+              : "No definition found."}
+          </Typography>
+        }
         {examples[0]?.translatedText && (
           <Typography>Examples: {examples[0]?.translatedText}</Typography>
         )}
@@ -132,7 +146,12 @@ const AddFlashcard: React.FC<AddCardProps> = ({
       <Button onClick={handleSwapInputs}>Swap Inputs</Button>
       <Button>Generate Image</Button>
       <Box>
-        <Button onClick={() => handleSubmitCard(false)}>Add New Card</Button>
+        <Button
+          disabled={existingCard || (meaning === "" && disableButton)}
+          onClick={() => handleSubmitCard(false)}
+        >
+          Add New Card
+        </Button>
         <Button onClick={() => handleSubmitCard(true)}>Cancel</Button>
       </Box>
     </div>
