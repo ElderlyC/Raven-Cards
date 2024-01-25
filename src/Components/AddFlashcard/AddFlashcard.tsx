@@ -2,8 +2,13 @@ import { Button, Typography, TextField, Box } from "@mui/material";
 import { WordPair } from "../../types";
 import { useState, useEffect } from "react";
 import { Deck } from "../../App";
-// back search useless?, front search useless, backend lang check code obsolete
+// make meaning n examples editable? - some way to choose the hint for the card so it's not too obvious
+// what is the purpose of meaning/examples? to give context for the flashcard answer. de-emphasise them.
+// English front meaning search?
+// define/ backend lang check code obsolete
 // refactor: file too BIG
+// better input width calc.
+// naver dict search? - postman?
 // -optional image generator button
 // --extract code from TranslationPair, delete it (IMAGE generation)
 
@@ -11,18 +16,18 @@ type AddCardProps = {
   pair: WordPair;
   meaning: string;
   examples: { text: string; translatedText: string }[];
-  onSearchDefinition: (input1: string) => void;
   onCardSubmit: () => void;
   deck: Deck;
+  onSearchDef: (word: string) => void;
 };
 
 const AddFlashcard: React.FC<AddCardProps> = ({
   pair,
   meaning,
   examples,
-  onSearchDefinition,
   onCardSubmit,
   deck,
+  onSearchDef,
 }) => {
   const [input1, setInput1] = useState(pair.source);
   const [input2, setInput2] = useState(pair.target);
@@ -30,13 +35,14 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   const minWidth1 = 28 + input1.length * 33;
   const minWidth2 = 28 + input2.length * 16;
   const existingCard = deck.findIndex((card) => card.front === input1) !== -1;
+
   const handleSwapInputs = () => {
     setInput1(input2);
     setInput2(input1);
-  };
-
-  const handleSearchDefinition = (word: string) => {
-    onSearchDefinition(word);
+    setDisable(true);
+    setTimeout(() => {
+      onSearchDef(input1);
+    }, 200);
   };
 
   const handleSubmitCard = (cancel: boolean) => {
@@ -66,7 +72,9 @@ const AddFlashcard: React.FC<AddCardProps> = ({
     setTimeout(() => {
       setDisable(false);
     }, 2500);
-  }, []);
+  }, [input1]);
+
+  console.log(disableButton);
 
   return (
     <div>
@@ -97,9 +105,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             value={input1}
             onChange={(e) => setInput1(e.target.value)}
           />
-          <Button onClick={() => handleSearchDefinition(input1)}>
-            Search Definition
-          </Button>
         </Box>
         <Box
           sx={{
@@ -124,9 +129,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             value={input2}
             onChange={(e) => setInput2(e.target.value)}
           />
-          <Button onClick={() => handleSearchDefinition(input2)}>
-            Search Definition
-          </Button>
         </Box>
       </Box>
       <Box>

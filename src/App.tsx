@@ -138,9 +138,9 @@ function App() {
               pair={cardPair}
               meaning={meaning}
               examples={examples}
-              onSearchDefinition={handleGenerateDefinition}
               onCardSubmit={() => setView("home")}
               deck={initialDeck}
+              onSearchDef={handleGenerateDefinition}
             />
           ) : view === "review" ? (
             <ReviewCards onEndReview={() => setView("home")} />

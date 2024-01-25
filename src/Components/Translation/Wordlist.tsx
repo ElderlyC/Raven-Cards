@@ -80,10 +80,10 @@ const Wordlist: React.FC<WordListProps> = ({
               >
                 <Grid container spacing={2} alignItems="center">
                   <Grid item xs={3.5}>
-                    <span>{pair.source}</span>
+                    <Typography>{pair.source}</Typography>
                   </Grid>
                   <Grid item xs={4.5}>
-                    <Input defaultValue={pair.target} sx={{ width: "100%" }} />
+                    <Typography>{pair.target}</Typography>
                   </Grid>
                   <Grid item xs={1.5}>
                     <Button onClick={() => handleDeletePair(pair.source)}>

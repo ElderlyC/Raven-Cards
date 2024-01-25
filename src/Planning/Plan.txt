@@ -1,11 +1,15 @@
 Minify Tasks
 
+Concept
+-En-Ko defining is bad
+
 Translator
 -focus input?
 -prettify: align titles, enlarge textarea, spacing
 
 Wordlist 
--change translation text via input
+-change translation text to just text
+-auto categorise (front is ko, back is en)
 -prettify
 
 AddFlashCard
