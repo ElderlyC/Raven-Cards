@@ -39,10 +39,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   const handleSwapInputs = () => {
     setInput1(input2);
     setInput2(input1);
-    setDisable(true);
-    setTimeout(() => {
-      onSearchDef(input1);
-    }, 200);
   };
 
   const handleSubmitCard = (cancel: boolean) => {
@@ -72,9 +68,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
     setTimeout(() => {
       setDisable(false);
     }, 2500);
-  }, [input1]);
-
-  console.log(disableButton);
+  }, []);
 
   return (
     <div>
