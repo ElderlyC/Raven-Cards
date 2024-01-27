@@ -1,5 +1,7 @@
 Minify Tasks
 
+Write and order tasks!
+
 Concept
 -En-Ko defining is bad
 
