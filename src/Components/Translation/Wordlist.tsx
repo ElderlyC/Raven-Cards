@@ -52,22 +52,18 @@ const Wordlist: React.FC<WordListProps> = ({
   }, [wordlist, scrollPosition]);
 
   return (
-    <Box
-      sx={{
-        margin: "15px",
-      }}
-    >
+    <Box>
       <Typography variant="h2">Word List</Typography>
       <Box
         sx={{
           border: "4px solid #5c5c5c",
           borderRadius: "15px",
           padding: "20px",
+          margin: "10px",
         }}
       >
         <StyledScrollbar
           style={{
-            fontSize: "1.2rem",
             maxHeight: "400px",
           }}
           ref={scrollbarRef}
@@ -76,23 +72,28 @@ const Wordlist: React.FC<WordListProps> = ({
             {wordlist.map((pair) => (
               <Paper
                 key={pair.source + Math.random() * 10000}
-                sx={{ marginBottom: "5px", padding: "5px", minWidth: "600px" }}
+                sx={{
+                  marginBottom: "5px",
+                  padding: "5px",
+                  minWidth: "35vw",
+                  maxWidth: "35vw",
+                }}
               >
                 <Grid container spacing={2} alignItems="center">
-                  <Grid item xs={3.5}>
-                    <Typography>{pair.source}</Typography>
+                  <Grid item xs={4}>
+                    <Typography fontSize="1.5rem">{pair.source}</Typography>
                   </Grid>
-                  <Grid item xs={4.5}>
-                    <Typography>{pair.target}</Typography>
+                  <Grid item xs={5}>
+                    <Typography fontSize="1.2rem">{pair.target}</Typography>
                   </Grid>
                   <Grid item xs={1.5}>
                     <Button onClick={() => handleDeletePair(pair.source)}>
-                      Delete
+                      DEL
                     </Button>
                   </Grid>
-                  <Grid item xs={2.5}>
+                  <Grid item xs={1.5}>
                     <Button onClick={() => handleAddFlashcard(pair)}>
-                      Make Card!
+                      ADD
                     </Button>
                   </Grid>
                 </Grid>

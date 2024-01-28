@@ -73,8 +73,12 @@ function App() {
   // };
 
   const handleAddToWordlist = (wordPair: WordPair) => {
-    const sourceArray = wordPair.source.split("\n");
-    const targetArray = wordPair.target.split("\n");
+    const sourceArray = wordPair.source
+      .split("\n")
+      .filter((word) => word !== "");
+    const targetArray = wordPair.target
+      .split("\n")
+      .filter((word) => word !== "");
     const newWordsTuples = sourceArray.map((element, index) => [
       element,
       targetArray[index],
@@ -121,16 +125,25 @@ function App() {
       <div className="App">
         <header className="App-header">
           {view === "home" ? (
-            <div style={{ display: "flex" }}>
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "center",
+              }}
+            >
               <TranslationForm onTranslation={handleAddToWordlist} />
-              <div>
-                <Button onClick={() => setView("view")}>Browse Cards</Button>
+              <div style={{ margin: "20px" }}>
                 <Wordlist
                   wordlist={wordList}
                   onRemovePair={handleRemovePair}
                   onAddCard={handleAddCard}
                 />
-                <Button onClick={() => setView("review")}>Review!</Button>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <Button onClick={() => setView("review")}>Review!</Button>
+                  <Button onClick={() => setView("view")}>Browse Cards</Button>
+                  <Button onClick={() => setView("")}>Settings</Button>
+                </div>
               </div>
             </div>
           ) : view === "newcard" ? (

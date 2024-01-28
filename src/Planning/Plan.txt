@@ -1,34 +1,37 @@
 Minify Tasks
 
 Write and order tasks!
+-what is required to complete project?
+-polish it for portfolio
+-in order of necessity
+-
 
-Concept
--En-Ko defining is bad
-
-Translator
--focus input?
--prettify: align titles, enlarge textarea, spacing
 
 Wordlist 
 -change translation text to just text
 -auto categorise (front is ko, back is en)
--prettify
 
 AddFlashCard
--prettify
+-En-Ko defining is bad, swap defining word
 -card generation: next review timing = now!
 -optional image generator button
+-extract code from TranslationPair, delete it
+-Keep server.js image search function.
+-> Convert to tsx
 
 Review Cards
 -add in SRS timings
 --modify next review after card has been tested
 ---switch case based on card level: 0: immediate, 1:now+4h, 2:now+8h etc.
+---or formula: 6hrs in ms times level^2
 -prettify
 
 Ideas: add a naver dictionary link to search words
 
 Settings
--SRS timing: 4h 8h 1d 2d 4d 1wk 2wk 4wk 16wk / other option?
+-SRS timing: 4h 8h 1d 2d 4d 8d 16d etc... / other option?
+-- if(level<2) interval = 4*2^level
+-- else interval = 1day* 2^(level-2)
 -Max Cards: 10-50
 -Testing style: ? 
 
@@ -36,11 +39,10 @@ View Deck
 -button: shows all cards
 --Cards are displayed in table format Word / Translation / Definition / Example / Next Review Date / Level / ImageLink etc. 
 
+Prettifying
 
--extract code from TranslationPair, delete it
 
-Keep server.js image search function.
--> Convert to tsx
+
 
 
 Structure:

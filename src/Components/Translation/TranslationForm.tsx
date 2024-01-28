@@ -38,16 +38,16 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
   };
 
   return (
-    <div style={{ minWidth: "30%" }}>
+    <div style={{ margin: "20px", minWidth: "40%", minHeight: "100%" }}>
       <Typography variant="h2">Translate</Typography>
       <Box sx={{ margin: "30px" }}>
-        <Typography variant="h6" fontWeight={"bold"}>
-          {langNames[langs[0] as keyof typeof langNames]} to{" "}
+        <Typography variant="h5" fontWeight={"bold"}>
+          {langNames[langs[0] as keyof typeof langNames]}
+          <Button onClick={handleSwap} size="large">
+            {"<  to  >"}
+          </Button>
           {langNames[langs[1] as keyof typeof langNames]}
         </Typography>
-        <Button onClick={handleSwap} size="large">
-          Swap!
-        </Button>
       </Box>
 
       <form onSubmit={handleSubmit}>
@@ -62,15 +62,26 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
             value={text}
             rows={5}
             onChange={(e) => setText(e.target.value)}
+            sx={{
+              width: "35vw",
+            }}
             InputProps={{
               sx: {
-                textarea: { fontSize: "1.5rem" },
-                lineHeight: "2rem",
+                textarea: { fontSize: "2rem" },
+                lineHeight: "3rem",
               },
             }}
           />
         </Box>
-        <Button variant="contained" color="primary" type="submit" size="large">
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          size="large"
+          sx={{
+            marginTop: "20px",
+          }}
+        >
           Translate
         </Button>
       </form>
