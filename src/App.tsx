@@ -7,7 +7,7 @@ import AddFlashcard from "./Components/AddFlashcard/AddFlashcard";
 import { WordPair } from "./types";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import ReviewCards from "./Components/ReviewCards/ReviewCards";
 import ViewDeck from "./Components/ViewDeck/ViewDeck";
 
@@ -44,16 +44,13 @@ function App() {
   >([]);
   const [view, setView] = useState("home");
 
-  const localDeck = localStorage.getItem("deck");
-  const initialDeck = localDeck ? JSON.parse(localDeck) : [];
-  const reviewCards = initialDeck.filter(
-    (card: Card) => new Date(card.nextReview) < now
-  );
+  const [initialDeck, setInitialDeck] = useState([]);
+  const [reviewCards, setReviewCards] = useState([]);
 
   const [toLang, setToLang] = useState("en");
 
   //const [imageLink, setImage] = useState("");
-  const [counter, setCounter] = useState(0);
+  const [count, setCount] = useState(reviewCards.length);
 
   //setLoading(true);
 
@@ -119,6 +116,18 @@ function App() {
     localStorage.setItem("wordlist", JSON.stringify(wordList));
   }, [wordList]);
 
+  useEffect(() => {
+    const localDeck = localStorage.getItem("deck");
+    const parsedDeck = localDeck ? JSON.parse(localDeck) : [];
+    setInitialDeck(parsedDeck);
+  }, [view]);
+
+  useEffect(() => {
+    setReviewCards(
+      initialDeck.filter((card: Card) => new Date(card.nextReview) < now)
+    );
+  }, [initialDeck]);
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -143,6 +152,7 @@ function App() {
                   <Button onClick={() => setView("review")}>Review!</Button>
                   <Button onClick={() => setView("view")}>Browse Cards</Button>
                   <Button onClick={() => setView("")}>Settings</Button>
+                  <Typography>{reviewCards.length}</Typography>
                 </div>
               </div>
             </div>
@@ -156,10 +166,14 @@ function App() {
               onSearchDef={handleGenerateDefinition}
             />
           ) : view === "review" ? (
-            <ReviewCards onEndReview={() => setView("home")} />
+            <ReviewCards
+              deck={initialDeck}
+              reviewCards={reviewCards}
+              onEndReview={() => setView("home")}
+            />
           ) : view === "view" ? (
             <ViewDeck
-              deck={initialDeck}
+              deck={reviewCards}
               onLeaveBrowser={() => setView("home")}
             />
           ) : (

@@ -1,5 +1,13 @@
 Minify Tasks
 
+To Finish:
+-delete from wordlist on add card
+-generate image button
+-change next review date on correct answer, incorrect goes back 1 level
+-select reviewDeck based on nextReviewDate ? filtering?
+-review card count
+-prettify, responsive
+
 Write and order tasks!
 -what is required to complete project?
 -polish it for portfolio
@@ -29,9 +37,11 @@ Review Cards
 Ideas: add a naver dictionary link to search words
 
 Settings
--SRS timing: 4h 8h 1d 2d 4d 8d 16d etc... / other option?
+-SRS timing: 4h 8h 1d 2d 4d 8d 16d 32d 64d 128d... / other options?
 -- if(level<2) interval = 4*2^level
 -- else interval = 1day* 2^(level-2)
+--4h, 8h, 1d, 2d, 1wk, 2wk, 1m, 4m
+--accelerated 2h, ^
 -Max Cards: 10-50
 -Testing style: ? 
 

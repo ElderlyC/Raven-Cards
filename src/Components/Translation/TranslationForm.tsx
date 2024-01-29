@@ -60,7 +60,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
             color="primary"
             multiline
             value={text}
-            rows={5}
+            rows={7}
             onChange={(e) => setText(e.target.value)}
             sx={{
               width: "35vw",

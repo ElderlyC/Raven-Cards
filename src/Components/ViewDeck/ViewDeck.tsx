@@ -23,6 +23,7 @@ const ViewDeck: React.FC<ViewDeckProps> = ({ onLeaveBrowser, deck }) => {
   const [cardDeck, setDeck] = useState(deck || []);
 
   const readableDate = (dateString: string) => {
+    if (dateString === "Mastered!") return dateString;
     const date = new Date(dateString);
     return date.toLocaleDateString("en-AU", {
       hour12: false,
