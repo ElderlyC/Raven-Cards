@@ -27,12 +27,12 @@ const ViewDeck: React.FC<ViewDeckProps> = ({ onLeaveBrowser, deck }) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-AU", {
       hour12: false,
-      year: "numeric",
+      // year: "numeric",
       month: "numeric",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-      second: "2-digit",
+      // second: "2-digit",
     });
   };
 

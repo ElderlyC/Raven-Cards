@@ -8,23 +8,18 @@ type ReviewCardsProps = {
   onEndReview: () => void;
 };
 
-// show front, input the back, correct adds 1 to score, level on card
-// incorrect gives some indication?
-// later: SRS timings
 const ReviewCards: React.FC<ReviewCardsProps> = ({
   deck,
   reviewCards,
   onEndReview,
 }) => {
-  // sorting logic here (select all cards up for review)
   const [reviewDeck, setDeck] = useState(reviewCards);
   const [hint, setHint] = useState(false);
   const [score, setScore] = useState(0);
   const [card, setCard] = useState(reviewDeck[0]);
   const [answer, setAnswer] = useState("");
+  const [error, setError] = useState(false);
   const widthback = 28 + card?.back.length * 15;
-
-  console.log(reviewDeck);
 
   const currentIndex = reviewDeck.indexOf(card);
 
@@ -37,32 +32,35 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
   const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.key === "Enter") {
       setAnswer("");
+      const updatedDeck = [...reviewDeck];
+      const currentCard = updatedDeck[currentIndex];
+      let newLevel = card.level + 1;
       if (answer.toLowerCase() !== card.back.toLowerCase()) {
-        // do smth when incorrect
-        console.log(card.back);
-        return;
+        setError(true);
+        if (currentCard.level === 0) return;
+        newLevel = card.level - 1;
+      } else {
+        setScore((p) => p + 1);
+        setError(false);
       }
-      const newLevel = card.level + 1;
+
       let newReviewDate = new Date();
       const newInterval =
         newLevel < 3 ? 2 * Math.pow(2, newLevel) : Math.pow(2, newLevel - 3);
+      // set new date/times
       newLevel < 3
         ? newReviewDate.setHours(newReviewDate.getHours() + newInterval)
         : newReviewDate.setDate(newReviewDate.getDate() + newInterval);
 
-      setScore((p) => p + 1);
       if (card.level === 10) {
-        setDeck((prev: Card[]) => {
-          const updatedDeck = [...prev];
-          updatedDeck[currentIndex].nextReview = "Mastered!";
+        setDeck(() => {
+          currentCard.nextReview = "Mastered!";
           return updatedDeck;
         });
       } else {
-        setDeck((prev: Card[]) => {
-          const updatedDeck = [...prev];
-          updatedDeck[currentIndex].level = newLevel;
-          console.log("in state", newReviewDate);
-          updatedDeck[currentIndex].nextReview = newReviewDate.toString();
+        setDeck(() => {
+          currentCard.level = newLevel;
+          currentCard.nextReview = newReviewDate.toString();
           return updatedDeck;
         });
       }
@@ -79,25 +77,21 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
   };
 
   useEffect(() => {
-    // merge altered reviewDeck with original deck (all cards)
-    // this code doesnt work yet!
-    console.log(deck, reviewDeck);
     const mergedDeck = deck.map((card) => {
       const matchingCard = reviewDeck.find(
         (reviewCard) => card.front === reviewCard.front
       );
-      console.log(matchingCard, "mathco");
       if (matchingCard) {
         return matchingCard;
       }
       return card;
     });
-    // const mergedDeck = deck.map((card) =>
-    //   reviewDeck.find((reviewCard) => card.front === reviewCard.front)
-    // );
-    console.log(mergedDeck, "merge");
     localStorage.setItem("deck", JSON.stringify(mergedDeck));
-  }, [reviewDeck]);
+  }, [deck, reviewDeck]);
+
+  useEffect(() => {
+    setError(false);
+  }, [card]);
 
   return (
     <div>
@@ -124,6 +118,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               autoFocus
+              error={error}
             />
           </Box>
           <Button onClick={() => setHint((p) => !p)}>

@@ -30,7 +30,6 @@ export type Card = {
 export type Deck = Card[];
 
 function App() {
-  const now = new Date();
   const wordlistString = localStorage.getItem("wordlist");
   //const [words, setWords] = useState(["", ""]);
   //const [loading, setLoading] = useState(false);
@@ -123,6 +122,7 @@ function App() {
   }, [view]);
 
   useEffect(() => {
+    const now = new Date();
     setReviewCards(
       initialDeck.filter((card: Card) => new Date(card.nextReview) < now)
     );
@@ -164,6 +164,7 @@ function App() {
               onCardSubmit={() => setView("home")}
               deck={initialDeck}
               onSearchDef={handleGenerateDefinition}
+              onRemovePair={handleRemovePair}
             />
           ) : view === "review" ? (
             <ReviewCards
@@ -173,7 +174,7 @@ function App() {
             />
           ) : view === "view" ? (
             <ViewDeck
-              deck={reviewCards}
+              deck={initialDeck}
               onLeaveBrowser={() => setView("home")}
             />
           ) : (

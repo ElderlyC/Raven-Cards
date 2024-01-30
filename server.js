@@ -45,7 +45,8 @@ app.get("/api/searchImage", async (req, res) => {
 
   try {
     const response = await fetch(
-      `https://openapi.naver.com/v1/search/image?query=${query}+뜻`,
+      // `https://openapi.naver.com/v1/search/image?query=${query}+뜻`,
+      `https://openapi.naver.com/v1/search/image?query=${query}`,
       {
         headers: {
           "X-Naver-Client-Id": "K36XW4vqHWjCWRFaXw9G",

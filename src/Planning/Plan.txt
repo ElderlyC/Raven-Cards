@@ -3,10 +3,13 @@ Minify Tasks
 To Finish:
 -delete from wordlist on add card
 -generate image button
--change next review date on correct answer, incorrect goes back 1 level
--select reviewDeck based on nextReviewDate ? filtering?
--review card count
 -prettify, responsive
+-READme
+-refactor code
+
+More Functionality:
+-next review time (in about 4 hours)
+-browser order by next review?
 
 Write and order tasks!
 -what is required to complete project?
