@@ -19,7 +19,6 @@ Write and order tasks!
 
 
 Wordlist 
--change translation text to just text
 -auto categorise (front is ko, back is en)
 
 AddFlashCard

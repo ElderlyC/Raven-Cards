@@ -5,6 +5,8 @@ import {
   Box,
   ImageList,
   ImageListItem,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
 import { WordPair } from "../../types";
 import { useState, useEffect } from "react";
@@ -19,6 +21,7 @@ import GenerateImage from "./GenerateImage";
 // naver dict search? - postman?
 // -optional image generator button
 // --extract code from TranslationPair, delete it (IMAGE generation)
+// empty tiles in image list
 
 type AddCardProps = {
   pair: WordPair;
@@ -44,6 +47,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   const [disableButton, setDisable] = useState(true);
   const [imageLink, setImage] = useState("");
   const [imgData, setImgData] = useState([{ title: "", link: "" }]);
+  const [definition, setDefinition] = useState("+뜻");
   const minWidth1 = 28 + input1.length * 33;
   const minWidth2 = 28 + input2.length * 16;
   const existingCard = deck.findIndex((card) => card.front === input1) !== -1;
@@ -82,7 +86,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
       setDisable(false);
     }, 2500);
   }, []);
-  console.log(imageLink);
 
   return (
     <div>
@@ -175,8 +178,23 @@ const AddFlashcard: React.FC<AddCardProps> = ({
           </Box> */}
 
           <Button onClick={handleSwapInputs}>Swap Inputs</Button>
+          {/* <Button onClick={() => setDefinition((p) => !p)}>
+            {definition ? "Definition" : "General"} Search
+          </Button> */}
+
+          <ToggleButtonGroup
+            color="primary"
+            value={definition}
+            exclusive
+            onChange={(e, newDef: string) => setDefinition(newDef)}
+            aria-label="Platform"
+          >
+            <ToggleButton value="+뜻">Definition</ToggleButton>
+            <ToggleButton value="">General</ToggleButton>
+          </ToggleButtonGroup>
+
           <GenerateImage
-            word={input1}
+            word={input1 + definition}
             onGenerate={(link: string) => setImage(link)}
             onItemList={(arr) => setImgData(arr)}
           />
@@ -195,12 +213,15 @@ const AddFlashcard: React.FC<AddCardProps> = ({
         <div>
           <ImageList sx={{ width: 1500, height: 800 }} cols={3} rowHeight={500}>
             {imgData.map((item) => (
-              <ImageListItem key={item.link}>
+              <ImageListItem
+                key={item.link}
+                onClick={() => console.log(item.link)}
+              >
                 <img
                   srcSet={`${item.link}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
                   src={`${item.link}?w=164&h=164&fit=crop&auto=format`}
                   alt={""}
-                  loading="lazy"
+                  // loading="lazy"
                 />
               </ImageListItem>
             ))}

@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Button, Typography, TextField, Box } from "@mui/material";
+import axios from "axios";
 
 type GenImageProps = {
   word: string;
   onGenerate: (link: string) => void;
-  onItemList: (arr: []) => void;
+  onItemList: (arr: { title: string; link: string }[]) => void;
 };
 
 const GenerateImage = ({ word, onGenerate, onItemList }: GenImageProps) => {
   const [counter, setCounter] = useState(0);
   const [data, setData] = useState([{ link: "" }]);
-  const getImage = () => {
+
+  const getImage = async () => {
     // image set to counter = 1, should set before counter++
     setCounter((p) => p + 1);
     // should check if a different button has been clicked or the same (counter=0 when diff)
@@ -19,16 +21,28 @@ const GenerateImage = ({ word, onGenerate, onItemList }: GenImageProps) => {
     if (data[0].link) {
       onGenerate(data[counter].link);
     } else {
-      fetch(`http://localhost:3001/api/searchImage?query=${word}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setData(data.items);
-          onGenerate(data.items[0].link);
-          onItemList(data.items);
-        });
+      try {
+        const response: { data: { title: string; link: string }[] } =
+          await axios.get("http://localhost:3002/images", {
+            params: { word: word },
+          });
+
+        setData(response.data);
+        onGenerate(response.data[0].link);
+        onItemList(response.data);
+      } catch (error) {
+        console.error("Error fetching definition:", error);
+      }
+
+      // fetch(`http://localhost:3001/api/searchImage?query=${word}`)
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     setData(data.items);
+      //     onGenerate(data.items[0].link);
+      //     onItemList(data.items);
+      //   });
     }
   };
-  console.log(data);
   return (
     <Button onClick={getImage}>
       {data[counter].link ? "New Image" : "Image Search"}

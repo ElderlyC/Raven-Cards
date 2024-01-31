@@ -74,7 +74,7 @@ fetch(`https://openapi.naver.com/v1/search/image?query=${"석가모니불"}+뜻`
   },
 })
   .then((response) => response.json())
-  .then((data) => console.log(data.items));
+  .then((data) => console.log(data));
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
