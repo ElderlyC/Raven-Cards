@@ -31,8 +31,6 @@ export type Deck = Card[];
 
 function App() {
   const wordlistString = localStorage.getItem("wordlist");
-  //const [words, setWords] = useState(["", ""]);
-  //const [loading, setLoading] = useState(false);
   const [wordList, setWordlist] = useState<WordPair[]>(
     wordlistString ? JSON.parse(wordlistString) : []
   );
@@ -46,27 +44,11 @@ function App() {
   const [initialDeck, setInitialDeck] = useState([]);
   const [reviewCards, setReviewCards] = useState([]);
 
-  const [toLang, setToLang] = useState("en");
-
-  //const [imageLink, setImage] = useState("");
-  const [count, setCount] = useState(reviewCards.length);
-
-  //setLoading(true);
-
-  // Check if the source word is not empty
-  //if (currentWords[0]) {
-
   const handleRemovePair = (source: string) => {
     setWordlist((wordlist) =>
       wordlist.filter((element) => element.source !== source)
     );
   };
-
-  // const handleImageGenerate = (link: string) => {
-  //   console.log(counter);
-  //   setImage(link[counter]?.link);
-  //   counter > 10 ? setCounter(0) : setCounter((p) => p + 1);
-  // };
 
   const handleAddToWordlist = (wordPair: WordPair) => {
     const sourceArray = wordPair.source
@@ -89,7 +71,6 @@ function App() {
   const handleGenerateDefinition = async (searchWord: string) => {
     setMeaning("");
     setExamples([{ translatedText: "", text: "" }]);
-    /[a-zA-Z+]/.test(searchWord) ? setToLang("ko") : setToLang("en");
     const updatedToLang = /[a-zA-Z+]/.test(searchWord) ? "ko" : "en";
     try {
       const response = await axios.get<{
@@ -148,11 +129,35 @@ function App() {
                   onRemovePair={handleRemovePair}
                   onAddCard={handleAddCard}
                 />
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <Button onClick={() => setView("review")}>Review!</Button>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <div>
+                    <Typography // replace with material badge
+                      sx={{
+                        border: "lime 3px solid", // grey out when 0
+                        borderRadius: "50%",
+                        width: "30px",
+                        fontWeight: "500",
+                        color: "lime", // grey out when 0
+                      }}
+                    >
+                      {reviewCards.length}
+                    </Typography>
+                  </div>
+                  <Button
+                    disabled={reviewCards.length === 0}
+                    onClick={() => setView("review")}
+                  >
+                    Review!
+                  </Button>
+
                   <Button onClick={() => setView("view")}>Browse Cards</Button>
                   <Button onClick={() => setView("")}>Settings</Button>
-                  <Typography>{reviewCards.length}</Typography>
                 </div>
               </div>
             </div>
@@ -180,23 +185,6 @@ function App() {
           ) : (
             <div>view not set</div>
           )}
-
-          {/* setCounter(0); */}
-
-          {/* <TranslationPair
-                    key={obj.source + Math.random() * 10000}
-                    source={obj.source}
-                    target={obj.target}
-                    onDelete={handleRemovePair}
-                    onGenerate={handleImageGenerate}
-                  /> */}
-          {/* {imageLink && (
-            <img
-              src={imageLink}
-              alt="definition"
-              style={{ maxHeight: 600, maxWidth: 600 }}
-            />
-          )} */}
         </header>
       </div>
     </ThemeProvider>

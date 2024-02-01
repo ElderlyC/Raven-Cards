@@ -2,6 +2,8 @@ import React, { useState, useEffect, KeyboardEventHandler } from "react";
 import { Button, Typography, TextField, Box } from "@mui/material";
 import { Deck, Card } from "../../App";
 
+// no cards to review case obsolete / delete code
+
 type ReviewCardsProps = {
   deck: Deck;
   reviewCards: Deck;
@@ -16,7 +18,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
   const [reviewDeck, setDeck] = useState(reviewCards);
   const [hint, setHint] = useState(false);
   const [score, setScore] = useState(0);
-  const [card, setCard] = useState(reviewDeck[0]);
+  const [card, setCard] = useState<Card>(reviewDeck[0]);
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState(false);
   const widthback = 28 + card?.back.length * 15;
@@ -95,39 +97,32 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
 
   return (
     <div>
-      {reviewDeck.length === 0 ? (
-        <div>
-          <Typography>No cards to review, go back</Typography>
-          <Button onClick={() => onEndReview()}>Go Back</Button>
-        </div>
-      ) : (
-        <div>
-          <div>Card Level: {card.level}</div>
-          <Box key={card.created}>
-            <Typography variant={"h3"}>{card.front}</Typography>
-            <TextField
-              inputProps={{
-                style: {
-                  textAlign: "center",
-                  fontSize: "2rem",
-                  minWidth: "160px",
-                  width: widthback,
-                },
-              }}
-              onKeyDown={handleKeyDown}
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-              autoFocus
-              error={error}
-            />
-          </Box>
-          <Button onClick={() => setHint((p) => !p)}>
-            {hint ? "Hints Off" : "Hints On"}
-          </Button>
-          <Button onClick={handleSkipCard}>Skip Card</Button>
-          {hint && <Typography>{card.example}</Typography>}
-        </div>
-      )}
+      <Box key={card.created}>
+        <Typography variant={"h3"}>{card.front}</Typography>
+        <TextField
+          inputProps={{
+            style: {
+              textAlign: "center",
+              fontSize: "2rem",
+              minWidth: "160px",
+              width: widthback,
+            },
+          }}
+          onKeyDown={handleKeyDown}
+          value={answer}
+          onChange={(e) => setAnswer(e.target.value)}
+          autoFocus
+          error={error}
+        />
+      </Box>
+
+      <Button onClick={() => setHint((p) => !p)}>
+        {hint ? "Hints Off" : "Hints On"}
+      </Button>
+
+      <Button onClick={handleSkipCard}>Skip Card</Button>
+      {hint && <Typography>{card.example}</Typography>}
+
       <Typography variant={"h4"}>Score: {score}</Typography>
     </div>
   );

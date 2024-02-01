@@ -1,84 +1,29 @@
 Minify Tasks
 
 To Finish:
--delete from wordlist on add card
--generate image button
+-image search handling
+--add imageLink to card
+--example to hint?
+-card details editable
 -prettify, responsive
 -READme
 -refactor code
 
 More Functionality:
--next review time (in about 4 hours)
 -browser order by next review?
-
-Write and order tasks!
--what is required to complete project?
--polish it for portfolio
--in order of necessity
--
-
+-naver dictionary link to search words?
+-export deck as xls?
 
 Wordlist 
--auto categorise (front is ko, back is en)
+-auto categorise (front is ko, back is en)?
 
 AddFlashCard
 -En-Ko defining is bad, swap defining word
--card generation: next review timing = now!
--optional image generator button
--extract code from TranslationPair, delete it
--Keep server.js image search function.
--> Convert to tsx
-
-Review Cards
--add in SRS timings
---modify next review after card has been tested
----switch case based on card level: 0: immediate, 1:now+4h, 2:now+8h etc.
----or formula: 6hrs in ms times level^2
--prettify
-
-Ideas: add a naver dictionary link to search words
+-input width formula
 
 Settings
 -SRS timing: 4h 8h 1d 2d 4d 8d 16d 32d 64d 128d... / other options?
--- if(level<2) interval = 4*2^level
--- else interval = 1day* 2^(level-2)
 --4h, 8h, 1d, 2d, 1wk, 2wk, 1m, 4m
 --accelerated 2h, ^
 -Max Cards: 10-50
 -Testing style: ? 
-
-View Deck 
--button: shows all cards
---Cards are displayed in table format Word / Translation / Definition / Example / Next Review Date / Level / ImageLink etc. 
-
-Prettifying
-
-
-
-
-
-Structure:
-App
--Translator
--Wordlist
--Make Flashcard
--Review Cards
---Based on timings and settings, a set number of cards are tested/reviewed in a row. (SRS) 
--View Deck
---Table displaying all relevant data for all cards (next review date, data, level)
--Settings [?]
--NavButton (all the buttons and stylings) [?]
-
-
-Functions:
--Translate words, separated by line  [adjust Papago package server code]
---(auto get added to wordlist) [existing code]
--Display a wordlist with make flashcard, delete buttons
--Make flashcards from wordlist words, overlay modal
---Word/translation, generate definition [papago],  optional image button [existing]
---(auto get added to review list) (SRS)
--Review cards button: SRS of words due now
---Display cards to review number 
--Settings button: change timings/number of cards/SRS style
--View Deck button: shows all cards
---Cards are displayed in table format Word / Translation / Definition / Example / Next Review Date / Level / ImageLink etc. 

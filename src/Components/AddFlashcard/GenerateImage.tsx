@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Button, Typography, TextField, Box } from "@mui/material";
 import axios from "axios";
 
+// reformat to focus on imagelist: don't need a counter
+// choose an image to attach to card: a part of 'hints'
+
 type GenImageProps = {
   word: string;
   onGenerate: (link: string) => void;
@@ -33,14 +36,6 @@ const GenerateImage = ({ word, onGenerate, onItemList }: GenImageProps) => {
       } catch (error) {
         console.error("Error fetching definition:", error);
       }
-
-      // fetch(`http://localhost:3001/api/searchImage?query=${word}`)
-      //   .then((response) => response.json())
-      //   .then((data) => {
-      //     setData(data.items);
-      //     onGenerate(data.items[0].link);
-      //     onItemList(data.items);
-      //   });
     }
   };
   return (

@@ -5,22 +5,20 @@ import {
   Box,
   ImageList,
   ImageListItem,
-  ToggleButton,
-  ToggleButtonGroup,
+  FormControlLabel,
+  Switch,
 } from "@mui/material";
 import { WordPair } from "../../types";
 import { useState, useEffect } from "react";
 import { Deck } from "../../App";
 import GenerateImage from "./GenerateImage";
-// make meaning n examples editable? - some way to choose the hint for the card so it's not too obvious
+// make meaning n examples editable - some way to choose the hint for the card so it's not too obvious
 // what is the purpose of meaning/examples? to give context for the flashcard answer. de-emphasise them.
 // English front meaning search?
 // define/ backend lang check code obsolete
 // refactor: file too BIG
 // better input width calc.
 // naver dict search? - postman?
-// -optional image generator button
-// --extract code from TranslationPair, delete it (IMAGE generation)
 // empty tiles in image list
 
 type AddCardProps = {
@@ -47,7 +45,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   const [disableButton, setDisable] = useState(true);
   const [imageLink, setImage] = useState("");
   const [imgData, setImgData] = useState([{ title: "", link: "" }]);
-  const [definition, setDefinition] = useState("+뜻");
+  const [definition, setDefinition] = useState(true);
   const minWidth1 = 28 + input1.length * 33;
   const minWidth2 = 28 + input2.length * 16;
   const existingCard = deck.findIndex((card) => card.front === input1) !== -1;
@@ -158,43 +156,21 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               <Typography>Examples: {examples[0]?.translatedText}</Typography>
             )}
           </Box>
-          {/* <Box
-            sx={{
-              height: 350,
-              width: 525,
-            }}
-          >
-            {imageLink && (
-              <Box
-                component="img"
-                alt="Broken Link"
-                src={imageLink}
-                sx={{
-                  height: 350,
-                  width: 525,
-                }}
-              />
-            )}
-          </Box> */}
 
           <Button onClick={handleSwapInputs}>Swap Inputs</Button>
-          {/* <Button onClick={() => setDefinition((p) => !p)}>
-            {definition ? "Definition" : "General"} Search
-          </Button> */}
 
-          <ToggleButtonGroup
-            color="primary"
-            value={definition}
-            exclusive
-            onChange={(e, newDef: string) => setDefinition(newDef)}
-            aria-label="Platform"
-          >
-            <ToggleButton value="+뜻">Definition</ToggleButton>
-            <ToggleButton value="">General</ToggleButton>
-          </ToggleButtonGroup>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={definition}
+                onChange={() => setDefinition((p) => !p)}
+              />
+            }
+            label={definition ? "Definition" : "General"}
+          />
 
           <GenerateImage
-            word={input1 + definition}
+            word={definition ? input1 + "+뜻" : input1}
             onGenerate={(link: string) => setImage(link)}
             onItemList={(arr) => setImgData(arr)}
           />
