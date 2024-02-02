@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { Deck, Card } from "../../App";
 // [OP] ImageLink
+// make cards editable
 // format it to be pretty + fit on mobile
 
 type ViewDeckProps = {

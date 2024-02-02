@@ -7,7 +7,8 @@ import AddFlashcard from "./Components/AddFlashcard/AddFlashcard";
 import { WordPair } from "./types";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, Badge } from "@mui/material";
+import QuizIcon from "@mui/icons-material/Quiz";
 import ReviewCards from "./Components/ReviewCards/ReviewCards";
 import ViewDeck from "./Components/ViewDeck/ViewDeck";
 
@@ -43,6 +44,7 @@ function App() {
 
   const [initialDeck, setInitialDeck] = useState([]);
   const [reviewCards, setReviewCards] = useState([]);
+  const emptyDeck = reviewCards.length === 0;
 
   const handleRemovePair = (source: string) => {
     setWordlist((wordlist) =>
@@ -134,27 +136,22 @@ function App() {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
+                    marginTop: "20px",
                   }}
                 >
-                  <div>
-                    <Typography // replace with material badge
+                  <Badge badgeContent={reviewCards.length} color="success">
+                    <Button
+                      disabled={emptyDeck}
+                      onClick={() => setView("review")}
+                      variant="outlined"
                       sx={{
-                        border: "lime 3px solid", // grey out when 0
-                        borderRadius: "50%",
-                        width: "30px",
-                        fontWeight: "500",
-                        color: "lime", // grey out when 0
+                        paddingLeft: "10px",
                       }}
                     >
-                      {reviewCards.length}
-                    </Typography>
-                  </div>
-                  <Button
-                    disabled={reviewCards.length === 0}
-                    onClick={() => setView("review")}
-                  >
-                    Review!
-                  </Button>
+                      <QuizIcon sx={{ marginRight: "5px" }} />
+                      Review!
+                    </Button>
+                  </Badge>
 
                   <Button onClick={() => setView("view")}>Browse Cards</Button>
                   <Button onClick={() => setView("")}>Settings</Button>

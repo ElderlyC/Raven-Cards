@@ -4,25 +4,6 @@ const { Papago } = require("papago-translate");
 const client = new Papago();
 const nodeFetch = require("node-fetch-commonjs");
 
-// import fetch from "node-fetch";
-// const fetch = (...args) =>
-//   import("node-fetch").then(({ default: fetch }) => fetch(...args));
-// interface NaverApiResponseItem {
-//   title: string;
-//   link: string;
-//   thumbnail: string;
-//   sizeheight: string;
-//   sizewidth: string;
-// }
-
-// interface NaverApiResponse {
-//   lastBuildDate: string;
-//   total: number;
-//   start: number;
-//   display: number;
-//   items: NaverApiResponseItem[];
-// }
-
 const app = express();
 
 app.use(cors());
@@ -80,26 +61,9 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-// client
-//   .define({
-//     to: "ko",
-//     text: "antisemitism",
-//   })
-//   .then((res) => console.log(res.result.items[0].pos[0].meanings[0]))
-//   .catch(console.error);
-
-// client
-//   .translate({
-//     from: "ko",
-//     to: "en",
-//     text: "취지",
-//   })
-//   .then((res) => console.log(res.result.translation));
-
 app.get("/images", async (req, res) => {
   try {
     const { word } = req.query;
-    console.log(word);
     const response = await nodeFetch(
       `https://openapi.naver.com/v1/search/image?query=${word}`,
       {
@@ -117,16 +81,3 @@ app.get("/images", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-// fetch(`https://openapi.naver.com/v1/search/image?query=${"석가모니불"}+뜻`, {
-//   headers: {
-//     "X-Naver-Client-Id": "K36XW4vqHWjCWRFaXw9G",
-//     "X-Naver-Client-Secret": "fblttEcVtD",
-//   },
-// })
-//   .then((response) => response.json())
-//   .then((data) => console.log(data.items));
-
-// app.listen(PORT, () => {
-//   console.log(`Server is running on http://localhost:${PORT}`);
-// });
