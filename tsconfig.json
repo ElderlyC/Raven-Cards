@@ -14,7 +14,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "noImplicitAny": false
   },
-  "include": ["src", "server.js, T2.tsx"]
+  "include": ["src", "T2.tsx"]
 }
