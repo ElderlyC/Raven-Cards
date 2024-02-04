@@ -20,6 +20,7 @@ import GenerateImage from "./GenerateImage";
 // better input width calc.
 // naver dict search? - postman?
 // empty tiles in image list
+// choose image from list, added to card
 
 type AddCardProps = {
   pair: WordPair;
@@ -46,8 +47,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   const [imageLink, setImage] = useState("");
   const [imgData, setImgData] = useState([{ title: "", link: "" }]);
   const [definition, setDefinition] = useState(true);
-  const minWidth1 = 28 + input1.length * 33;
-  const minWidth2 = 28 + input2.length * 16;
   const existingCard = deck.findIndex((card) => card.front === input1) !== -1;
 
   const handleSwapInputs = () => {
@@ -105,12 +104,13 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 helperText={existingCard && "Card already in deck."}
                 inputProps={{
                   style: {
-                    fontSize: "2rem",
-                    minWidth: "60px",
-                    width: `${minWidth1}px`,
+                    fontSize: "3rem",
+                    width: "300px",
                     textAlign: "center",
+                    lineHeight: "3.5rem",
                   },
                 }}
+                multiline
                 id="source"
                 variant="outlined"
                 value={input1}
@@ -127,12 +127,13 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             >
               <Typography variant={"h4"}>Back:</Typography>
               <TextField
+                multiline
                 inputProps={{
                   style: {
                     fontSize: "2rem",
-                    width: `${minWidth2}px`,
-                    minWidth: "120px",
+                    width: "300px",
                     textAlign: "center",
+                    lineHeight: "2rem",
                   },
                 }}
                 id="target"
@@ -143,18 +144,31 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             </Box>
           </Box>
           <Box>
-            {
-              <Typography>
-                {meaning
-                  ? `Meaning: ${meaning}`
+            <Typography>Meaning: </Typography>
+            <TextField
+              multiline
+              sx={{ width: "300px" }}
+              value={
+                meaning
+                  ? meaning
                   : disableButton
                   ? "Searching for Definition..."
-                  : "No definition found."}
-              </Typography>
-            }
-            {examples[0]?.translatedText && (
-              <Typography>Examples: {examples[0]?.translatedText}</Typography>
-            )}
+                  : "No definition found."
+              }
+            />
+
+            <Typography>
+              {meaning
+                ? `Meaning: ${meaning}`
+                : disableButton
+                ? "Searching for Definition..."
+                : "No definition found."}
+            </Typography>
+
+            <Typography>
+              {examples[0]?.translatedText &&
+                `Examples: ${examples[0]?.translatedText}`}
+            </Typography>
           </Box>
 
           <Button onClick={handleSwapInputs}>Swap Inputs</Button>

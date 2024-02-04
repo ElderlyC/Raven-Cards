@@ -2,8 +2,6 @@ import React, { useState, useEffect, KeyboardEventHandler } from "react";
 import { Button, Typography, TextField, Box } from "@mui/material";
 import { Deck, Card } from "../../App";
 
-// no cards to review case obsolete / delete code
-
 type ReviewCardsProps = {
   deck: Deck;
   reviewCards: Deck;
@@ -21,7 +19,6 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
   const [card, setCard] = useState<Card>(reviewDeck[0]);
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState(false);
-  const widthback = 28 + card?.back.length * 15;
 
   const currentIndex = reviewDeck.indexOf(card);
 
@@ -100,12 +97,13 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
       <Box key={card.created}>
         <Typography variant={"h3"}>{card.front}</Typography>
         <TextField
+          multiline
           inputProps={{
             style: {
               textAlign: "center",
               fontSize: "2rem",
-              minWidth: "160px",
-              width: widthback,
+              width: "300px",
+              lineHeight: "2.5rem",
             },
           }}
           onKeyDown={handleKeyDown}

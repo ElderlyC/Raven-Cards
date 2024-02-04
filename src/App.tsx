@@ -134,8 +134,7 @@ function App() {
                 <div
                   style={{
                     display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
+                    justifyContent: "space-evenly",
                     marginTop: "20px",
                   }}
                 >
