@@ -14,10 +14,11 @@ import { Deck } from "../../App";
 import GenerateImage from "./GenerateImage";
 // make meaning n examples editable - some way to choose the hint for the card so it's not too obvious
 // what is the purpose of meaning/examples? to give context for the flashcard answer. de-emphasise them.
+// meaning as initial guide, first example editable, show other examples, image as hint on review, items[n].hanjaEntry
+// handle multiple meanings (array)
 // English front meaning search?
 // define/ backend lang check code obsolete
 // refactor: file too BIG
-// better input width calc.
 // naver dict search? - postman?
 // empty tiles in image list
 // choose image from list, added to card
@@ -43,10 +44,13 @@ const AddFlashcard: React.FC<AddCardProps> = ({
 }) => {
   const [input1, setInput1] = useState(pair.source);
   const [input2, setInput2] = useState(pair.target);
+  const [meaningInput, setMeaning] = useState(meaning);
+  const [examplesInput, setExamples] = useState(examples[0]?.text);
+
   const [disableButton, setDisable] = useState(true);
   const [imageLink, setImage] = useState("");
   const [imgData, setImgData] = useState([{ title: "", link: "" }]);
-  const [definition, setDefinition] = useState(true);
+  const [definitionSearch, setSearch] = useState(true);
   const existingCard = deck.findIndex((card) => card.front === input1) !== -1;
 
   const handleSwapInputs = () => {
@@ -71,6 +75,10 @@ const AddFlashcard: React.FC<AddCardProps> = ({
       onRemovePair(input1);
     }
     onCardSubmit();
+  };
+
+  const convertExample = (sentence: string) => {
+    return sentence.replace(/<b>(.*?)<\/b>/g, "<$1>");
   };
 
   useEffect(() => {
@@ -144,19 +152,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             </Box>
           </Box>
           <Box>
-            <Typography>Meaning: </Typography>
-            <TextField
-              multiline
-              sx={{ width: "300px" }}
-              value={
-                meaning
-                  ? meaning
-                  : disableButton
-                  ? "Searching for Definition..."
-                  : "No definition found."
-              }
-            />
-
             <Typography>
               {meaning
                 ? `Meaning: ${meaning}`
@@ -165,9 +160,28 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 : "No definition found."}
             </Typography>
 
+            {/* <TextField
+              multiline
+              sx={{ width: "300px" }}
+              value={
+                examples ? (
+                  <p>examples[0].text</p> // display all examples instead
+                ) : disableButton ? (
+                  "Searching for Examples..."
+                ) : (
+                  "No examples found."
+                )
+              }
+            /> */}
             <Typography>
-              {examples[0]?.translatedText &&
-                `Examples: ${examples[0]?.translatedText}`}
+              {examples[0]?.translatedText && (
+                <div>
+                  Examples:
+                  <br />
+                  {convertExample(examples[0]?.text)} <br />
+                  {examples[0]?.translatedText}
+                </div>
+              )}
             </Typography>
           </Box>
 
@@ -176,15 +190,15 @@ const AddFlashcard: React.FC<AddCardProps> = ({
           <FormControlLabel
             control={
               <Switch
-                checked={definition}
-                onChange={() => setDefinition((p) => !p)}
+                checked={definitionSearch}
+                onChange={() => setSearch((p) => !p)}
               />
             }
-            label={definition ? "Definition" : "General"}
+            label={definitionSearch ? "Definition" : "General"}
           />
 
           <GenerateImage
-            word={definition ? input1 + "+뜻" : input1}
+            word={definitionSearch ? input1 + "+뜻" : input1}
             onGenerate={(link: string) => setImage(link)}
             onItemList={(arr) => setImgData(arr)}
           />

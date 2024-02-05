@@ -78,11 +78,13 @@ function App() {
       const response = await axios.get<{
         meaning: string;
         examples: { text: string; translatedText: string }[];
+        object: any;
       }>("http://localhost:3002/define", {
         params: { text: searchWord, to: updatedToLang },
       });
       setMeaning(response.data.meaning);
       response.data.examples && setExamples(response.data.examples);
+      console.log(response.data.object);
     } catch (error) {
       console.error("Error fetching definition:", error);
     }
@@ -125,6 +127,7 @@ function App() {
               }}
             >
               <TranslationForm onTranslation={handleAddToWordlist} />
+
               <div style={{ margin: "20px" }}>
                 <Wordlist
                   wordlist={wordList}
@@ -134,10 +137,11 @@ function App() {
                 <div
                   style={{
                     display: "flex",
-                    justifyContent: "space-evenly",
+                    justifyContent: "space-around",
                     marginTop: "20px",
                   }}
                 >
+                  <Button onClick={() => setView("view")}>Browse Deck</Button>
                   <Badge badgeContent={reviewCards.length} color="success">
                     <Button
                       disabled={emptyDeck}
@@ -151,8 +155,6 @@ function App() {
                       Review!
                     </Button>
                   </Badge>
-
-                  <Button onClick={() => setView("view")}>Browse Cards</Button>
                   <Button onClick={() => setView("")}>Settings</Button>
                 </div>
               </div>

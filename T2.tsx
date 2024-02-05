@@ -46,6 +46,7 @@ app.get("/define", async (req, res) => {
     res.status(200).json({
       meaning: definition.result?.items[0]?.pos[0]?.meanings[0]?.meaning,
       examples: definition.result?.items[0]?.pos[0]?.meanings[0]?.examples,
+      object: definition.result,
     });
   } catch (error) {
     console.error(error);

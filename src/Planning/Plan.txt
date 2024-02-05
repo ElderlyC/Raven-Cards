@@ -1,6 +1,7 @@
 Minify Tasks
 
 To Finish:
+-editable definitions
 -image search handling
 --add imageLink to card
 --example to hint?
@@ -13,13 +14,14 @@ More Functionality:
 -browser order by next review?
 -naver dictionary link to search words?
 -export deck as xls?
+-hanja search
+-zoom in on image (click to reduce frame size, choose center)
 
 Wordlist 
 -auto categorise (front is ko, back is en)?
 
 AddFlashCard
 -En-Ko defining is bad, swap defining word
--input width formula
 
 Settings
 -SRS timing: 4h 8h 1d 2d 4d 8d 16d 32d 64d 128d... / other options?

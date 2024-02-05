@@ -30,6 +30,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
 
   const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.key === "Enter") {
+      event.preventDefault();
       setAnswer("");
       const updatedDeck = [...reviewDeck];
       const currentCard = updatedDeck[currentIndex];
@@ -103,7 +104,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
               textAlign: "center",
               fontSize: "2rem",
               width: "300px",
-              lineHeight: "2.5rem",
+              lineHeight: "3rem",
             },
           }}
           onKeyDown={handleKeyDown}
