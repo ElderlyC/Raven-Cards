@@ -43,10 +43,12 @@ app.get("/define", async (req, res) => {
       to: to,
       text: text,
     });
+    const firstItem = definition.result?.items[0];
     res.status(200).json({
-      meaning: definition.result?.items[0]?.pos[0]?.meanings[0]?.meaning,
-      examples: definition.result?.items[0]?.pos[0]?.meanings[0]?.examples,
+      meaning: firstItem?.pos[0]?.meanings[0]?.meaning,
+      examples: firstItem?.pos[0]?.meanings[0]?.examples,
       object: definition.result,
+      hanjaEntry: firstItem?.hanjaEntry,
     });
   } catch (error) {
     console.error(error);

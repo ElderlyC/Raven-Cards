@@ -26,6 +26,7 @@ export type Card = {
   level: number;
   example: string;
   meaning: string;
+  hint: string;
 };
 
 export type Deck = Card[];
@@ -40,6 +41,7 @@ function App() {
   const [examples, setExamples] = useState<
     { text: string; translatedText: string }[]
   >([]);
+  const [hanja, setHanja] = useState("");
   const [view, setView] = useState("home");
 
   const [initialDeck, setInitialDeck] = useState([]);
@@ -71,6 +73,7 @@ function App() {
   };
 
   const handleGenerateDefinition = async (searchWord: string) => {
+    setHanja("");
     setMeaning("");
     setExamples([{ translatedText: "", text: "" }]);
     const updatedToLang = /[a-zA-Z+]/.test(searchWord) ? "ko" : "en";
@@ -79,12 +82,13 @@ function App() {
         meaning: string;
         examples: { text: string; translatedText: string }[];
         object: any;
+        hanjaEntry: string;
       }>("http://localhost:3002/define", {
         params: { text: searchWord, to: updatedToLang },
       });
       setMeaning(response.data.meaning);
       response.data.examples && setExamples(response.data.examples);
-      console.log(response.data.object);
+      setHanja(response.data.hanjaEntry);
     } catch (error) {
       console.error("Error fetching definition:", error);
     }
@@ -164,9 +168,9 @@ function App() {
               pair={cardPair}
               meaning={meaning}
               examples={examples}
+              hanja={hanja}
               onCardSubmit={() => setView("home")}
               deck={initialDeck}
-              onSearchDef={handleGenerateDefinition}
               onRemovePair={handleRemovePair}
             />
           ) : view === "review" ? (

@@ -7,19 +7,16 @@ import {
   ImageListItem,
   FormControlLabel,
   Switch,
+  Link,
 } from "@mui/material";
 import { WordPair } from "../../types";
 import { useState, useEffect } from "react";
 import { Deck } from "../../App";
 import GenerateImage from "./GenerateImage";
-// make meaning n examples editable - some way to choose the hint for the card so it's not too obvious
-// what is the purpose of meaning/examples? to give context for the flashcard answer. de-emphasise them.
-// meaning as initial guide, first example editable, show other examples, image as hint on review, items[n].hanjaEntry
-// handle multiple meanings (array)
+// show image as hint on review
 // English front meaning search?
 // define/ backend lang check code obsolete
 // refactor: file too BIG
-// naver dict search? - postman?
 // empty tiles in image list
 // choose image from list, added to card
 
@@ -27,9 +24,9 @@ type AddCardProps = {
   pair: WordPair;
   meaning: string;
   examples: { text: string; translatedText: string }[];
+  hanja: string;
   onCardSubmit: () => void;
   deck: Deck;
-  onSearchDef: (word: string) => void;
   onRemovePair: (source: string) => void;
 };
 
@@ -37,20 +34,18 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   pair,
   meaning,
   examples,
+  hanja,
   onCardSubmit,
   deck,
-  onSearchDef,
   onRemovePair,
 }) => {
   const [input1, setInput1] = useState(pair.source);
   const [input2, setInput2] = useState(pair.target);
-  const [meaningInput, setMeaning] = useState(meaning);
-  const [examplesInput, setExamples] = useState(examples[0]?.text);
-
   const [disableButton, setDisable] = useState(true);
   const [imageLink, setImage] = useState("");
   const [imgData, setImgData] = useState([{ title: "", link: "" }]);
   const [definitionSearch, setSearch] = useState(true);
+  const [hint, setHint] = useState("");
   const existingCard = deck.findIndex((card) => card.front === input1) !== -1;
 
   const handleSwapInputs = () => {
@@ -67,8 +62,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
           created: new Date(),
           nextReview: new Date(),
           level: 0,
-          example: examples[0]?.translatedText,
-          meaning,
+          hint,
         },
       ];
       localStorage.setItem("deck", JSON.stringify([...deck, ...newCard]));
@@ -78,7 +72,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   };
 
   const convertExample = (sentence: string) => {
-    return sentence.replace(/<b>(.*?)<\/b>/g, "<$1>");
+    return sentence.replace(/<b>(.*?)<\/b>/g, "[$1]");
   };
 
   useEffect(() => {
@@ -90,7 +84,8 @@ const AddFlashcard: React.FC<AddCardProps> = ({
     setTimeout(() => {
       setDisable(false);
     }, 2500);
-  }, []);
+    setHint(convertExample(examples[0]?.text));
+  }, [examples]);
 
   return (
     <div>
@@ -135,13 +130,12 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             >
               <Typography variant={"h4"}>Back:</Typography>
               <TextField
-                multiline
                 inputProps={{
                   style: {
                     fontSize: "2rem",
                     width: "300px",
                     textAlign: "center",
-                    lineHeight: "2rem",
+                    lineHeight: "2.5rem",
                   },
                 }}
                 id="target"
@@ -151,38 +145,67 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               />
             </Box>
           </Box>
-          <Box>
-            <Typography>
-              {meaning
-                ? `Meaning: ${meaning}`
-                : disableButton
-                ? "Searching for Definition..."
-                : "No definition found."}
-            </Typography>
-
-            {/* <TextField
-              multiline
-              sx={{ width: "300px" }}
-              value={
-                examples ? (
-                  <p>examples[0].text</p> // display all examples instead
-                ) : disableButton ? (
-                  "Searching for Examples..."
-                ) : (
-                  "No examples found."
-                )
-              }
-            /> */}
-            <Typography>
-              {examples[0]?.translatedText && (
-                <div>
-                  Examples:
-                  <br />
-                  {convertExample(examples[0]?.text)} <br />
-                  {examples[0]?.translatedText}
-                </div>
+          <Box
+            sx={{
+              fontSize: "1.2rem",
+              fontWeight: "bold",
+              width: "500px",
+            }}
+          >
+            <Box sx={{ margin: "15px" }}>
+              {meaning ? (
+                <span>
+                  Meaning <br />
+                  {meaning}
+                </span>
+              ) : disableButton ? (
+                "Searching for Definition..."
+              ) : (
+                "No definition found."
               )}
-            </Typography>
+            </Box>
+
+            <Link
+              href={"https://hanja.dict.naver.com/#/search?query=" + hanja}
+              variant="h3"
+              underline="hover"
+              rel="noopener"
+              target="_blank"
+            >
+              {hanja}
+            </Link>
+
+            <Box sx={{ margin: "15px" }}>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <span>
+                  Hint{" "}
+                  <Link
+                    href={
+                      "https://ko.dict.naver.com/#/search?range=example&query=" +
+                      input1
+                    }
+                    underline="hover"
+                    rel="noopener"
+                    target="_blank"
+                  >
+                    예
+                  </Link>
+                </span>
+                <TextField
+                  value={hint}
+                  onChange={(e) => setHint(e.target.value)}
+                  variant="standard"
+                  inputProps={{
+                    sx: { fontSize: "1.5rem", textAlign: "center" },
+                  }}
+                />
+                <span>
+                  {convertExample(examples[0].text) === hint
+                    ? examples[0]?.translatedText
+                    : ""}
+                </span>
+              </div>
+            </Box>
           </Box>
 
           <Button onClick={handleSwapInputs}>Swap Inputs</Button>

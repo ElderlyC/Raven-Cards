@@ -55,8 +55,7 @@ const ViewDeck: React.FC<ViewDeckProps> = ({ onLeaveBrowser, deck }) => {
               <TableRow>
                 <TableCell>Front</TableCell>
                 <TableCell>Back</TableCell>
-                <TableCell>Definition</TableCell>
-                <TableCell>Example</TableCell>
+                <TableCell>Hint</TableCell>
                 <TableCell>Next Review</TableCell>
                 <TableCell>Level</TableCell>
                 <TableCell>Created</TableCell>
@@ -68,8 +67,7 @@ const ViewDeck: React.FC<ViewDeckProps> = ({ onLeaveBrowser, deck }) => {
                 <TableRow key={card.front}>
                   <TableCell>{card.front}</TableCell>
                   <TableCell>{card.back}</TableCell>
-                  <TableCell>{card.meaning}</TableCell>
-                  <TableCell>{card.example}</TableCell>
+                  <TableCell>{card.hint}</TableCell>
                   <TableCell>{readableDate(card.nextReview)}</TableCell>
                   <TableCell>{card.level}</TableCell>
                   <TableCell>{readableDate(card.created)}</TableCell>

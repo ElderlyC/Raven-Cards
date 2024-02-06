@@ -1,11 +1,9 @@
 Minify Tasks
 
 To Finish:
--editable definitions
 -image search handling
 --add imageLink to card
---example to hint?
--card details editable
+-browser: card details editable
 -prettify, responsive
 -READme
 -refactor code

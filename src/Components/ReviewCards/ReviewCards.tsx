@@ -120,7 +120,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
       </Button>
 
       <Button onClick={handleSkipCard}>Skip Card</Button>
-      {hint && <Typography>{card.example}</Typography>}
+      {hint && <Typography variant="h5">{card.hint}</Typography>}
 
       <Typography variant={"h4"}>Score: {score}</Typography>
     </div>
