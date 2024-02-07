@@ -46,6 +46,8 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   const [imgData, setImgData] = useState([{ title: "", link: "" }]);
   const [definitionSearch, setSearch] = useState(true);
   const [hint, setHint] = useState("");
+  const [zoom, setZoom] = useState(1.0);
+  const [verticalOffset, setVertical] = useState(0);
   const existingCard = deck.findIndex((card) => card.front === input1) !== -1;
 
   const handleSwapInputs = () => {
@@ -73,6 +75,11 @@ const AddFlashcard: React.FC<AddCardProps> = ({
 
   const convertExample = (sentence: string) => {
     return sentence.replace(/<b>(.*?)<\/b>/g, "[$1]");
+  };
+
+  const handleImageLink = (link: string) => {
+    setImage(link);
+    setImgData([{ title: "", link: "" }]);
   };
 
   useEffect(() => {
@@ -164,6 +171,52 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 "No definition found."
               )}
             </Box>
+            {imageLink && (
+              <Box>
+                <Button
+                  onClick={() => setVertical((p) => p + 5)}
+                  variant="contained"
+                  sx={{ zIndex: 1, color: "blue" }}
+                >
+                  Up
+                </Button>
+                <Box
+                  sx={{
+                    overflow: "hidden",
+                    cursor: "zoom-in",
+                    margin: "0",
+                    flexDirection: "column",
+                    height: "169px",
+                  }}
+                >
+                  <img
+                    style={{
+                      height: `${(300 * 9) / 16}px`,
+                      backgroundSize: "cover",
+                      transform: `scale(${zoom})`, // change the scale with zoom clicks until final click resets (array) [1,2,3,4]
+                      marginTop: `${verticalOffset}%`, // make adjustable
+                    }}
+                    srcSet={`${imageLink}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                    src={`${imageLink}?w=164&h=164&fit=crop&auto=format`}
+                    alt={""}
+                    onClick={() => setZoom((p) => (p > 4 ? 1 : p + 0.1))}
+                    // loading="lazy"
+                  />
+                </Box>
+                <Button
+                  onClick={() => setVertical((p) => p - 5)}
+                  variant="contained"
+                >
+                  Down
+                </Button>
+                <Button
+                  onClick={() => setZoom((p) => (p <= 1 ? 4 : p - 0.1))}
+                  variant="contained"
+                >
+                  Zoom-Out
+                </Button>
+              </Box>
+            )}
 
             <Link
               href={"https://hanja.dict.naver.com/#/search?query=" + hanja}
@@ -242,7 +295,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             {imgData.map((item) => (
               <ImageListItem
                 key={item.link}
-                onClick={() => console.log(item.link)}
+                onClick={() => handleImageLink(item.link)}
               >
                 <img
                   srcSet={`${item.link}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
