@@ -65,6 +65,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
           nextReview: new Date(),
           level: 0,
           hint,
+          image: [zoom, verticalOffset, imageLink],
         },
       ];
       localStorage.setItem("deck", JSON.stringify([...deck, ...newCard]));
@@ -176,28 +177,47 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 <Button
                   onClick={() => setVertical((p) => p + 5)}
                   variant="contained"
-                  sx={{ zIndex: 1, color: "blue" }}
                 >
                   Up
+                </Button>
+                <Button
+                  onClick={() => {
+                    setVertical(0);
+                    setZoom(1);
+                  }}
+                  variant="contained"
+                >
+                  Reset
                 </Button>
                 <Box
                   sx={{
                     overflow: "hidden",
                     cursor: "zoom-in",
-                    margin: "0",
-                    flexDirection: "column",
                     height: "169px",
                   }}
                 >
                   <img
                     style={{
-                      height: `${(300 * 9) / 16}px`,
-                      backgroundSize: "cover",
-                      transform: `scale(${zoom})`, // change the scale with zoom clicks until final click resets (array) [1,2,3,4]
+                      height: "169px",
+                      objectFit: "cover",
+                      scale: zoom.toString(), // increments by 0.1 1-4
                       marginTop: `${verticalOffset}%`, // make adjustable
                     }}
                     srcSet={`${imageLink}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                    src={`${imageLink}?w=164&h=164&fit=crop&auto=format`}
+                    src={`${imageLink}?w=164&h=164&fit=crop&auto=format`} //this formatting is doing extra stuff?
+                    alt={""}
+                    onClick={() => setZoom((p) => (p > 4 ? 1 : p + 0.1))}
+                    // loading="lazy"
+                  />
+                  <img
+                    style={{
+                      height: "169px",
+                      objectFit: "cover",
+                      scale: zoom.toString(), // increments by 0.1 1-4
+                      marginTop: `${verticalOffset}%`, // make adjustable
+                    }}
+                    srcSet={imageLink}
+                    src={imageLink}
                     alt={""}
                     onClick={() => setZoom((p) => (p > 4 ? 1 : p + 0.1))}
                     // loading="lazy"
@@ -306,7 +326,12 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               </ImageListItem>
             ))}
           </ImageList>
-          <Button onClick={() => setImgData([{ title: "", link: "" }])}>
+          <Button
+            onClick={() => {
+              setImgData([{ title: "", link: "" }]);
+              setImage("");
+            }}
+          >
             Exit
           </Button>
         </div>

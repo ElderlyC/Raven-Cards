@@ -56,6 +56,7 @@ const ViewDeck: React.FC<ViewDeckProps> = ({ onLeaveBrowser, deck }) => {
                 <TableCell>Front</TableCell>
                 <TableCell>Back</TableCell>
                 <TableCell>Hint</TableCell>
+                <TableCell>Image</TableCell>
                 <TableCell>Next Review</TableCell>
                 <TableCell>Level</TableCell>
                 <TableCell>Created</TableCell>
@@ -68,6 +69,28 @@ const ViewDeck: React.FC<ViewDeckProps> = ({ onLeaveBrowser, deck }) => {
                   <TableCell>{card.front}</TableCell>
                   <TableCell>{card.back}</TableCell>
                   <TableCell>{card.hint}</TableCell>
+                  <TableCell>
+                    {card.image && (
+                      <div
+                        style={{
+                          overflow: "hidden",
+                          height: "40px",
+                          display: "flex",
+                        }}
+                      >
+                        <img
+                          onClick={() => console.log("je")} //expand image to be visible
+                          src={card.image[2]}
+                          style={{
+                            width: "80px",
+                            objectFit: "cover",
+                            // transform: `scale(${card.image[0] * (40 / 80)})`, // change the scale with zoom clicks until final click resets (array) [1,2,3,4]
+                            // marginTop: `${card.image[1] * 7}%`,
+                          }}
+                        />
+                      </div>
+                    )}
+                  </TableCell>
                   <TableCell>{readableDate(card.nextReview)}</TableCell>
                   <TableCell>{card.level}</TableCell>
                   <TableCell>{readableDate(card.created)}</TableCell>

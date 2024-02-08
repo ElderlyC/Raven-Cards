@@ -93,6 +93,8 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
     setError(false);
   }, [card]);
 
+  console.log(card.image);
+
   return (
     <div>
       <Box key={card.created}>
@@ -121,7 +123,20 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
 
       <Button onClick={handleSkipCard}>Skip Card</Button>
       {hint && <Typography variant="h5">{card.hint}</Typography>}
-
+      {/* show image as another hint */}
+      {card.image && (
+        <Box sx={{ height: "169px", overflow: "hidden", display: "flex" }}>
+          <img
+            src={card.image[2]}
+            style={{
+              width: "500px",
+              objectFit: "cover",
+              // scale: card.image[0].toString(),
+              transform: `scale(${card.image[0]})`,
+            }}
+          />
+        </Box>
+      )}
       <Typography variant={"h4"}>Score: {score}</Typography>
     </div>
   );

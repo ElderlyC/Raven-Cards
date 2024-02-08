@@ -27,6 +27,7 @@ export type Card = {
   example: string;
   meaning: string;
   hint: string;
+  image: [zoom: number, vertical: number, link: string];
 };
 
 export type Deck = Card[];
