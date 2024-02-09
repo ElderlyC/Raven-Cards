@@ -196,7 +196,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                     height: "169px",
                   }}
                 >
-                  <img
+                  {/* <img
                     style={{
                       height: "169px",
                       objectFit: "cover",
@@ -208,7 +208,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                     alt={""}
                     onClick={() => setZoom((p) => (p > 4 ? 1 : p + 0.1))}
                     // loading="lazy"
-                  />
+                  /> */}
                   <img
                     style={{
                       height: "169px",

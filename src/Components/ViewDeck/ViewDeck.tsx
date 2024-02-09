@@ -9,8 +9,10 @@ import {
   TableRow,
   Paper,
   Typography,
+  Modal,
 } from "@mui/material";
 import { Deck, Card } from "../../App";
+import classes from "./ViewDeck.module.css";
 // [OP] ImageLink
 // make cards editable
 // format it to be pretty + fit on mobile
@@ -22,6 +24,13 @@ type ViewDeckProps = {
 
 const ViewDeck: React.FC<ViewDeckProps> = ({ onLeaveBrowser, deck }) => {
   const [cardDeck, setDeck] = useState(deck || []);
+  const [showModal, setShowModal] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+
+  const toggleModal = (url: string) => {
+    setImageUrl(url);
+    setShowModal(true);
+  };
 
   const readableDate = (dateString: string) => {
     if (dateString === "Mastered!") return dateString;
@@ -46,70 +55,82 @@ const ViewDeck: React.FC<ViewDeckProps> = ({ onLeaveBrowser, deck }) => {
   }, [cardDeck]);
 
   return (
-    <div style={{ width: "80%", maxWidth: "1000px" }}>
-      <Typography variant={"h2"}>Browse Deck</Typography>
-      {cardDeck.length > 0 ? (
-        <TableContainer component={Paper} sx={{ maxHeight: "600px" }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Front</TableCell>
-                <TableCell>Back</TableCell>
-                <TableCell>Hint</TableCell>
-                <TableCell>Image</TableCell>
-                <TableCell>Next Review</TableCell>
-                <TableCell>Level</TableCell>
-                <TableCell>Created</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {cardDeck.map((card) => (
-                <TableRow key={card.front}>
-                  <TableCell>{card.front}</TableCell>
-                  <TableCell>{card.back}</TableCell>
-                  <TableCell>{card.hint}</TableCell>
-                  <TableCell>
-                    {card.image && (
-                      <div
-                        style={{
-                          overflow: "hidden",
-                          height: "40px",
-                          display: "flex",
-                        }}
-                      >
-                        <img
-                          onClick={() => console.log("je")} //expand image to be visible
-                          src={card.image[2]}
-                          style={{
-                            width: "80px",
-                            objectFit: "cover",
-                            // transform: `scale(${card.image[0] * (40 / 80)})`, // change the scale with zoom clicks until final click resets (array) [1,2,3,4]
-                            // marginTop: `${card.image[1] * 7}%`,
-                          }}
-                        />
-                      </div>
-                    )}
-                  </TableCell>
-                  <TableCell>{readableDate(card.nextReview)}</TableCell>
-                  <TableCell>{card.level}</TableCell>
-                  <TableCell>{readableDate(card.created)}</TableCell>
-                  <TableCell>
-                    <Button onClick={() => handleDeleteCard(card)}>
-                      Delete
-                    </Button>
-                  </TableCell>
+    <div>
+      <div style={{ width: "100%", maxWidth: "1000px" }}>
+        <Modal open={showModal}>
+          <div
+            className={classes.modalOverlay}
+            onClick={() => setShowModal(false)}
+          >
+            <div className={classes.modalContent}>
+              <img src={imageUrl} alt="Modal" />
+            </div>
+          </div>
+        </Modal>
+
+        <Typography variant={"h2"}>Browse Deck</Typography>
+        {cardDeck.length > 0 ? (
+          <TableContainer component={Paper} sx={{ maxHeight: "600px" }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Front</TableCell>
+                  <TableCell>Back</TableCell>
+                  <TableCell>Hint</TableCell>
+                  <TableCell>Image</TableCell>
+                  <TableCell>Next Review</TableCell>
+                  <TableCell>Level</TableCell>
+                  <TableCell>Created</TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      ) : (
-        <Typography variant={"h4"} sx={{ margin: "30px" }}>
-          No cards yet!
-        </Typography>
-      )}
-      <Button onClick={() => onLeaveBrowser()}>Go Back</Button>
+              </TableHead>
+              <TableBody>
+                {cardDeck.map((card) => (
+                  <TableRow key={card.front}>
+                    <TableCell>{card.front}</TableCell>
+                    <TableCell>{card.back}</TableCell>
+                    <TableCell>{card.hint}</TableCell>
+                    <TableCell>
+                      {card.image && (
+                        <div
+                          style={{
+                            overflow: "hidden",
+                            height: "40px",
+                            display: "flex",
+                          }}
+                        >
+                          <img
+                            onClick={() => toggleModal(card.image[2])} //expand image to be visible
+                            src={card.image[2]}
+                            style={{
+                              width: "80px",
+                              objectFit: "cover",
+                            }}
+                          />
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>{readableDate(card.nextReview)}</TableCell>
+                    <TableCell>{card.level}</TableCell>
+                    <TableCell>{readableDate(card.created)}</TableCell>
+                    <TableCell>
+                      <Button onClick={() => handleDeleteCard(card)}>
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          <Typography variant={"h4"} sx={{ margin: "30px" }}>
+            No cards yet!
+          </Typography>
+        )}
+
+        <Button onClick={() => onLeaveBrowser()}>Go Back</Button>
+      </div>
     </div>
   );
 };
