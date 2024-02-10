@@ -1,19 +1,14 @@
 Minify Tasks
 
 To Finish:
--image search handling
---add imageLink to card
--browser: card details editable
 -prettify, responsive
 -READme
 -refactor code
 
 More Functionality:
+-browser: card details editable?
 -browser order by next review?
--naver dictionary link to search words?
 -export deck as xls?
--hanja search
--zoom in on image (click to reduce frame size, choose center)
 
 Wordlist 
 -auto categorise (front is ko, back is en)?

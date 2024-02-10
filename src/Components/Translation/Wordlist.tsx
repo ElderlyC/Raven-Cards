@@ -75,12 +75,13 @@ const Wordlist: React.FC<WordListProps> = ({
                 sx={{
                   marginBottom: "5px",
                   padding: "5px",
-                  minWidth: "35vw",
-                  maxWidth: "35vw",
+                  width: "35vw",
+                  //maxWidth: "35vw",
+                  //maxWidth: "100%",
                 }}
               >
                 <Grid container spacing={2} alignItems="center">
-                  <Grid item xs={4}>
+                  <Grid item xs={3.5}>
                     <Typography fontSize="1.5rem">{pair.source}</Typography>
                   </Grid>
                   <Grid item xs={5}>

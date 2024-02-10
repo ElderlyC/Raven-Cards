@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import { Deck, Card } from "../../App";
 import classes from "./ViewDeck.module.css";
-// [OP] ImageLink
 // make cards editable
 // format it to be pretty + fit on mobile
 
@@ -56,7 +55,7 @@ const ViewDeck: React.FC<ViewDeckProps> = ({ onLeaveBrowser, deck }) => {
 
   return (
     <div>
-      <div style={{ width: "100%", maxWidth: "1000px" }}>
+      <div className={classes.backdrop}>
         <Modal open={showModal}>
           <div
             className={classes.modalOverlay}
@@ -70,7 +69,7 @@ const ViewDeck: React.FC<ViewDeckProps> = ({ onLeaveBrowser, deck }) => {
 
         <Typography variant={"h2"}>Browse Deck</Typography>
         {cardDeck.length > 0 ? (
-          <TableContainer component={Paper} sx={{ maxHeight: "600px" }}>
+          <TableContainer component={Paper} className={classes.container}>
             <Table>
               <TableHead>
                 <TableRow>
@@ -129,7 +128,9 @@ const ViewDeck: React.FC<ViewDeckProps> = ({ onLeaveBrowser, deck }) => {
           </Typography>
         )}
 
-        <Button onClick={() => onLeaveBrowser()}>Go Back</Button>
+        <Button variant="contained" onClick={() => onLeaveBrowser()}>
+          Go Back
+        </Button>
       </div>
     </div>
   );

@@ -13,12 +13,10 @@ import { WordPair } from "../../types";
 import { useState, useEffect } from "react";
 import { Deck } from "../../App";
 import GenerateImage from "./GenerateImage";
-// show image as hint on review
 // English front meaning search?
 // define/ backend lang check code obsolete
 // refactor: file too BIG
 // empty tiles in image list
-// choose image from list, added to card
 
 type AddCardProps = {
   pair: WordPair;
@@ -196,19 +194,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                     height: "169px",
                   }}
                 >
-                  {/* <img
-                    style={{
-                      height: "169px",
-                      objectFit: "cover",
-                      scale: zoom.toString(), // increments by 0.1 1-4
-                      marginTop: `${verticalOffset}%`, // make adjustable
-                    }}
-                    srcSet={`${imageLink}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                    src={`${imageLink}?w=164&h=164&fit=crop&auto=format`} //this formatting is doing extra stuff?
-                    alt={""}
-                    onClick={() => setZoom((p) => (p > 4 ? 1 : p + 0.1))}
-                    // loading="lazy"
-                  /> */}
                   <img
                     style={{
                       height: "169px",

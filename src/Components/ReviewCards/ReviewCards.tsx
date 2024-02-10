@@ -35,7 +35,10 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
       const updatedDeck = [...reviewDeck];
       const currentCard = updatedDeck[currentIndex];
       let newLevel = card.level + 1;
-      if (answer.toLowerCase() !== card.back.toLowerCase()) {
+      if (
+        answer.toLowerCase().replaceAll(" ", "") !== // ignore capitals and spaces
+        card.back.toLowerCase().replaceAll(" ", "")
+      ) {
         setError(true);
         if (currentCard.level === 0) return;
         newLevel = card.level - 1;
