@@ -13,9 +13,8 @@ import { WordPair } from "../../types";
 import { useState, useEffect } from "react";
 import { Deck } from "../../App";
 import GenerateImage from "./GenerateImage";
-// English front meaning search?
 // define/ backend lang check code obsolete
-// refactor: file too BIG
+// refactor: file TOO BIG
 // empty tiles in image list
 
 type AddCardProps = {
@@ -73,7 +72,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   };
 
   const convertExample = (sentence: string) => {
-    return sentence.replace(/<b>(.*?)<\/b>/g, "[$1]");
+    return sentence?.replace(/<b>(.*?)<\/b>/g, "[$1]");
   };
 
   const handleImageLink = (link: string) => {
@@ -90,8 +89,9 @@ const AddFlashcard: React.FC<AddCardProps> = ({
     setTimeout(() => {
       setDisable(false);
     }, 2500);
+
     setHint(convertExample(examples[0]?.text));
-  }, [examples]);
+  }, [examples, input1]);
 
   return (
     <div>
@@ -119,7 +119,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                     lineHeight: "3.5rem",
                   },
                 }}
-                multiline
                 id="source"
                 variant="outlined"
                 value={input1}
@@ -238,10 +237,9 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 <span>
                   Hint{" "}
                   <Link
-                    href={
-                      "https://ko.dict.naver.com/#/search?range=example&query=" +
-                      input1
-                    }
+                    href={`https://${
+                      /[a-zA-Z+]/.test(input1) ? "en" : "ko"
+                    }.dict.naver.com/#/search?range=example&query=${input1}`}
                     underline="hover"
                     rel="noopener"
                     target="_blank"
@@ -258,8 +256,10 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                   }}
                 />
                 <span>
-                  {convertExample(examples[0].text) === hint
+                  {convertExample(examples[0]?.text) === hint
                     ? examples[0]?.translatedText
+                    : examples[0]?.translatedText === hint
+                    ? convertExample(examples[0]?.text)
                     : ""}
                 </span>
               </div>
@@ -279,7 +279,13 @@ const AddFlashcard: React.FC<AddCardProps> = ({
           />
 
           <GenerateImage
-            word={definitionSearch ? input1 + "+뜻" : input1}
+            word={
+              definitionSearch
+                ? /[a-zA-Z+]/.test(input1)
+                  ? input1 + "+definition"
+                  : input1 + "+뜻"
+                : input1
+            }
             onGenerate={(link: string) => setImage(link)}
             onItemList={(arr) => setImgData(arr)}
           />
@@ -303,10 +309,10 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 onClick={() => handleImageLink(item.link)}
               >
                 <img
-                  srcSet={`${item.link}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                  src={`${item.link}?w=164&h=164&fit=crop&auto=format`}
+                  srcSet={`${item.link}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`} //?
+                  src={`${item.link}?w=164&h=164&fit=crop&auto=format`} //?
                   alt={""}
-                  // loading="lazy"
+                  // loading="lazy" //?
                 />
               </ImageListItem>
             ))}

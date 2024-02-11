@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, FormEvent } from "react";
+import React, { useState, FormEvent } from "react";
 import { WordPair } from "../../types";
 import { TextField, Button, Typography, Box } from "@mui/material";
 import axios from "axios";
@@ -37,6 +37,16 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
     setLangs(([lang1, lang2]) => [lang2, lang1]);
   };
 
+  const handleTextChange = (e) => {
+    const koReg = /[\u3131-\uD79D]/giu; // regex for korean 한글
+    if (
+      (/[a-zA-Z+]/.test(text.slice(-1)) && langs[0] === "ko") ||
+      (koReg.test(text.slice(-1)) && langs[0] === "en")
+    )
+      handleSwap();
+    setText(e.target.value);
+  };
+
   return (
     <div style={{ margin: "20px", minWidth: "40%", minHeight: "100%" }}>
       <Typography variant="h2">Translate</Typography>
@@ -61,7 +71,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
             multiline
             value={text}
             rows={7}
-            onChange={(e) => setText(e.target.value)}
+            onChange={handleTextChange}
             sx={{
               width: "35vw",
             }}

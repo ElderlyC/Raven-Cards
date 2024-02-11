@@ -126,10 +126,11 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
       {hint && (
         <div>
           <Typography variant="h5">{card.hint}</Typography>
-          {card.image[2] && (
+          {card?.image[2] && (
             <Box sx={{ height: "169px", width: "500px", overflow: "hidden" }}>
               <img
                 src={card.image[2]}
+                alt={card.image[2]}
                 style={{
                   height: "169px",
                   objectFit: "cover",
