@@ -13,18 +13,32 @@ import {
 } from "@mui/material";
 import { Deck, Card } from "../../App";
 import classes from "./ViewDeck.module.css";
-// make cards editable
+import AddFlashcard from "../AddFlashcard/AddFlashcard";
+// make cards editable using adjusted add card component
 // format it to be pretty + fit on mobile
 
 type ViewDeckProps = {
   deck: Deck;
   onLeaveBrowser: () => void;
+  onRemovePair: (source: string) => void;
 };
 
-const ViewDeck: React.FC<ViewDeckProps> = ({ onLeaveBrowser, deck }) => {
+const ViewDeck: React.FC<ViewDeckProps> = ({
+  onLeaveBrowser,
+  onRemovePair,
+  deck,
+}) => {
   const [cardDeck, setDeck] = useState(deck || []);
   const [showModal, setShowModal] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
+  const [editing, setEditing] = useState(false);
+  const [editCard, setEditCard] = useState({
+    image: [1, 0, ""] as [number, number, string],
+    pair: { source: "", target: "" },
+    meaning: "",
+    examples: [{ text: "", translatedText: "" }],
+    hanja: "",
+  });
 
   const toggleModal = (url: string) => {
     setImageUrl(url);
@@ -49,89 +63,121 @@ const ViewDeck: React.FC<ViewDeckProps> = ({ onLeaveBrowser, deck }) => {
     setDeck((deck) => deck.filter((card) => card !== deleteCard));
   };
 
+  const handleEditCard = (editCard: Card) => {
+    setEditCard({
+      image: [editCard[0], editCard[1], editCard[2]],
+      pair: { source: editCard.front, target: editCard.back },
+      meaning: editCard.meaning,
+      examples: [{ text: editCard.hint, translatedText: "" }],
+      hanja: "",
+    });
+    setEditing(true);
+    // set prop for add so that it doesn't add but does smth different
+  };
+
   useEffect(() => {
     localStorage.setItem("deck", JSON.stringify(cardDeck));
   }, [cardDeck]);
 
   return (
     <div>
-      <div className={classes.backdrop}>
-        <Modal open={showModal}>
-          <div
-            className={classes.modalOverlay}
-            onClick={() => setShowModal(false)}
-          >
-            <div className={classes.modalContent}>
-              <img src={imageUrl} alt="Modal" />
+      {editing ? (
+        <div>
+          <AddFlashcard
+            image={editCard.image}
+            editMode={true}
+            pair={editCard.pair}
+            meaning={editCard.meaning}
+            examples={editCard.examples}
+            hanja={editCard.hanja}
+            onCardSubmit={() => setEditing(false)}
+            deck={cardDeck}
+            onRemovePair={onRemovePair}
+          />
+          <Button onClick={() => setEditing(false)}>Cancel</Button>
+        </div>
+      ) : (
+        <div className={classes.backdrop}>
+          <Modal open={showModal}>
+            <div
+              className={classes.modalOverlay}
+              onClick={() => setShowModal(false)}
+            >
+              <div className={classes.modalContent}>
+                <img src={imageUrl} alt="Modal" />
+              </div>
             </div>
-          </div>
-        </Modal>
+          </Modal>
 
-        <Typography variant={"h2"}>Browse Deck</Typography>
-        {cardDeck.length > 0 ? (
-          <TableContainer component={Paper} className={classes.container}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Front</TableCell>
-                  <TableCell>Back</TableCell>
-                  <TableCell>Hint</TableCell>
-                  <TableCell>Image</TableCell>
-                  <TableCell>Next Review</TableCell>
-                  <TableCell>Level</TableCell>
-                  <TableCell>Created</TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {cardDeck.map((card) => (
-                  <TableRow key={card.front}>
-                    <TableCell>{card.front}</TableCell>
-                    <TableCell>{card.back}</TableCell>
-                    <TableCell>{card.hint}</TableCell>
-                    <TableCell>
-                      {card.image && (
-                        <div
-                          style={{
-                            overflow: "hidden",
-                            height: "40px",
-                            display: "flex",
-                          }}
-                        >
-                          <img
-                            onClick={() => toggleModal(card.image[2])} //expand image to be visible
-                            src={card.image[2]}
-                            style={{
-                              width: "80px",
-                              objectFit: "cover",
-                            }}
-                          />
-                        </div>
-                      )}
-                    </TableCell>
-                    <TableCell>{readableDate(card.nextReview)}</TableCell>
-                    <TableCell>{card.level}</TableCell>
-                    <TableCell>{readableDate(card.created)}</TableCell>
-                    <TableCell>
-                      <Button onClick={() => handleDeleteCard(card)}>
-                        Delete
-                      </Button>
-                    </TableCell>
+          <Typography variant={"h2"}>Browse Deck</Typography>
+          {cardDeck.length > 0 ? (
+            <TableContainer component={Paper} className={classes.container}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Front</TableCell>
+                    <TableCell>Back</TableCell>
+                    <TableCell>Hint</TableCell>
+                    <TableCell>Image</TableCell>
+                    <TableCell>Next Review</TableCell>
+                    <TableCell>Level</TableCell>
+                    <TableCell>Created</TableCell>
+                    <TableCell></TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        ) : (
-          <Typography variant={"h4"} sx={{ margin: "30px" }}>
-            No cards yet!
-          </Typography>
-        )}
+                </TableHead>
+                <TableBody>
+                  {cardDeck.map((card) => (
+                    <TableRow key={card.front}>
+                      <TableCell>{card.front}</TableCell>
+                      <TableCell>{card.back}</TableCell>
+                      <TableCell>{card.hint}</TableCell>
+                      <TableCell>
+                        {card.image && (
+                          <div
+                            style={{
+                              overflow: "hidden",
+                              height: "40px",
+                              display: "flex",
+                            }}
+                          >
+                            <img
+                              onClick={() => toggleModal(card.image[2])} //expand image to be visible
+                              src={card.image[2]}
+                              style={{
+                                width: "80px",
+                                objectFit: "cover",
+                              }}
+                            />
+                          </div>
+                        )}
+                      </TableCell>
+                      <TableCell>{readableDate(card.nextReview)}</TableCell>
+                      <TableCell>{card.level}</TableCell>
+                      <TableCell>{readableDate(card.created)}</TableCell>
+                      <TableCell>
+                        <Button onClick={() => handleDeleteCard(card)}>
+                          Delete
+                        </Button>
+                        <Button onClick={() => handleEditCard(card)}>
+                          Edit
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            <Typography variant={"h4"} sx={{ margin: "30px" }}>
+              No cards yet!
+            </Typography>
+          )}
 
-        <Button variant="contained" onClick={() => onLeaveBrowser()}>
-          Go Back
-        </Button>
-      </div>
+          <Button variant="contained" onClick={() => onLeaveBrowser()}>
+            Go Back
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

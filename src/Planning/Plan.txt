@@ -1,22 +1,22 @@
 Minify Tasks
 
 To Finish:
+-edit cards from Browser (edit button -> adjusted add form)
+-hosted node server w updated endpoints
 -prettify, responsive
 -READme
 -refactor code
 
-More Functionality:
--browser: card details editable?
+Refactoring:
+-check each component, remove fat
+-split into smaller parts
+
+Extra [OP] Functionality:
+-replace localStorage with DB storage, CRUD
 -browser order by next review?
--export deck as xls?
+-export deck as xls? / notepad?
 
-Wordlist 
--auto categorise (front is ko, back is en)?
-
-AddFlashCard
--En-Ko defining is bad, swap defining word
-
-Settings
+Settings [OBSOLETE?]
 -SRS timing: 4h 8h 1d 2d 4d 8d 16d 32d 64d 128d... / other options?
 --4h, 8h, 1d, 2d, 1wk, 2wk, 1m, 4m
 --accelerated 2h, ^

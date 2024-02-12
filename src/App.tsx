@@ -166,6 +166,7 @@ function App() {
             </div>
           ) : view === "newcard" ? (
             <AddFlashcard
+              editMode={false}
               pair={cardPair}
               meaning={meaning}
               examples={examples}
@@ -184,6 +185,7 @@ function App() {
             <ViewDeck
               deck={initialDeck}
               onLeaveBrowser={() => setView("home")}
+              onRemovePair={handleRemovePair}
             />
           ) : (
             <div>view not set</div>

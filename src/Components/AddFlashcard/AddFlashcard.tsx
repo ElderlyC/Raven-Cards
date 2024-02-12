@@ -16,8 +16,11 @@ import GenerateImage from "./GenerateImage";
 // define/ backend lang check code obsolete
 // refactor: file TOO BIG
 // empty tiles in image list
+// image is reset for editing, not hint?
 
 type AddCardProps = {
+  image?: [zoom: number, verticalOffset: number, imageLink: string]; //this not working
+  editMode: boolean;
   pair: WordPair;
   meaning: string;
   examples: { text: string; translatedText: string }[];
@@ -28,6 +31,8 @@ type AddCardProps = {
 };
 
 const AddFlashcard: React.FC<AddCardProps> = ({
+  image,
+  editMode,
   pair,
   meaning,
   examples,
@@ -39,13 +44,16 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   const [input1, setInput1] = useState(pair.source);
   const [input2, setInput2] = useState(pair.target);
   const [disableButton, setDisable] = useState(true);
-  const [imageLink, setImage] = useState("");
+  const [imageLink, setImage] = useState(image ? image[2] : "");
   const [imgData, setImgData] = useState([{ title: "", link: "" }]);
   const [definitionSearch, setSearch] = useState(true);
   const [hint, setHint] = useState("");
   const [zoom, setZoom] = useState(1.0);
   const [verticalOffset, setVertical] = useState(0);
   const existingCard = deck.findIndex((card) => card.front === input1) !== -1;
+  const [editingCardName, setName] = useState(input1);
+
+  console.log(image);
 
   const handleSwapInputs = () => {
     setInput1(input2);
@@ -80,6 +88,17 @@ const AddFlashcard: React.FC<AddCardProps> = ({
     setImgData([{ title: "", link: "" }]);
   };
 
+  const handleEditCard = () => {
+    const cardIndex = deck.findIndex((card) => card.front === editingCardName);
+    deck[cardIndex].front = input1;
+    deck[cardIndex].back = input2;
+    deck[cardIndex].hint = hint;
+    deck[cardIndex].image = [zoom, verticalOffset, imageLink];
+
+    localStorage.setItem("deck", JSON.stringify(deck));
+    onCardSubmit();
+  };
+
   useEffect(() => {
     setInput1(pair.source);
     setInput2(pair.target);
@@ -97,7 +116,9 @@ const AddFlashcard: React.FC<AddCardProps> = ({
     <div>
       {imgData[0].link === "" ? (
         <div>
-          <Typography variant={"h2"}>New Card</Typography>
+          <Typography variant={"h2"}>
+            {editMode ? "Editing Card" : "New Card"}
+          </Typography>
           <Box>
             <Box
               sx={{
@@ -109,8 +130,10 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             >
               <Typography variant={"h4"}>Front:</Typography>
               <TextField
-                error={existingCard}
-                helperText={existingCard && "Card already in deck."}
+                error={existingCard && !editMode}
+                helperText={
+                  existingCard && !editMode && "Card already in deck."
+                }
                 inputProps={{
                   style: {
                     fontSize: "3rem",
@@ -290,15 +313,24 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             onItemList={(arr) => setImgData(arr)}
           />
           <Button onClick={() => setImage("")}>Remove Image</Button>
-          <Box>
-            <Button
-              disabled={existingCard || (meaning === "" && disableButton)}
-              onClick={() => handleSubmitCard(false)}
-            >
-              Add New Card
-            </Button>
-            <Button onClick={() => handleSubmitCard(true)}>Cancel</Button>
-          </Box>
+          {!editMode ? (
+            <Box>
+              <Button
+                variant="contained"
+                disabled={existingCard || (meaning === "" && disableButton)}
+                onClick={() => handleSubmitCard(false)}
+              >
+                Add New Card
+              </Button>
+              <Button onClick={() => handleSubmitCard(true)}>Cancel</Button>
+            </Box>
+          ) : (
+            <Box>
+              <Button onClick={handleEditCard} size="large" variant="contained">
+                Save
+              </Button>
+            </Box>
+          )}
         </div>
       ) : (
         <div>
