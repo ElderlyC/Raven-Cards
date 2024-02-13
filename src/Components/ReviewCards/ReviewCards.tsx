@@ -124,10 +124,22 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
 
       <Button onClick={handleSkipCard}>Skip Card</Button>
       {hint && (
-        <div>
+        <div
+          style={{
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
           <Typography variant="h5">{card.hint}</Typography>
           {card?.image[2] && (
-            <Box sx={{ height: "169px", width: "500px", overflow: "hidden" }}>
+            <Box
+              sx={{
+                height: "169px",
+                width: "500px",
+                overflow: "hidden",
+              }}
+            >
               <img
                 src={card.image[2]}
                 alt={card.image[2]}

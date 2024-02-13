@@ -188,7 +188,10 @@ function App() {
               onRemovePair={handleRemovePair}
             />
           ) : (
-            <div>view not set</div>
+            <div>
+              <Typography variant="h3">View not set [WIP]</Typography>
+              <Button onClick={() => setView("home")}>Go Back!</Button>
+            </div>
           )}
         </header>
       </div>

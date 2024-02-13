@@ -1,9 +1,8 @@
 Minify Tasks
 
 To Finish:
--edit cards from Browser (edit button -> adjusted add form)
 -hosted node server w updated endpoints
--prettify, responsive
+-prettify, responsive, icons + colours
 -READme
 -refactor code
 

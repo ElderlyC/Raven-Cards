@@ -50,7 +50,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
   return (
     <div style={{ margin: "20px", minWidth: "40%", minHeight: "100%" }}>
       <Typography variant="h2">Translate</Typography>
-      <Box sx={{ margin: "30px" }}>
+      <Box sx={{ margin: "10px" }}>
         <Typography variant="h5" fontWeight={"bold"}>
           {langNames[langs[0] as keyof typeof langNames]}
           <Button onClick={handleSwap} size="large">
@@ -63,6 +63,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
       <form onSubmit={handleSubmit}>
         <Box>
           <TextField
+            fullWidth
             autoFocus
             label="Text to translate"
             placeholder="Enter words/phrases here, separated by line"
@@ -72,9 +73,6 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
             value={text}
             rows={7}
             onChange={handleTextChange}
-            sx={{
-              width: "35vw",
-            }}
             InputProps={{
               sx: {
                 textarea: { fontSize: "2rem" },
@@ -89,7 +87,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
           type="submit"
           size="large"
           sx={{
-            marginTop: "20px",
+            width: "100%",
           }}
         >
           Translate

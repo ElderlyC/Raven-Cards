@@ -14,7 +14,6 @@ import {
 import { Deck, Card } from "../../App";
 import classes from "./ViewDeck.module.css";
 import AddFlashcard from "../AddFlashcard/AddFlashcard";
-// make cards editable using adjusted add card component
 // format it to be pretty + fit on mobile
 
 type ViewDeckProps = {
@@ -65,14 +64,17 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
 
   const handleEditCard = (editCard: Card) => {
     setEditCard({
-      image: [editCard[0], editCard[1], editCard[2]],
+      image: [
+        editCard.image ? editCard.image[0] : 1,
+        editCard.image ? editCard.image[1] : 0,
+        editCard.image ? editCard.image[2] : "",
+      ],
       pair: { source: editCard.front, target: editCard.back },
       meaning: editCard.meaning,
       examples: [{ text: editCard.hint, translatedText: "" }],
       hanja: "",
     });
     setEditing(true);
-    // set prop for add so that it doesn't add but does smth different
   };
 
   useEffect(() => {
@@ -140,14 +142,17 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
                               display: "flex",
                             }}
                           >
-                            <img
-                              onClick={() => toggleModal(card.image[2])} //expand image to be visible
-                              src={card.image[2]}
-                              style={{
-                                width: "80px",
-                                objectFit: "cover",
-                              }}
-                            />
+                            {card.image[2] && (
+                              <img
+                                alt="hint"
+                                onClick={() => toggleModal(card.image[2])} //expand image to be visible
+                                src={card.image[2]}
+                                style={{
+                                  width: "80px",
+                                  objectFit: "cover",
+                                }}
+                              />
+                            )}
                           </div>
                         )}
                       </TableCell>
@@ -155,11 +160,21 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
                       <TableCell>{card.level}</TableCell>
                       <TableCell>{readableDate(card.created)}</TableCell>
                       <TableCell>
-                        <Button onClick={() => handleDeleteCard(card)}>
-                          Delete
-                        </Button>
                         <Button onClick={() => handleEditCard(card)}>
                           Edit
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            if (
+                              window.confirm(
+                                `Are you sure you want to delete this card? [${card.front}]`
+                              )
+                            ) {
+                              handleDeleteCard(card);
+                            }
+                          }}
+                        >
+                          Delete
                         </Button>
                       </TableCell>
                     </TableRow>

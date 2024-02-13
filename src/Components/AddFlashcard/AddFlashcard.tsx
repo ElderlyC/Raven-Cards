@@ -10,13 +10,12 @@ import {
   Link,
 } from "@mui/material";
 import { WordPair } from "../../types";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Deck } from "../../App";
 import GenerateImage from "./GenerateImage";
 // define/ backend lang check code obsolete
 // refactor: file TOO BIG
 // empty tiles in image list
-// image is reset for editing, not hint?
 
 type AddCardProps = {
   image?: [zoom: number, verticalOffset: number, imageLink: string]; //this not working
@@ -48,12 +47,10 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   const [imgData, setImgData] = useState([{ title: "", link: "" }]);
   const [definitionSearch, setSearch] = useState(true);
   const [hint, setHint] = useState("");
-  const [zoom, setZoom] = useState(1.0);
-  const [verticalOffset, setVertical] = useState(0);
+  const [zoom, setZoom] = useState(image ? image[0] : 1.0);
+  const [verticalOffset, setVertical] = useState(image ? image[1] : 0);
   const existingCard = deck.findIndex((card) => card.front === input1) !== -1;
-  const [editingCardName, setName] = useState(input1);
-
-  console.log(image);
+  const editingCardName = useRef(input1).current;
 
   const handleSwapInputs = () => {
     setInput1(input2);
@@ -220,8 +217,8 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                     style={{
                       height: "169px",
                       objectFit: "cover",
-                      scale: zoom.toString(), // increments by 0.1 1-4
-                      marginTop: `${verticalOffset}%`, // make adjustable
+                      scale: zoom.toString(),
+                      marginTop: `${verticalOffset}%`,
                     }}
                     srcSet={imageLink}
                     src={imageLink}
@@ -271,7 +268,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                   </Link>
                 </span>
                 <TextField
-                  value={hint}
+                  value={hint || ""}
                   onChange={(e) => setHint(e.target.value)}
                   variant="standard"
                   inputProps={{
