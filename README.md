@@ -1,74 +1,37 @@
-# Flashcard Mini Project - Translations and Definitions
+# Ko-En Cards - Translation and Flashcard Maker
 
 ### _A work in progress!_
 
-This project has yet to be completed and this readme is just a placeholder for now!
-Try out this project here: https://elderlyc.github.io/Flashcard-Mini-Project/
+This project is near completion so this readme is unfinished for now!
+Try out this project here: https://elderlyc.github.io/Ko-En-Cards/
 
 ## Introduction
 
-kiloJoules was my first major project after having spent time learning JavaScript, HTML, CSS, and finally React basics.
+Welcome to our Translation and Flashcard Application! This versatile tool is designed to streamline your language learning journey, offering both translation capabilities and a robust flashcard system to enhance your vocabulary retention.
 
-The application features 6 self-contained pages with varying functions, from a calorie calculator to a meal generator.
+## Features
 
-Creating this project was a way for me to learn as I went about implementing various functionality and designs.
+### Translation
 
-I was able to become familiar with the use of RESTful APIs by fetching food data from the Edamam database.
+Easily translate text between Korean and English with our intuitive translation feature. Great for quick translation, or retain your words in the wordlist so you can make flashcards!
 
-I also utilised localStorage, dealing with JSON and nested objects in the process, to store various data across sessions.
+### Flashcards
 
-Custom components and hooks were applied for various elements of the application. Implementing routing allowed me to achieve a Single-Page Application.
+Master new vocabulary and concepts with our customizable flashcard system. Create personalized flashcards with words, phrases, or definitions, and reinforce your learning through spaced repetition. With our flashcard feature, you can organize, review, and track your progress effortlessly.
 
-Although visually basic, this was intentional as I wished to focus mostly on functionality over form.
-
-## Wireframes to Pages
+## Visual Demonstration
 
 At first I used Paint to sketch out my ideas for the various sections of my application. Later Figma helped me understand visually what I wanted to accomplish.
 Below are some screenshots from my application in use.
 
-### Home page
-
-![paintsketch](./src/screenshots/fitness%20app%20paint.png) ![figma](./src/screenshots/Fitness%20App%20figma.png)
+### Subtitle for Screenshots (Home page)
 
 I managed to follow my sketches for the home page almost exactly, except for some minor aesthetic changes. Below is the finished application:
 ![homepage](./src/screenshots/homepage.png)
 
-### Maintenance calories calculator
-
-![maintenance calculator](./src/screenshots/maintenance.PNG)
-
-### Weight tracker
-
-![weight tracker sketch](./src/screenshots/weight-tracker-blueprint.png)
-
-Some functions from the planning stage were canned, others added as I worked out what would be most useful.
-![weight tracker](./src/screenshots/weighttracker.PNG)
-
-### BMI calculator
-
-![bmi calculator](./src/screenshots/bmi.PNG)
-
-### Calorie calculator
-
-![calorie calculator sketch](./src/screenshots/daily-calories-blueprint%20v2.png)
-
-Again, I narrowed the scope of the application's functions to make it less cluttered and focused.
-![calorie calculator](./src/screenshots/calorie%20calc.PNG)
-
-### Random meal generator
-
-![random meal generator](./src/screenshots/randommeal.PNG)
-
-### Keto checker
-
-![keto checker sketch](./src/screenshots/keto-checker-blueprint.png)
-
-Another example where more features were added later in production:
-![keto checker](./src/screenshots/ketochecker.PNG)
-
 ## The Programmer
 
-Hi. I study programming by myself through online resources and am looking for a web development job. I have experience with React (JS, HTML, CSS), Git, and Firebase, and am studying TypeScript and Node.js.
+Hi. I study programming by myself through online resources and am looking for a web development job. I have experience with React (TypeScript, JS, HTML, CSS), Git, Material UI and Firebase, and am studying Node.js and Express.js.
 
 I am always striving to learn about the seemingly endless world of programming, and try to program every day.
 
@@ -80,4 +43,4 @@ You can try it out here: https://elderlyc.github.io/meetup-app
 
 ## Special Thanks
 
-To Mike and Baker for giving me ideas and helping test out my application, and everyone else for trying it out.
+To Naver OpenAPI and Material UI for making this project possible, and all users for trying out my application!
