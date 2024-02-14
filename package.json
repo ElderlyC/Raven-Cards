@@ -1,5 +1,6 @@
 {
-  "name": "flashcard-mini",
+  "name": "flashcard-project",
+  "homepage": "https://elderlyc.github.io/Ko-En-Cards",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -18,6 +19,7 @@
     "cors": "^2.8.5",
     "crypto-browserify": "^3.12.0",
     "express": "^4.18.2",
+    "gh-pages": "^6.1.1",
     "mongodb": "4.1",
     "node-fetch": "^3.3.2",
     "node-fetch-commonjs": "^3.3.2",
@@ -32,7 +34,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
