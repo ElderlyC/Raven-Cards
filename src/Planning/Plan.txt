@@ -1,6 +1,7 @@
 Minify Tasks
 
 To Finish:
+-deploy to githubio, test with local server
 -hosted node server w updated endpoints
 -prettify, responsive, icons + colours
 -READme
@@ -12,6 +13,7 @@ Refactoring:
 
 Extra [OP] Functionality:
 -replace localStorage with DB storage, CRUD
+-browser search function
 -browser order by next review?
 -export deck as xls? / notepad?
 

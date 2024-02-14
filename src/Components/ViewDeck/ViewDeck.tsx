@@ -15,6 +15,7 @@ import { Deck, Card } from "../../App";
 import classes from "./ViewDeck.module.css";
 import AddFlashcard from "../AddFlashcard/AddFlashcard";
 // format it to be pretty + fit on mobile
+// browser search function
 
 type ViewDeckProps = {
   deck: Deck;
@@ -117,23 +118,25 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Front</TableCell>
-                    <TableCell>Back</TableCell>
-                    <TableCell>Hint</TableCell>
-                    <TableCell>Image</TableCell>
-                    <TableCell>Next Review</TableCell>
-                    <TableCell>Level</TableCell>
-                    <TableCell>Created</TableCell>
-                    <TableCell></TableCell>
+                    <TableCell align="center">Front</TableCell>
+                    <TableCell align="center">Back</TableCell>
+                    <TableCell align="center">Hint</TableCell>
+                    <TableCell align="center">Image</TableCell>
+                    <TableCell align="center">Next Review</TableCell>
+                    <TableCell align="center">Level</TableCell>
+                    <TableCell align="center">Created</TableCell>
+                    <TableCell align="center">Tools</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {cardDeck.map((card) => (
                     <TableRow key={card.front}>
-                      <TableCell>{card.front}</TableCell>
-                      <TableCell>{card.back}</TableCell>
-                      <TableCell>{card.hint}</TableCell>
-                      <TableCell>
+                      <TableCell align="center" width="120px">
+                        {card.front}
+                      </TableCell>
+                      <TableCell align="center">{card.back}</TableCell>
+                      <TableCell align="center">{card.hint}</TableCell>
+                      <TableCell align="center">
                         {card.image && (
                           <div
                             style={{
@@ -156,10 +159,14 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
                           </div>
                         )}
                       </TableCell>
-                      <TableCell>{readableDate(card.nextReview)}</TableCell>
-                      <TableCell>{card.level}</TableCell>
-                      <TableCell>{readableDate(card.created)}</TableCell>
-                      <TableCell>
+                      <TableCell align="center">
+                        {readableDate(card.nextReview)}
+                      </TableCell>
+                      <TableCell align="center">{card.level}</TableCell>
+                      <TableCell align="center">
+                        {readableDate(card.created)}
+                      </TableCell>
+                      <TableCell align="center">
                         <Button onClick={() => handleEditCard(card)}>
                           Edit
                         </Button>

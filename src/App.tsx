@@ -133,7 +133,7 @@ function App() {
             >
               <TranslationForm onTranslation={handleAddToWordlist} />
 
-              <div style={{ margin: "20px" }}>
+              <div style={{ margin: "20px", flex: 1, maxWidth: "600px" }}>
                 <Wordlist
                   wordlist={wordList}
                   onRemovePair={handleRemovePair}
@@ -142,25 +142,48 @@ function App() {
                 <div
                   style={{
                     display: "flex",
-                    justifyContent: "space-around",
-                    marginTop: "20px",
+                    justifyContent: "space-between",
                   }}
                 >
-                  <Button onClick={() => setView("view")}>Browse Deck</Button>
-                  <Badge badgeContent={reviewCards.length} color="success">
+                  <div>
                     <Button
-                      disabled={emptyDeck}
-                      onClick={() => setView("review")}
-                      variant="outlined"
-                      sx={{
-                        paddingLeft: "10px",
-                      }}
+                      size="large"
+                      variant="contained"
+                      sx={{ fontWeight: "bold", width: "170px" }}
+                      onClick={() => setView("view")}
                     >
-                      <QuizIcon sx={{ marginRight: "5px" }} />
-                      Review!
+                      Browse Deck
                     </Button>
-                  </Badge>
-                  <Button onClick={() => setView("")}>Settings</Button>
+                  </div>
+                  <div>
+                    <Badge badgeContent={reviewCards.length} color="success">
+                      <Button
+                        size="large"
+                        disabled={emptyDeck}
+                        onClick={() => setView("review")}
+                        variant="contained"
+                        fullWidth
+                        sx={{
+                          fontWeight: "bold",
+                          width: "170px",
+                          paddingRight: "30px",
+                        }}
+                      >
+                        <QuizIcon sx={{ marginRight: "5px" }} />
+                        Review!
+                      </Button>
+                    </Badge>
+                  </div>
+                  <div>
+                    <Button
+                      size="large"
+                      variant="contained"
+                      sx={{ fontWeight: "bold", width: "170px" }}
+                      onClick={() => setView("")}
+                    >
+                      Settings
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

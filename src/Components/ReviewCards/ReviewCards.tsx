@@ -132,7 +132,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
           }}
         >
           <Typography variant="h5">{card.hint}</Typography>
-          {card?.image[2] && (
+          {card?.image && card?.image[2] && (
             <Box
               sx={{
                 height: "169px",

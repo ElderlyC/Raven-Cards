@@ -48,7 +48,15 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
   };
 
   return (
-    <div style={{ margin: "20px", minWidth: "40%", minHeight: "100%" }}>
+    <div
+      style={{
+        margin: "20px",
+        minWidth: "30%",
+        minHeight: "100%",
+        flex: 1,
+        maxWidth: "600px",
+      }}
+    >
       <Typography variant="h2">Translate</Typography>
       <Box sx={{ margin: "10px" }}>
         <Typography variant="h5" fontWeight={"bold"}>
@@ -88,6 +96,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
           size="large"
           sx={{
             width: "100%",
+            fontWeight: "bold",
           }}
         >
           Translate

@@ -1,13 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Paper,
-  Grid,
-  Button,
-  Input,
-  styled,
-  Typography,
-  Box,
-} from "@mui/material";
+import { Paper, Grid, Button, styled, Typography, Box } from "@mui/material";
 import { WordPair } from "../../types";
 
 type WordListProps = {
@@ -54,17 +46,34 @@ const Wordlist: React.FC<WordListProps> = ({
   return (
     <Box>
       <Typography variant="h2">Word List</Typography>
+      <Typography
+        variant="h5"
+        sx={{
+          display: "flex",
+          justifyContent: "space-around",
+          fontWeight: "bold",
+          height: "42.25px",
+          margin: "10px",
+          alignItems: "center",
+        }}
+      >
+        <span>Front</span>
+        <span>Back</span>
+        <span>Tools</span>
+      </Typography>
+
       <Box
         sx={{
-          border: "4px solid #5c5c5c",
-          borderRadius: "15px",
-          padding: "20px",
-          margin: "10px",
+          border: "1px solid #5c5c5c",
+          borderRadius: "4px",
+          padding: "10px",
+          height: "370px",
+          ":hover": { borderColor: "white" },
         }}
       >
         <StyledScrollbar
           style={{
-            maxHeight: "400px",
+            maxHeight: "350px",
           }}
           ref={scrollbarRef}
         >
@@ -74,25 +83,20 @@ const Wordlist: React.FC<WordListProps> = ({
                 key={pair.source + Math.random() * 10000}
                 sx={{
                   marginBottom: "5px",
-                  padding: "5px",
-                  width: "35vw",
-                  //maxWidth: "35vw",
-                  //maxWidth: "100%",
+                  padding: "3px",
                 }}
               >
                 <Grid container spacing={2} alignItems="center">
-                  <Grid item xs={3.5}>
+                  <Grid item xs={4}>
                     <Typography fontSize="1.5rem">{pair.source}</Typography>
                   </Grid>
-                  <Grid item xs={5}>
+                  <Grid item xs={4}>
                     <Typography fontSize="1.2rem">{pair.target}</Typography>
                   </Grid>
-                  <Grid item xs={1.5}>
+                  <Grid item xs={4}>
                     <Button onClick={() => handleDeletePair(pair.source)}>
                       DEL
                     </Button>
-                  </Grid>
-                  <Grid item xs={1.5}>
                     <Button onClick={() => handleAddFlashcard(pair)}>
                       ADD
                     </Button>
