@@ -1,8 +1,9 @@
 Minify Tasks
 
 To Finish:
--deploy to githubio, test with local server
 -hosted node server w updated endpoints
+--find a host
+--replace "http://localhost:3002/define" etc.
 -prettify, responsive, icons + colours
 -READme
 -refactor code
@@ -18,8 +19,9 @@ Extra [OP] Functionality:
 -export deck as xls? / notepad?
 
 Settings [OBSOLETE?]
+-Maximum cards to review in a day:?
 -SRS timing: 4h 8h 1d 2d 4d 8d 16d 32d 64d 128d... / other options?
 --4h, 8h, 1d, 2d, 1wk, 2wk, 1m, 4m
 --accelerated 2h, ^
 -Max Cards: 10-50
--Testing style: ? 
+-Testing style: ?

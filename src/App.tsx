@@ -58,10 +58,14 @@ function App() {
   const handleAddToWordlist = (wordPair: WordPair) => {
     const sourceArray = wordPair.source
       .split("\n")
-      .filter((word) => word !== "");
+      .filter(
+        (word) => word !== "" && !wordList.some((pair) => pair.source === word)
+      );
     const targetArray = wordPair.target
       .split("\n")
-      .filter((word) => word !== "");
+      .filter(
+        (word) => word !== "" && !wordList.some((pair) => pair.target === word)
+      );
     const newWordsTuples = sourceArray.map((element, index) => [
       element,
       targetArray[index],

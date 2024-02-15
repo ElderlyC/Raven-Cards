@@ -107,7 +107,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
     }, 2500);
 
     setHint(convertExample(examples[0]?.text));
-  }, [examples, input1]);
+  }, [examples, input1]); //input1 necessary?
 
   return (
     <div>
@@ -306,7 +306,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                   : input1 + "+뜻"
                 : input1
             }
-            onGenerate={(link: string) => setImage(link)}
             onItemList={(arr) => setImgData(arr)}
           />
           <Button onClick={() => setImage("")}>Remove Image</Button>
@@ -349,7 +348,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
           <Button
             onClick={() => {
               setImgData([{ title: "", link: "" }]);
-              setImage("");
             }}
           >
             Exit
