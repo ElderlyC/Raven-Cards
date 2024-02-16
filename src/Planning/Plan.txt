@@ -1,7 +1,7 @@
 Minify Tasks
 
 To Finish:
--hosted node server w updated endpoints
+-hosted node server w updated endpoints   //tested using glitch. couldn't successfully send a request
 --find a host
 --replace "http://localhost:3002/define" etc.
 -prettify, responsive, icons + colours

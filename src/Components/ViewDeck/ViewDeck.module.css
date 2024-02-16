@@ -20,6 +20,15 @@
   margin: 10px;
 }
 
+.container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: #cccccc;
+  border-radius: 4px;
+}
+
 .modalOverlay {
   position: fixed;
   top: 0;
