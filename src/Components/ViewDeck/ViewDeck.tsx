@@ -135,7 +135,9 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
                         {card.front}
                       </TableCell>
                       <TableCell align="center">{card.back}</TableCell>
-                      <TableCell align="center">{card.hint}</TableCell>
+                      <TableCell align="center" className={classes.hint}>
+                        {card.hint}
+                      </TableCell>
                       <TableCell align="center">
                         {card.image && (
                           <div
