@@ -20,11 +20,10 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
       const response = await axios.post<{
         translation: string;
         meaning: string;
-      }>("http://localhost:3002/translate", {
-        source: langs[0],
-        target: langs[1],
-        text: text,
-      });
+      }>(
+        "https://australia-southeast1-ko-en-cards.cloudfunctions.net/Ko-En-Cards",
+        { source: langs[0], target: langs[1], text: text }
+      );
 
       onTranslation({ source: text, target: response.data.translation });
     } catch (error) {

@@ -88,9 +88,12 @@ function App() {
         examples: { text: string; translatedText: string }[];
         object: any;
         hanjaEntry: string;
-      }>("http://localhost:3002/define", {
-        params: { text: searchWord, to: updatedToLang },
-      });
+      }>(
+        "https://australia-southeast1-ko-en-cards.cloudfunctions.net/Ko-En-Cards",
+        {
+          params: { word: searchWord, to: updatedToLang },
+        }
+      );
       setMeaning(response.data.meaning);
       response.data.examples && setExamples(response.data.examples);
       setHanja(response.data.hanjaEntry);

@@ -1,12 +1,13 @@
 Minify Tasks
 
 To Finish:
--hosted node server w updated endpoints   //tested using glitch. couldn't successfully send a request
---try firebase? - cloud functions! OR find mosh tutorial
---find a host
---replace "http://localhost:3002/define" etc.
+-hosting using google cloud functions!
 -prettify, responsive, icons + colours
+--edit card too long (height)
+--add card too?
+--empty images in list
 -READme
+-settings?
 -refactor code
 
 Refactoring:

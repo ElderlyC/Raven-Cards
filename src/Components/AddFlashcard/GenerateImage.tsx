@@ -10,9 +10,12 @@ const GenerateImage = ({ word, onItemList }: GenImageProps) => {
   const getImage = async () => {
     try {
       const response: { data: { title: string; link: string }[] } =
-        await axios.get("http://localhost:3002/images", {
-          params: { word: word },
-        });
+        await axios.get(
+          "https://australia-southeast1-ko-en-cards.cloudfunctions.net/Ko-En-Cards",
+          {
+            params: { word: word },
+          }
+        );
 
       onItemList(response.data);
     } catch (error) {
