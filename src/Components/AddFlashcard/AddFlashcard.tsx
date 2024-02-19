@@ -109,6 +109,8 @@ const AddFlashcard: React.FC<AddCardProps> = ({
     setHint(convertExample(examples[0]?.text));
   }, [examples, input1]); //input1 necessary?
 
+  console.log(imgData);
+
   return (
     <div>
       {imgData[0].link === "" ? (
@@ -224,7 +226,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                     src={imageLink}
                     alt={""}
                     onClick={() => setZoom((p) => (p > 4 ? 1 : p + 0.1))}
-                    // loading="lazy"
+                    loading="lazy"
                   />
                 </Box>
                 <Button
@@ -336,12 +338,14 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 key={item.link}
                 onClick={() => handleImageLink(item.link)}
               >
-                <img
-                  srcSet={`${item.link}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`} //?
-                  src={`${item.link}?w=164&h=164&fit=crop&auto=format`} //?
-                  alt={""}
-                  // loading="lazy" //?
-                />
+                {item.link && (
+                  <img
+                    srcSet={item.link}
+                    src={item.link}
+                    alt={""}
+                    loading="lazy"
+                  />
+                )}
               </ImageListItem>
             ))}
           </ImageList>

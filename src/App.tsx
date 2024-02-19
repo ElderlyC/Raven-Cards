@@ -149,7 +149,7 @@ function App() {
                 <div
                   style={{
                     display: "flex",
-                    justifyContent: "space-between",
+                    justifyContent: "space-evenly",
                   }}
                 >
                   <div>
@@ -181,7 +181,7 @@ function App() {
                       </Button>
                     </Badge>
                   </div>
-                  <div>
+                  {/* <div>
                     <Button
                       size="large"
                       variant="contained"
@@ -190,7 +190,7 @@ function App() {
                     >
                       Settings
                     </Button>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

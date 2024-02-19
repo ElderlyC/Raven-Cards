@@ -17,7 +17,7 @@ const GenerateImage = ({ word, onItemList }: GenImageProps) => {
           }
         );
 
-      onItemList(response.data);
+      onItemList(response.data.slice(0, -1)); //only show 9 images for 3x3
     } catch (error) {
       console.error("Error fetching definition:", error);
     }
