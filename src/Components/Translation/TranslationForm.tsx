@@ -2,6 +2,7 @@ import React, { useState, FormEvent } from "react";
 import { WordPair } from "../../types";
 import { TextField, Button, Typography, Box } from "@mui/material";
 import axios from "axios";
+import classes from "./TranslationForm.module.css";
 
 type TranslationFormTypes = {
   onTranslation: ({ source, target }: WordPair) => void;
@@ -48,8 +49,8 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
 
   return (
     <div
+      className={classes.container}
       style={{
-        margin: "20px",
         minWidth: "30%",
         minHeight: "100%",
         flex: 1,
@@ -57,7 +58,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
       }}
     >
       <Typography variant="h2">Translate</Typography>
-      <Box sx={{ margin: "10px" }}>
+      <Box className={classes.langs}>
         <Typography variant="h5" fontWeight={"bold"}>
           {langNames[langs[0] as keyof typeof langNames]}
           <Button onClick={handleSwap} size="large">
@@ -80,9 +81,9 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
             value={text}
             rows={7}
             onChange={handleTextChange}
+            className={classes.textfield}
             InputProps={{
               sx: {
-                textarea: { fontSize: "2rem" },
                 lineHeight: "3rem",
               },
             }}

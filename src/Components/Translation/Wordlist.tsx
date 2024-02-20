@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Paper, Grid, Button, styled, Typography, Box } from "@mui/material";
 import { WordPair } from "../../types";
+import classes from "./Wordlist.module.css";
 
 type WordListProps = {
   wordlist: WordPair[];
@@ -44,39 +45,16 @@ const Wordlist: React.FC<WordListProps> = ({
   }, [wordlist, scrollPosition]);
 
   return (
-    <Box>
+    <Box className={classes.container}>
       <Typography variant="h2">Word List</Typography>
-      <Typography
-        variant="h5"
-        sx={{
-          display: "flex",
-          justifyContent: "space-around",
-          fontWeight: "bold",
-          height: "42.25px",
-          margin: "10px",
-          alignItems: "center",
-        }}
-      >
+      <Typography variant="h5" className={classes.titles}>
         <span>Front</span>
         <span>Back</span>
         <span>Tools</span>
       </Typography>
 
-      <Box
-        sx={{
-          border: "1px solid #5c5c5c",
-          borderRadius: "4px",
-          padding: "10px",
-          height: "370px",
-          ":hover": { borderColor: "white" },
-        }}
-      >
-        <StyledScrollbar
-          style={{
-            maxHeight: "350px",
-          }}
-          ref={scrollbarRef}
-        >
+      <Box className={classes.wordlist}>
+        <StyledScrollbar className={classes.scroll} ref={scrollbarRef}>
           <div>
             {wordlist.map((pair) => (
               <Paper

@@ -1,0 +1,48 @@
+.titles {
+  display: flex;
+  justify-content: space-around;
+  font-weight: bold;
+  height: 42.25px;
+  margin: 10px;
+  align-items: center;
+}
+
+.wordlist {
+  border: 1px solid #5c5c5c;
+  border-radius: 4px;
+  padding: 10px;
+  height: 370px;
+}
+
+.wordlist:hover {
+  border-color: white;
+}
+
+.scroll {
+  max-height: 350px;
+}
+
+@media (max-width: 740px) {
+  .container h2 {
+    font-size: 2rem;
+  }
+  .container h5 {
+    font-size: 1rem;
+    margin: 5px;
+  }
+  .container p {
+    font-size: 1rem;
+  }
+  .container button {
+    font-size: 0.8rem;
+    font-weight: 800;
+  }
+  .wordlist {
+    padding: 5px;
+    height: auto;
+  }
+
+  .scroll {
+    max-height: 30vh;
+  }
+}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, KeyboardEventHandler } from "react";
 import { Button, Typography, TextField, Box } from "@mui/material";
 import { Deck, Card } from "../../App";
+import classes from "./ReviewCards.module.css";
 
 type ReviewCardsProps = {
   deck: Deck;
@@ -97,7 +98,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
   }, [card]);
 
   return (
-    <div>
+    <div className={classes.container}>
       <Box key={card.created}>
         <Typography variant={"h3"}>{card.front}</Typography>
         <TextField
@@ -118,11 +119,14 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
         />
       </Box>
 
-      <Button onClick={() => setHint((p) => !p)}>
-        {hint ? "Hints Off" : "Hints On"}
-      </Button>
+      <Box>
+        <Button onClick={() => setHint((p) => !p)}>
+          {hint ? "Hints Off" : "Hints On"}
+        </Button>
 
-      <Button onClick={handleSkipCard}>Skip Card</Button>
+        <Button onClick={handleSkipCard}>Skip Card</Button>
+      </Box>
+
       {hint && (
         <div
           style={{
@@ -131,15 +135,11 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
             flexDirection: "column",
           }}
         >
-          <Typography variant="h5">{card.hint}</Typography>
+          <Typography variant="h5" maxWidth={600} width={"80vw"}>
+            {card.hint}
+          </Typography>
           {card?.image && card?.image[2] && (
-            <Box
-              sx={{
-                height: "169px",
-                width: "500px",
-                overflow: "hidden",
-              }}
-            >
+            <Box className={classes.imageContainer}>
               <img
                 src={card.image[2]}
                 alt={card.image[2]}
@@ -155,7 +155,9 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
         </div>
       )}
 
-      <Typography variant={"h4"}>Score: {score}</Typography>
+      <Typography variant={"h4"} margin={2}>
+        Score: {score}
+      </Typography>
     </div>
   );
 };

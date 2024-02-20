@@ -28,15 +28,6 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 p,
 input,
 button {
@@ -46,4 +37,33 @@ button {
 
 iframe#webpack-dev-server-client-overlay {
   display: none !important;
+}
+
+.home {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.wordlist-container {
+  margin: 20px;
+  flex: 1;
+  max-width: 600px;
+}
+
+@media (max-width: 740px) {
+  .home {
+    flex-direction: column;
+  }
+  .imageContainer {
+    width: 90vw;
+  }
+  .wordlist-container {
+    margin: 10px;
+  }
+  .wordlist-container button {
+    font-size: 0.8rem;
+    font-weight: 800;
+    height: 40px;
+  }
 }

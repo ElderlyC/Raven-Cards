@@ -1,11 +1,12 @@
 Minify Tasks
+hosting using google cloud functions!
 
 To Finish:
--hosting using google cloud functions!
--prettify, responsive, icons + colours
---edit card too long (height)
---add card too?
---empty images in list
+-prettify, icons + colours
+-responsive
+--main
+--browse
+--add/edit
 -READme
 -download deck?
 -settings?

@@ -1,0 +1,35 @@
+.container {
+  margin: 20px;
+}
+
+.langs {
+  margin: 10px;
+}
+
+.textfield textarea {
+  font-size: 2rem;
+}
+
+@media (max-width: 740px) {
+  .container {
+    margin: 10px;
+  }
+  .container h2 {
+    font-size: 2rem;
+  }
+  .container h5 {
+    font-size: 1rem;
+  }
+  .container textarea {
+    font-size: 1rem;
+    line-height: 1.2rem;
+  }
+  .container button {
+    font-size: 0.8rem;
+    font-weight: 800;
+    height: 40px;
+  }
+  .langs {
+    margin: 5px;
+  }
+}

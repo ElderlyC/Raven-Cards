@@ -10,6 +10,7 @@ import {
   Paper,
   Typography,
   Modal,
+  Box,
 } from "@mui/material";
 import { Deck, Card } from "../../App";
 import classes from "./ViewDeck.module.css";
@@ -83,22 +84,19 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
   }, [cardDeck]);
 
   return (
-    <div>
+    <div className={classes.bigContainer}>
       {editing ? (
-        <div>
-          <AddFlashcard
-            image={editCard.image}
-            editMode={true}
-            pair={editCard.pair}
-            meaning={editCard.meaning}
-            examples={editCard.examples}
-            hanja={editCard.hanja}
-            onCardSubmit={() => setEditing(false)}
-            deck={cardDeck}
-            onRemovePair={onRemovePair}
-          />
-          <Button onClick={() => setEditing(false)}>Cancel</Button>
-        </div>
+        <AddFlashcard
+          image={editCard.image}
+          editMode={true}
+          pair={editCard.pair}
+          meaning={editCard.meaning}
+          examples={editCard.examples}
+          hanja={editCard.hanja}
+          onEndEditing={() => setEditing(false)}
+          deck={cardDeck}
+          onRemovePair={onRemovePair}
+        />
       ) : (
         <div className={classes.backdrop}>
           <Modal open={showModal}>
@@ -120,74 +118,91 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
                   <TableRow>
                     <TableCell align="center">Front</TableCell>
                     <TableCell align="center">Back</TableCell>
-                    <TableCell align="center">Hint</TableCell>
-                    <TableCell align="center">Image</TableCell>
+                    <TableCell className={classes.hideCol} align="center">
+                      Hint
+                    </TableCell>
+                    <TableCell className={classes.hideCol} align="center">
+                      Image
+                    </TableCell>
                     <TableCell align="center">Next Review</TableCell>
-                    <TableCell align="center">Level</TableCell>
-                    <TableCell align="center">Created</TableCell>
+                    <TableCell className={classes.hideCol} align="center">
+                      Level
+                    </TableCell>
+                    <TableCell className={classes.hideCol} align="center">
+                      Created
+                    </TableCell>
                     <TableCell align="center">Tools</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {cardDeck.map((card) => (
-                    <TableRow key={card.front}>
-                      <TableCell align="center" width="120px">
-                        {card.front}
-                      </TableCell>
-                      <TableCell align="center">{card.back}</TableCell>
-                      <TableCell align="center" className={classes.hint}>
-                        {card.hint}
-                      </TableCell>
-                      <TableCell align="center">
-                        {card.image && (
-                          <div
-                            style={{
-                              overflow: "hidden",
-                              height: "40px",
-                              display: "flex",
+                  {cardDeck
+                    .slice()
+                    .reverse() // display newest cards first
+                    .map((card) => (
+                      <TableRow key={card.front}>
+                        <TableCell align="center" width="120px">
+                          {card.front}
+                        </TableCell>
+                        <TableCell align="center">{card.back}</TableCell>
+                        <TableCell align="center" className={classes.hint}>
+                          {card.hint}
+                        </TableCell>
+                        <TableCell className={classes.hideCol} align="center">
+                          {card.image && (
+                            <Box
+                              sx={{
+                                overflow: "hidden",
+                                height: "60px",
+                                display: "flex",
+                                border: card.image[2] && "2px solid #5c5c5c",
+                                borderRadius: "4px",
+                                padding: "1px",
+                                ":hover": { borderColor: "white" },
+                              }}
+                            >
+                              {card.image[2] && (
+                                <img
+                                  alt="hint"
+                                  onClick={() => toggleModal(card.image[2])} //expand image to be visible
+                                  src={card.image[2]}
+                                  style={{
+                                    width: "80px",
+                                    objectFit: "cover",
+                                  }}
+                                />
+                              )}
+                            </Box>
+                          )}
+                        </TableCell>
+                        <TableCell align="center">
+                          {readableDate(card.nextReview)}
+                        </TableCell>
+                        <TableCell className={classes.hideCol} align="center">
+                          {card.level}
+                        </TableCell>
+                        <TableCell className={classes.hideCol} align="center">
+                          {readableDate(card.created)}
+                        </TableCell>
+                        <TableCell align="center">
+                          <Button onClick={() => handleEditCard(card)}>
+                            Edit
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              if (
+                                window.confirm(
+                                  `Are you sure you want to delete this card? [${card.front}]`
+                                )
+                              ) {
+                                handleDeleteCard(card);
+                              }
                             }}
                           >
-                            {card.image[2] && (
-                              <img
-                                alt="hint"
-                                onClick={() => toggleModal(card.image[2])} //expand image to be visible
-                                src={card.image[2]}
-                                style={{
-                                  width: "80px",
-                                  objectFit: "cover",
-                                }}
-                              />
-                            )}
-                          </div>
-                        )}
-                      </TableCell>
-                      <TableCell align="center">
-                        {readableDate(card.nextReview)}
-                      </TableCell>
-                      <TableCell align="center">{card.level}</TableCell>
-                      <TableCell align="center">
-                        {readableDate(card.created)}
-                      </TableCell>
-                      <TableCell align="center">
-                        <Button onClick={() => handleEditCard(card)}>
-                          Edit
-                        </Button>
-                        <Button
-                          onClick={() => {
-                            if (
-                              window.confirm(
-                                `Are you sure you want to delete this card? [${card.front}]`
-                              )
-                            ) {
-                              handleDeleteCard(card);
-                            }
-                          }}
-                        >
-                          Delete
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                            Delete
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </TableContainer>

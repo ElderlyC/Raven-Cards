@@ -131,16 +131,10 @@ function App() {
       <div className="App">
         <header className="App-header">
           {view === "home" ? (
-            <div
-              style={{
-                display: "flex",
-                width: "100%",
-                justifyContent: "center",
-              }}
-            >
+            <div className="home">
               <TranslationForm onTranslation={handleAddToWordlist} />
 
-              <div style={{ margin: "20px", flex: 1, maxWidth: "600px" }}>
+              <div className="wordlist-container">
                 <Wordlist
                   wordlist={wordList}
                   onRemovePair={handleRemovePair}
@@ -149,21 +143,25 @@ function App() {
                 <div
                   style={{
                     display: "flex",
-                    justifyContent: "space-evenly",
                   }}
                 >
-                  <div>
+                  <div style={{ flex: 1 }}>
                     <Button
+                      fullWidth
                       size="large"
                       variant="contained"
-                      sx={{ fontWeight: "bold", width: "170px" }}
+                      sx={{ fontWeight: "bold" }}
                       onClick={() => setView("view")}
                     >
                       Browse Deck
                     </Button>
                   </div>
-                  <div>
-                    <Badge badgeContent={reviewCards.length} color="success">
+                  <div style={{ flex: 1 }}>
+                    <Badge
+                      badgeContent={reviewCards.length}
+                      color="success"
+                      sx={{ width: "100%" }}
+                    >
                       <Button
                         size="large"
                         disabled={emptyDeck}
@@ -172,11 +170,10 @@ function App() {
                         fullWidth
                         sx={{
                           fontWeight: "bold",
-                          width: "170px",
                           paddingRight: "30px",
                         }}
                       >
-                        <QuizIcon sx={{ marginRight: "5px" }} />
+                        <QuizIcon sx={{ marginRight: "10px" }} />
                         Review!
                       </Button>
                     </Badge>
@@ -201,7 +198,7 @@ function App() {
               meaning={meaning}
               examples={examples}
               hanja={hanja}
-              onCardSubmit={() => setView("home")}
+              onEndEditing={() => setView("home")}
               deck={initialDeck}
               onRemovePair={handleRemovePair}
             />

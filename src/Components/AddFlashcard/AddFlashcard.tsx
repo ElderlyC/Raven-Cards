@@ -15,16 +15,15 @@ import { Deck } from "../../App";
 import GenerateImage from "./GenerateImage";
 // define/ backend lang check code obsolete
 // refactor: file TOO BIG
-// empty tiles in image list
 
 type AddCardProps = {
-  image?: [zoom: number, verticalOffset: number, imageLink: string]; //this not working
+  image?: [zoom: number, verticalOffset: number, imageLink: string];
   editMode: boolean;
   pair: WordPair;
   meaning: string;
   examples: { text: string; translatedText: string }[];
   hanja: string;
-  onCardSubmit: () => void;
+  onEndEditing: () => void;
   deck: Deck;
   onRemovePair: (source: string) => void;
 };
@@ -36,7 +35,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   meaning,
   examples,
   hanja,
-  onCardSubmit,
+  onEndEditing,
   deck,
   onRemovePair,
 }) => {
@@ -73,7 +72,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
       localStorage.setItem("deck", JSON.stringify([...deck, ...newCard]));
       onRemovePair(input1);
     }
-    onCardSubmit();
+    onEndEditing();
   };
 
   const convertExample = (sentence: string) => {
@@ -93,7 +92,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
     deck[cardIndex].image = [zoom, verticalOffset, imageLink];
 
     localStorage.setItem("deck", JSON.stringify(deck));
-    onCardSubmit();
+    onEndEditing();
   };
 
   useEffect(() => {
@@ -109,13 +108,11 @@ const AddFlashcard: React.FC<AddCardProps> = ({
     setHint(convertExample(examples[0]?.text));
   }, [examples, input1]); //input1 necessary?
 
-  console.log(imgData);
-
   return (
     <div>
       {imgData[0].link === "" ? (
         <div>
-          <Typography variant={"h2"}>
+          <Typography variant={"h3"}>
             {editMode ? "Editing Card" : "New Card"}
           </Typography>
           <Box>
@@ -182,7 +179,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             <Box sx={{ margin: "15px" }}>
               {meaning ? (
                 <span>
-                  Meaning <br />
+                  {"Meaning: "}
                   {meaning}
                 </span>
               ) : disableButton ? (
@@ -314,18 +311,37 @@ const AddFlashcard: React.FC<AddCardProps> = ({
           {!editMode ? (
             <Box>
               <Button
+                size="large"
                 variant="contained"
                 disabled={existingCard || (meaning === "" && disableButton)}
                 onClick={() => handleSubmitCard(false)}
               >
                 Add New Card
               </Button>
-              <Button onClick={() => handleSubmitCard(true)}>Cancel</Button>
+              <Button
+                size="large"
+                variant="outlined"
+                onClick={() => handleSubmitCard(true)}
+              >
+                Cancel
+              </Button>
             </Box>
           ) : (
             <Box>
-              <Button onClick={handleEditCard} size="large" variant="contained">
+              <Button
+                onClick={handleEditCard}
+                size="large"
+                variant="contained"
+                sx={{ width: "110px" }}
+              >
                 Save
+              </Button>
+              <Button
+                size="large"
+                variant="outlined"
+                onClick={() => onEndEditing()}
+              >
+                Cancel
               </Button>
             </Box>
           )}

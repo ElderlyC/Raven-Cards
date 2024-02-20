@@ -1,0 +1,22 @@
+.imageContainer {
+  height: 169px;
+  width: 500px;
+  overflow: hidden;
+}
+
+@media (max-width: 500px) {
+  .container {
+    width: 80vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .imageContainer {
+    width: 100vw;
+  }
+
+  .imageContainer img {
+    transform: scale(0.67);
+  }
+}

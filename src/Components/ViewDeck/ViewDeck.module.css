@@ -12,6 +12,7 @@
   align-items: center;
   justify-content: center;
 }
+
 .container {
   padding: 20px;
   border-radius: 8px;
@@ -28,8 +29,10 @@
   font-size: 1.2rem;
 }
 
-.hint {
-  font-size: 1rem !important;
+.container td.hint {
+  min-width: 150px;
+  font-size: 1rem;
+  color: red;
 }
 
 .container::-webkit-scrollbar {
@@ -63,4 +66,37 @@
 .modalContent img {
   max-width: 100%;
   max-height: 100%;
+}
+
+@media (max-width: 1400px) {
+  .backdrop {
+    padding: 10px;
+    width: 90vw;
+  }
+  .container {
+    padding: 10px;
+  }
+
+  .container th,
+  .container td {
+    font-size: 1rem;
+    padding: 5px;
+  }
+  .container button {
+    font-size: 0.8rem;
+  }
+  .container td.hint {
+    width: 150px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 900px) {
+  /* start removing less important columns */
+  .container .hideCol,
+  .container td.hint {
+    display: none;
+    color: red;
+  }
+  /* yogi ggaji */
 }
