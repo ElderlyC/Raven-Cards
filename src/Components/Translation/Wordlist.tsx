@@ -47,7 +47,13 @@ const Wordlist: React.FC<WordListProps> = ({
   return (
     <Box className={classes.container}>
       <Typography variant="h2">Word List</Typography>
-      <Typography variant="h5" className={classes.titles}>
+      <Typography
+        variant="h5"
+        className={classes.titles}
+        sx={{
+          margin: "10px",
+        }}
+      >
         <span>Front</span>
         <span>Back</span>
         <span>Tools</span>
@@ -72,10 +78,16 @@ const Wordlist: React.FC<WordListProps> = ({
                     <Typography fontSize="1.2rem">{pair.target}</Typography>
                   </Grid>
                   <Grid item xs={4}>
-                    <Button onClick={() => handleDeletePair(pair.source)}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => handleDeletePair(pair.source)}
+                    >
                       DEL
                     </Button>
-                    <Button onClick={() => handleAddFlashcard(pair)}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => handleAddFlashcard(pair)}
+                    >
                       ADD
                     </Button>
                   </Grid>

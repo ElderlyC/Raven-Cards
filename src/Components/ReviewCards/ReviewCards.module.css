@@ -2,6 +2,7 @@
   height: 169px;
   width: 500px;
   overflow: hidden;
+  border: red 3px solid;
 }
 
 @media (max-width: 500px) {

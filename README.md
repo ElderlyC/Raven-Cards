@@ -1,9 +1,8 @@
 # Ko-En Cards - Translation and Flashcard Maker
 
-### _A work in progress!_
+### Try it out here!
 
-This project is near completion so this readme is unfinished for now!
-Try out this project here: https://elderlyc.github.io/Ko-En-Cards/
+https://elderlyc.github.io/Ko-En-Cards/
 
 ## Introduction
 
@@ -21,13 +20,9 @@ Master new vocabulary and concepts with our customizable flashcard system. Creat
 
 ## Visual Demonstration
 
-At first I used Paint to sketch out my ideas for the various sections of my application. Later Figma helped me understand visually what I wanted to accomplish.
-Below are some screenshots from my application in use.
+Here is a gif showing how my app functions:
 
-### Subtitle for Screenshots (Home page)
-
-I managed to follow my sketches for the home page almost exactly, except for some minor aesthetic changes. Below is the finished application:
-![homepage](./src/screenshots/homepage.png)
+<img src="./src/Planning/Ko-En Cards.gif" width="786">
 
 ## The Programmer
 

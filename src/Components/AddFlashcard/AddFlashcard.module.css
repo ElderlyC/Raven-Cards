@@ -1,0 +1,109 @@
+.front input {
+  font-size: 3rem;
+  width: 300px;
+  text-align: center;
+}
+.back input {
+  font-size: 2rem;
+  width: 300px;
+  text-align: center;
+}
+.inputBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+}
+.dataContainer {
+  font-size: 1.2rem;
+  font-weight: bold;
+  width: 500px;
+}
+
+.meaning {
+  margin: 15px;
+}
+.imageButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.imageContainer {
+  overflow: hidden;
+  cursor: zoom-in;
+  height: 169px;
+  width: 500px;
+  border: red 3px solid;
+}
+.hintBox {
+  margin: 15px;
+}
+.imageList {
+  border: 3px white solid;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 0;
+}
+.image {
+  border: 3px #999999 solid;
+  border-radius: 8px;
+  max-height: 100%;
+}
+.image:hover {
+  border-color: white;
+}
+
+@media (max-width: 500px) {
+  .container h3 {
+    font-size: 2.5rem;
+  }
+  .container h4 {
+    font-size: 1.5rem;
+  }
+
+  .front input {
+    font-size: 2rem;
+  }
+
+  .back input {
+    font-size: 1.5rem;
+  }
+  .inputBox {
+    margin: 10px;
+  }
+
+  .meaning {
+    margin: 5px;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .imageButtons button {
+    font-size: 0.7rem;
+    font-weight: 800;
+  }
+  .imageContainer {
+    width: 90vw;
+  }
+  .imageContainer img {
+    transform: scale(0.67);
+  }
+
+  .dataContainer {
+    width: 100vw;
+  }
+  .hintBox {
+    margin: 5px;
+  }
+  .hintBox input,
+  .hintBox span {
+    font-size: 1rem;
+  }
+  .imageList {
+    column-count: 1;
+  }
+  .submitButtons button {
+    font-weight: 800;
+  }
+}

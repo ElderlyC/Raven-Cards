@@ -32,7 +32,6 @@
 .container td.hint {
   min-width: 150px;
   font-size: 1rem;
-  color: red;
 }
 
 .container::-webkit-scrollbar {
@@ -96,7 +95,23 @@
   .container .hideCol,
   .container td.hint {
     display: none;
-    color: red;
   }
-  /* yogi ggaji */
+  .backdrop h2 {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 500px) {
+  .backdrop {
+    padding: 5px;
+    width: 100vw;
+    height: auto;
+  }
+  .container th,
+  .container td {
+    font-size: 0.8rem;
+    padding: 2px;
+  }
+  .container button {
+    font-size: 0.6rem;
+  }
 }

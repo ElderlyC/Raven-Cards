@@ -82,11 +82,6 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
             rows={7}
             onChange={handleTextChange}
             className={classes.textfield}
-            InputProps={{
-              sx: {
-                lineHeight: "3rem",
-              },
-            }}
           />
         </Box>
         <Button

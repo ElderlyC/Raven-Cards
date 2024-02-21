@@ -15,7 +15,6 @@ import {
 import { Deck, Card } from "../../App";
 import classes from "./ViewDeck.module.css";
 import AddFlashcard from "../AddFlashcard/AddFlashcard";
-// format it to be pretty + fit on mobile
 // browser search function
 
 type ViewDeckProps = {
@@ -152,7 +151,8 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
                             <Box
                               sx={{
                                 overflow: "hidden",
-                                height: "60px",
+                                width: "100px",
+                                height: "80px",
                                 display: "flex",
                                 border: card.image[2] && "2px solid #5c5c5c",
                                 borderRadius: "4px",
@@ -166,7 +166,7 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
                                   onClick={() => toggleModal(card.image[2])} //expand image to be visible
                                   src={card.image[2]}
                                   style={{
-                                    width: "80px",
+                                    width: "100%",
                                     objectFit: "cover",
                                   }}
                                 />
@@ -184,10 +184,14 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
                           {readableDate(card.created)}
                         </TableCell>
                         <TableCell align="center">
-                          <Button onClick={() => handleEditCard(card)}>
+                          <Button
+                            variant="outlined"
+                            onClick={() => handleEditCard(card)}
+                          >
                             Edit
                           </Button>
                           <Button
+                            variant="outlined"
                             onClick={() => {
                               if (
                                 window.confirm(

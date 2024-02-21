@@ -8,12 +8,13 @@ import {
   FormControlLabel,
   Switch,
   Link,
+  useMediaQuery,
 } from "@mui/material";
 import { WordPair } from "../../types";
 import { useState, useEffect, useRef } from "react";
 import { Deck } from "../../App";
 import GenerateImage from "./GenerateImage";
-// define/ backend lang check code obsolete
+import classes from "./AddFlashcard.module.css";
 // refactor: file TOO BIG
 
 type AddCardProps = {
@@ -51,6 +52,8 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   const existingCard = deck.findIndex((card) => card.front === input1) !== -1;
   const editingCardName = useRef(input1).current;
 
+  const matches = useMediaQuery("(min-width:800px)");
+
   const handleSwapInputs = () => {
     setInput1(input2);
     setInput2(input1);
@@ -67,6 +70,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
           level: 0,
           hint,
           image: [zoom, verticalOffset, imageLink],
+          meaning,
         },
       ];
       localStorage.setItem("deck", JSON.stringify([...deck, ...newCard]));
@@ -111,57 +115,29 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   return (
     <div>
       {imgData[0].link === "" ? (
-        <div>
+        <div className={classes.container}>
           <Typography variant={"h3"}>
             {editMode ? "Editing Card" : "New Card"}
           </Typography>
           <Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                margin: "20px",
-              }}
-            >
+            <Box className={classes.inputBox}>
               <Typography variant={"h4"}>Front:</Typography>
               <TextField
                 error={existingCard && !editMode}
                 helperText={
                   existingCard && !editMode && "Card already in deck."
                 }
-                inputProps={{
-                  style: {
-                    fontSize: "3rem",
-                    width: "300px",
-                    textAlign: "center",
-                    lineHeight: "3.5rem",
-                  },
-                }}
+                className={classes.front}
                 id="source"
                 variant="outlined"
                 value={input1}
                 onChange={(e) => setInput1(e.target.value)}
               />
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                margin: "20px",
-              }}
-            >
+            <Box className={classes.inputBox}>
               <Typography variant={"h4"}>Back:</Typography>
               <TextField
-                inputProps={{
-                  style: {
-                    fontSize: "2rem",
-                    width: "300px",
-                    textAlign: "center",
-                    lineHeight: "2.5rem",
-                  },
-                }}
+                className={classes.back}
                 id="target"
                 variant="outlined"
                 value={input2}
@@ -169,14 +145,8 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               />
             </Box>
           </Box>
-          <Box
-            sx={{
-              fontSize: "1.2rem",
-              fontWeight: "bold",
-              width: "500px",
-            }}
-          >
-            <Box sx={{ margin: "15px" }}>
+          <Box className={classes.dataContainer}>
+            <Box className={classes.meaning}>
               {meaning ? (
                 <span>
                   {"Meaning: "}
@@ -189,33 +159,29 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               )}
             </Box>
             {imageLink && (
-              <Box>
-                <Button
-                  onClick={() => setVertical((p) => p + 5)}
-                  variant="contained"
-                >
-                  Up
-                </Button>
-                <Button
-                  onClick={() => {
-                    setVertical(0);
-                    setZoom(1);
-                  }}
-                  variant="contained"
-                >
-                  Reset
-                </Button>
-                <Box
-                  sx={{
-                    overflow: "hidden",
-                    cursor: "zoom-in",
-                    height: "169px",
-                  }}
-                >
+              <Box className={classes.imageButtons}>
+                <div>
+                  <Button
+                    onClick={() => setVertical((p) => p + 5)}
+                    variant="contained"
+                  >
+                    Up
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setVertical(0);
+                      setZoom(1);
+                    }}
+                    variant="contained"
+                  >
+                    Reset
+                  </Button>
+                </div>
+
+                <Box className={classes.imageContainer}>
                   <img
                     style={{
                       height: "169px",
-                      objectFit: "cover",
                       scale: zoom.toString(),
                       marginTop: `${verticalOffset}%`,
                     }}
@@ -226,18 +192,20 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                     loading="lazy"
                   />
                 </Box>
-                <Button
-                  onClick={() => setVertical((p) => p - 5)}
-                  variant="contained"
-                >
-                  Down
-                </Button>
-                <Button
-                  onClick={() => setZoom((p) => (p <= 1 ? 4 : p - 0.1))}
-                  variant="contained"
-                >
-                  Zoom-Out
-                </Button>
+                <div>
+                  <Button
+                    onClick={() => setVertical((p) => p - 5)}
+                    variant="contained"
+                  >
+                    Down
+                  </Button>
+                  <Button
+                    onClick={() => setZoom((p) => (p <= 1 ? 4 : p - 0.1))}
+                    variant="contained"
+                  >
+                    Zoom-Out
+                  </Button>
+                </div>
               </Box>
             )}
 
@@ -251,7 +219,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               {hanja}
             </Link>
 
-            <Box sx={{ margin: "15px" }}>
+            <Box className={classes.hintBox}>
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <span>
                   Hint{" "}
@@ -270,6 +238,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                   value={hint || ""}
                   onChange={(e) => setHint(e.target.value)}
                   variant="standard"
+                  className={classes.hint}
                   inputProps={{
                     sx: { fontSize: "1.5rem", textAlign: "center" },
                   }}
@@ -308,8 +277,9 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             onItemList={(arr) => setImgData(arr)}
           />
           <Button onClick={() => setImage("")}>Remove Image</Button>
+
           {!editMode ? (
-            <Box>
+            <Box className={classes.submitButtons}>
               <Button
                 size="large"
                 variant="contained"
@@ -327,7 +297,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               </Button>
             </Box>
           ) : (
-            <Box>
+            <Box className={classes.submitButtons}>
               <Button
                 onClick={handleEditCard}
                 size="large"
@@ -348,7 +318,15 @@ const AddFlashcard: React.FC<AddCardProps> = ({
         </div>
       ) : (
         <div>
-          <ImageList sx={{ width: 1500, height: 800 }} cols={3} rowHeight={500}>
+          <ImageList
+            cols={matches ? 3 : 1}
+            rowHeight={matches ? 450 : 200}
+            className={classes.imageList}
+            sx={{
+              width: matches ? "80vw" : "90vw",
+              height: matches ? "800px" : "90vh",
+            }}
+          >
             {imgData.map((item) => (
               <ImageListItem
                 key={item.link}
@@ -356,6 +334,10 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               >
                 {item.link && (
                   <img
+                    className={classes.image}
+                    style={{
+                      objectFit: "contain",
+                    }}
                     srcSet={item.link}
                     src={item.link}
                     alt={""}
@@ -366,6 +348,8 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             ))}
           </ImageList>
           <Button
+            variant="contained"
+            size="large"
             onClick={() => {
               setImgData([{ title: "", link: "" }]);
             }}
