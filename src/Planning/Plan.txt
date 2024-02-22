@@ -2,7 +2,10 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
--insecure/mixed content (http)
+-insecure/mixed content (http+s) = warning
+-or remove from view all http = empty list
+-or convert http somehow = ?
+--http:// to //
 -download deck?
 -settings?
 -refactor code
