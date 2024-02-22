@@ -2,7 +2,7 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
--change http image urls to https?
+-insecure/mixed content (http)
 -download deck?
 -settings?
 -refactor code
