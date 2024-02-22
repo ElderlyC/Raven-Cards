@@ -1,7 +1,5 @@
 .container {
   margin: 20px;
-  min-width: 30%;
-  min-height: 100%;
   flex: 1;
   max-width: 600px;
 }
