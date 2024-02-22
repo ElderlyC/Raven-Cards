@@ -44,7 +44,9 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   const [input2, setInput2] = useState(pair.target);
   const [disableButton, setDisable] = useState(true);
   const [imageLink, setImage] = useState(image ? image[2] : "");
-  const [imgData, setImgData] = useState([{ title: "", link: "" }]);
+  const [imgData, setImgData] = useState([
+    { title: "", link: "", error: false },
+  ]);
   const [definitionSearch, setSearch] = useState(true);
   const [hint, setHint] = useState("");
   const [zoom, setZoom] = useState(image ? image[0] : 1.0);
@@ -85,7 +87,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
 
   const handleImageLink = (link: string) => {
     setImage(link);
-    setImgData([{ title: "", link: "" }]);
+    setImgData([{ title: "", link: "", error: false }]);
   };
 
   const handleEditCard = () => {
@@ -329,21 +331,23 @@ const AddFlashcard: React.FC<AddCardProps> = ({
           >
             {imgData.map((item) => (
               <ImageListItem
-                key={item.link.replace("http:", "https:")}
-                onClick={() =>
-                  handleImageLink(item.link.replace("http:", "https:"))
-                }
+                key={item.link}
+                onClick={() => handleImageLink(item.link)}
               >
-                {item.link && (
+                {item.link && !item.error && (
                   <img
                     className={classes.image}
                     style={{
                       objectFit: "contain",
                     }}
-                    srcSet={item.link.replace("http:", "https:")}
-                    src={item.link.replace("http:", "https:")}
+                    srcSet={item.link}
+                    src={item.link}
                     alt={"insecure content (mixed)"}
                     loading="lazy"
+                    onError={() => {
+                      item.error = true;
+                      setImgData([...imgData]);
+                    }}
                   />
                 )}
               </ImageListItem>
@@ -353,7 +357,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             variant="contained"
             size="large"
             onClick={() => {
-              setImgData([{ title: "", link: "" }]);
+              setImgData([{ title: "", link: "", error: false }]);
             }}
           >
             Exit
