@@ -48,15 +48,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
   };
 
   return (
-    <div
-      className={classes.container}
-      style={{
-        minWidth: "30%",
-        minHeight: "100%",
-        flex: 1,
-        maxWidth: "600px",
-      }}
-    >
+    <div className={classes.container}>
       <Typography variant="h2">Translate</Typography>
       <Box className={classes.langs}>
         <Typography variant="h5" fontWeight={"bold"}>
