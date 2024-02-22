@@ -45,7 +45,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   const [disableButton, setDisable] = useState(true);
   const [imageLink, setImage] = useState(image ? image[2] : "");
   const [imgData, setImgData] = useState([
-    { title: "", link: "", error: false },
+    { title: "", link: "", thumbnail: "" },
   ]);
   const [definitionSearch, setSearch] = useState(true);
   const [hint, setHint] = useState("");
@@ -87,7 +87,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
 
   const handleImageLink = (link: string) => {
     setImage(link);
-    setImgData([{ title: "", link: "", error: false }]);
+    setImgData([{ title: "", link: "", thumbnail: "" }]);
   };
 
   const handleEditCard = () => {
@@ -331,21 +331,21 @@ const AddFlashcard: React.FC<AddCardProps> = ({
           >
             {imgData.map((item) => (
               <ImageListItem
-                key={item.link.replace("http:", "")}
-                onClick={() => handleImageLink(item.link.replace("http:", ""))}
+                key={item.link}
+                onClick={() => handleImageLink(item.link)}
               >
-                {item.link && !item.error && (
+                {item.link && (
                   <img
                     className={classes.image}
                     style={{
                       objectFit: "contain",
                     }}
-                    srcSet={item.link.replace("http:", "")}
-                    src={item.link.replace("http:", "")}
-                    alt={"insecure content (mixed)"}
+                    srcSet={item.link}
+                    src={item.link}
+                    alt={""}
                     loading="lazy"
                     onError={() => {
-                      item.error = true;
+                      item.link = item.thumbnail;
                       setImgData([...imgData]);
                     }}
                   />
@@ -357,7 +357,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             variant="contained"
             size="large"
             onClick={() => {
-              setImgData([{ title: "", link: "", error: false }]);
+              setImgData([{ title: "", link: "", thumbnail: "" }]);
             }}
           >
             Exit

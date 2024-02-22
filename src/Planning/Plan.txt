@@ -5,7 +5,7 @@ To Finish:
 -insecure/mixed content (http+s) = warning
 -or remove from view all http = empty list
 -or convert http somehow = ?
---http:// to //
+--taking the thumbnail/screenshot of img
 -download deck?
 -settings?
 -refactor code
