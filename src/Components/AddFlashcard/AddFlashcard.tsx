@@ -332,7 +332,11 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             {imgData.map((item) => (
               <ImageListItem
                 key={item.link}
-                onClick={() => handleImageLink(item.link)}
+                onClick={() =>
+                  handleImageLink(
+                    item.link.includes("http:") ? item.thumbnail : item.link
+                  )
+                }
               >
                 {item.link && (
                   <img
@@ -340,8 +344,12 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                     style={{
                       objectFit: "contain",
                     }}
-                    srcSet={item.link}
-                    src={item.link}
+                    srcSet={
+                      item.link.includes("http:") ? item.thumbnail : item.link
+                    }
+                    src={
+                      item.link.includes("http:") ? item.thumbnail : item.link
+                    }
                     alt={""}
                     loading="lazy"
                     onError={() => {
