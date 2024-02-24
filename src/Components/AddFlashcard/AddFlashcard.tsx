@@ -123,7 +123,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
           </Typography>
           <Box>
             <Box className={classes.inputBox}>
-              <Typography variant={"h4"}>Front:</Typography>
               <TextField
                 error={existingCard && !editMode}
                 helperText={
@@ -131,16 +130,17 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 }
                 className={classes.front}
                 id="source"
+                label="Front"
                 variant="outlined"
                 value={input1}
                 onChange={(e) => setInput1(e.target.value)}
               />
             </Box>
             <Box className={classes.inputBox}>
-              <Typography variant={"h4"}>Back:</Typography>
               <TextField
                 className={classes.back}
                 id="target"
+                label="Back"
                 variant="outlined"
                 value={input2}
                 onChange={(e) => setInput2(e.target.value)}
@@ -217,6 +217,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               underline="hover"
               rel="noopener"
               target="_blank"
+              className={classes.hanja}
             >
               {hanja}
             </Link>

@@ -19,8 +19,11 @@ const GenerateImage = ({ word, onItemList }: GenImageProps) => {
           params: { word: word },
         }
       );
-
-      onItemList(response.data.slice(0, -1)); //only show 9 images for 3x3
+      if (response.data.length === 0) {
+        alert("Couldn't find any images.");
+      } else {
+        onItemList(response.data.slice(0, -1)); //only show 9 images for 3x3
+      }
     } catch (error) {
       console.error("Error fetching definition:", error);
     }

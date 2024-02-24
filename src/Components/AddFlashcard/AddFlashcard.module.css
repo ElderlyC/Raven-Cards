@@ -1,5 +1,5 @@
 .front input {
-  font-size: 3rem;
+  font-size: 2.5rem;
   width: 300px;
   text-align: center;
 }
@@ -58,9 +58,6 @@
   .container h3 {
     font-size: 2.5rem;
   }
-  .container h4 {
-    font-size: 1.5rem;
-  }
 
   .front input {
     font-size: 2rem;
@@ -78,6 +75,7 @@
     font-size: 1rem;
     white-space: nowrap;
     overflow: hidden;
+    width: 98%;
   }
   .imageButtons button {
     font-size: 0.7rem;
@@ -92,6 +90,9 @@
 
   .dataContainer {
     width: 100vw;
+  }
+  .hanja {
+    font-size: 2rem;
   }
   .hintBox {
     margin: 5px;
