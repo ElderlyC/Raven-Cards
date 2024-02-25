@@ -6,17 +6,17 @@ https://elderlyc.github.io/Ko-En-Cards/
 
 ## Introduction
 
-Welcome to our Translation and Flashcard Application! This versatile tool is designed to streamline your language learning journey, offering both translation capabilities and a robust flashcard system to enhance your vocabulary retention.
+Welcome to my Translation and Flashcard Application! This versatile tool is designed to streamline your language learning journey, offering both translation capabilities and a robust flashcard system to enhance your vocabulary retention.
 
 ## Features
 
 ### Translation
 
-Easily translate text between Korean and English with our intuitive translation feature. Great for quick translation, or retain your words in the wordlist so you can make flashcards!
+Easily translate text between Korean and English with the intuitive translation feature. Great for quick translation, or retain your words in the wordlist so you can make flashcards!
 
 ### Flashcards
 
-Master new vocabulary and concepts with our customizable flashcard system. Create personalized flashcards with words, phrases, or definitions, and reinforce your learning through spaced repetition. With our flashcard feature, you can organize, review, and track your progress effortlessly.
+Master new vocabulary and concepts with our customizable flashcard system. Create personalized flashcards with words, images, or definitions, and reinforce your learning through spaced repetition. With the flashcard feature, you can organize, review, and track your progress effortlessly.
 
 ## Visual Demonstration
 
