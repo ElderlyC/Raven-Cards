@@ -322,8 +322,8 @@ const AddFlashcard: React.FC<AddCardProps> = ({
       ) : (
         <div>
           <ImageList
-            cols={matches ? 3 : 1}
-            rowHeight={matches ? 450 : 200}
+            cols={matches && imgData.length > 3 ? 3 : 1}
+            rowHeight={imgData.length === 1 ? 794 : matches ? 450 : 200}
             className={classes.imageList}
             sx={{
               width: matches ? "80vw" : "90vw",

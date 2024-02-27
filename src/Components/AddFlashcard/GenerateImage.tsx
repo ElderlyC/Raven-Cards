@@ -22,7 +22,9 @@ const GenerateImage = ({ word, onItemList }: GenImageProps) => {
       if (response.data.length === 0) {
         alert("Couldn't find any images.");
       } else {
-        onItemList(response.data.slice(0, -1)); //only show 9 images for 3x3
+        if (response.data.length > 9)
+          onItemList(response.data.slice(0, 9)); //only show up to 9 images
+        else onItemList(response.data);
       }
     } catch (error) {
       console.error("Error fetching definition:", error);
