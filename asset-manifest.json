@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Ko-En-Cards/static/css/main.3544ad21.css",
-    "main.js": "/Ko-En-Cards/static/js/main.e9ad992c.js",
+    "main.css": "/Ko-En-Cards/static/css/main.6e77ac9b.css",
+    "main.js": "/Ko-En-Cards/static/js/main.a6992305.js",
     "static/js/787.f4ab7052.chunk.js": "/Ko-En-Cards/static/js/787.f4ab7052.chunk.js",
     "index.html": "/Ko-En-Cards/index.html",
-    "main.3544ad21.css.map": "/Ko-En-Cards/static/css/main.3544ad21.css.map",
-    "main.e9ad992c.js.map": "/Ko-En-Cards/static/js/main.e9ad992c.js.map",
+    "main.6e77ac9b.css.map": "/Ko-En-Cards/static/css/main.6e77ac9b.css.map",
+    "main.a6992305.js.map": "/Ko-En-Cards/static/js/main.a6992305.js.map",
     "787.f4ab7052.chunk.js.map": "/Ko-En-Cards/static/js/787.f4ab7052.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3544ad21.css",
-    "static/js/main.e9ad992c.js"
+    "static/css/main.6e77ac9b.css",
+    "static/js/main.a6992305.js"
   ]
 }
