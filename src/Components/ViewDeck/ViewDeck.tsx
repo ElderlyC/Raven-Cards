@@ -110,6 +110,7 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
           </Modal>
 
           <Typography variant={"h2"}>Browse Deck</Typography>
+          <span>Total Cards: {cardDeck.length}</span>
           {cardDeck.length > 0 ? (
             <TableContainer component={Paper} className={classes.container}>
               <Table>
