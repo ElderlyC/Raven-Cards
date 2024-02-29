@@ -61,10 +61,12 @@
 
   .front input {
     font-size: 2rem;
+    padding: 10px;
   }
 
   .back input {
     font-size: 1.5rem;
+    padding: 10px;
   }
   .inputBox {
     margin: 10px;
@@ -91,7 +93,7 @@
   .dataContainer {
     width: 100vw;
   }
-  .hanja {
+  a.hanja {
     font-size: 2rem;
   }
   .hintBox {

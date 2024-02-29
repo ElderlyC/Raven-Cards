@@ -1,3 +1,6 @@
+.container button {
+  width: 140px;
+}
 .imageContainer {
   height: 169px;
   width: 500px;
@@ -12,6 +15,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+  .container button {
+    font-weight: 800;
+    height: 40px;
   }
   .imageContainer {
     width: 100vw;

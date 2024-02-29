@@ -31,52 +31,56 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
 
   const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.key === "Enter") {
+      handleSubmit(event);
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setAnswer("");
+    const updatedDeck = [...reviewDeck];
+    const currentCard = updatedDeck[currentIndex];
+    let newLevel = card.level + 1;
+    if (
+      answer.toLowerCase().replaceAll(" ", "") !== // ignore capitals and spaces
+      card.back.toLowerCase().replaceAll(" ", "")
+    ) {
+      setError(true);
+      if (currentCard.level === 0) return;
+      newLevel = card.level - 1;
+    } else {
+      setScore((p) => p + 1);
+      setError(false);
+    }
+
+    let newReviewDate = new Date();
+    const newInterval =
+      newLevel < 3 ? 2 * Math.pow(2, newLevel) : Math.pow(2, newLevel - 3);
+    // set new date/times
+    newLevel < 3
+      ? newReviewDate.setHours(newReviewDate.getHours() + newInterval)
+      : newReviewDate.setDate(newReviewDate.getDate() + newInterval);
+
+    if (card.level === 10) {
+      setDeck(() => {
+        currentCard.nextReview = "Mastered!";
+        return updatedDeck;
+      });
+    } else {
+      setDeck(() => {
+        currentCard.level = newLevel;
+        currentCard.nextReview = newReviewDate.toString();
+        return updatedDeck;
+      });
+    }
+
+    if (currentIndex === reviewDeck.length - 1) {
       event.preventDefault();
-      setAnswer("");
-      const updatedDeck = [...reviewDeck];
-      const currentCard = updatedDeck[currentIndex];
-      let newLevel = card.level + 1;
-      if (
-        answer.toLowerCase().replaceAll(" ", "") !== // ignore capitals and spaces
-        card.back.toLowerCase().replaceAll(" ", "")
-      ) {
-        setError(true);
-        if (currentCard.level === 0) return;
-        newLevel = card.level - 1;
-      } else {
-        setScore((p) => p + 1);
-        setError(false);
-      }
-
-      let newReviewDate = new Date();
-      const newInterval =
-        newLevel < 3 ? 2 * Math.pow(2, newLevel) : Math.pow(2, newLevel - 3);
-      // set new date/times
-      newLevel < 3
-        ? newReviewDate.setHours(newReviewDate.getHours() + newInterval)
-        : newReviewDate.setDate(newReviewDate.getDate() + newInterval);
-
-      if (card.level === 10) {
-        setDeck(() => {
-          currentCard.nextReview = "Mastered!";
-          return updatedDeck;
-        });
-      } else {
-        setDeck(() => {
-          currentCard.level = newLevel;
-          currentCard.nextReview = newReviewDate.toString();
-          return updatedDeck;
-        });
-      }
-
-      if (currentIndex === reviewDeck.length - 1) {
-        event.preventDefault();
-        setTimeout(() => {
-          onEndReview();
-        }, 100);
-      } else {
-        setCard(reviewDeck[currentIndex + 1]);
-      }
+      setTimeout(() => {
+        onEndReview();
+      }, 100);
+    } else {
+      setCard(reviewDeck[currentIndex + 1]);
     }
   };
 
@@ -118,13 +122,17 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
           error={error}
         />
       </Box>
-
+      <Button variant="outlined" onClick={handleSubmit}>
+        Enter
+      </Button>
       <Box>
-        <Button onClick={() => setHint((p) => !p)}>
+        <Button variant="outlined" onClick={() => setHint((p) => !p)}>
           {hint ? "Hints Off" : "Hints On"}
         </Button>
 
-        <Button onClick={handleSkipCard}>Skip Card</Button>
+        <Button variant="outlined" onClick={handleSkipCard}>
+          Skip Card
+        </Button>
       </Box>
 
       {hint && (
