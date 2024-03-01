@@ -107,6 +107,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
         <Typography variant={"h3"}>{card.front}</Typography>
         <TextField
           multiline
+          margin="normal"
           inputProps={{
             style: {
               textAlign: "center",
@@ -164,7 +165,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
       )}
 
       <Typography variant={"h4"} margin={2}>
-        Score: {score}
+        Correct: {score}
       </Typography>
     </div>
   );
