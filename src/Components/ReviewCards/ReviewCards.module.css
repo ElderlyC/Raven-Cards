@@ -1,5 +1,6 @@
 .container button {
   width: 140px;
+  margin: 10px;
 }
 .imageContainer {
   height: 169px;

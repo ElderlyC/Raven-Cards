@@ -143,7 +143,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
             flexDirection: "column",
           }}
         >
-          <Typography variant="h5" maxWidth={600} width={"80vw"}>
+          <Typography variant="h5" maxWidth={600} width={"80vw"} margin="10px">
             {card.hint}
           </Typography>
           {card?.image && card?.image[2] && (
