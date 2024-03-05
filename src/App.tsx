@@ -44,6 +44,7 @@ function App() {
   >([]);
   const [hanja, setHanja] = useState("");
   const [view, setView] = useState("home");
+  const [hoursUntilNextReview, setNext] = useState([0, "hrs"]);
 
   const [initialDeck, setInitialDeck] = useState([]);
   const [reviewCards, setReviewCards] = useState([]);
@@ -120,10 +121,30 @@ function App() {
 
   useEffect(() => {
     const now = new Date();
+    if (initialDeck.length > 0 && reviewCards.length === 0) {
+      const timeSortedDeck: Deck = initialDeck.slice();
+      timeSortedDeck.sort(
+        (a: Card, b: Card) =>
+          new Date(a.nextReview).getTime() - new Date(b.nextReview).getTime()
+      );
+      const nextTime = new Date(timeSortedDeck[0].nextReview);
+      const timeDifferenceSecs = (nextTime.getTime() - now.getTime()) / 1000;
+      const timeDifferenceMins = timeDifferenceSecs / 60;
+      setNext(
+        timeDifferenceMins / 60 > 24
+          ? [Math.ceil(timeDifferenceMins / 1440), "days"]
+          : timeDifferenceMins > 90
+          ? [Math.ceil(timeDifferenceMins / 60), "hrs"]
+          : timeDifferenceMins < 1.5
+          ? [timeDifferenceSecs.toFixed(), "secs"]
+          : [timeDifferenceMins.toFixed(), "mins"]
+      );
+    }
+
     setReviewCards(
       initialDeck.filter((card: Card) => new Date(card.nextReview) < now)
     );
-  }, [initialDeck]);
+  }, [initialDeck, reviewCards.length]);
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -174,7 +195,9 @@ function App() {
                         }}
                       >
                         <QuizIcon sx={{ marginRight: "10px" }} />
-                        Review!
+                        {(hoursUntilNextReview[0] as number) > 0
+                          ? `in ~${hoursUntilNextReview[0]} ${hoursUntilNextReview[1]}`
+                          : "Review!"}
                       </Button>
                     </Badge>
                   </div>

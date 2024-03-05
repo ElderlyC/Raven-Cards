@@ -11,6 +11,7 @@ import {
   Typography,
   Modal,
   Box,
+  Link,
 } from "@mui/material";
 import { Deck, Card } from "../../App";
 import classes from "./ViewDeck.module.css";
@@ -39,6 +40,8 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
     examples: [{ text: "", translatedText: "" }],
     hanja: "",
   });
+  const [displayDeck, setDisplay] = useState(cardDeck.slice().reverse()); // display newest cards first
+  const [ascending, setAscending] = useState(true);
 
   const toggleModal = (url: string) => {
     setImageUrl(url);
@@ -61,6 +64,7 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
 
   const handleDeleteCard = (deleteCard: Card) => {
     setDeck((deck) => deck.filter((card) => card !== deleteCard));
+    setDisplay((prev) => prev.filter((card) => card !== deleteCard));
   };
 
   const handleEditCard = (editCard: Card) => {
@@ -76,6 +80,19 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
       hanja: "",
     });
     setEditing(true);
+  };
+
+  const handleOrderBy = (column: string) => {
+    const sortedDeck = [...displayDeck].sort((a, b) => {
+      if (column === "front" || column === "back") {
+        const aValue = a[column].toLowerCase();
+        const bValue = b[column].toLowerCase();
+        return aValue.localeCompare(bValue);
+      } else
+        return new Date(a[column]).getTime() - new Date(b[column]).getTime();
+    });
+    setAscending(!ascending);
+    setDisplay(ascending ? sortedDeck : sortedDeck.reverse());
   };
 
   useEffect(() => {
@@ -116,98 +133,131 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center">Front</TableCell>
-                    <TableCell align="center">Back</TableCell>
+                    <TableCell align="center">
+                      <Link
+                        underline="hover"
+                        onClick={() => handleOrderBy("front")}
+                        sx={{ cursor: "pointer" }}
+                      >
+                        Front
+                      </Link>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Link
+                        underline="hover"
+                        onClick={() => handleOrderBy("back")}
+                        sx={{ cursor: "pointer" }}
+                      >
+                        Back
+                      </Link>
+                    </TableCell>
                     <TableCell className={classes.hideCol} align="center">
                       Hint
                     </TableCell>
                     <TableCell className={classes.hideCol} align="center">
                       Image
                     </TableCell>
-                    <TableCell align="center">Next Review</TableCell>
-                    <TableCell className={classes.hideCol} align="center">
-                      Level
+                    <TableCell align="center">
+                      <Link
+                        underline="hover"
+                        onClick={() => handleOrderBy("nextReview")}
+                        sx={{ cursor: "pointer" }}
+                      >
+                        Next Review
+                      </Link>
                     </TableCell>
                     <TableCell className={classes.hideCol} align="center">
-                      Created
+                      <Link
+                        underline="hover"
+                        onClick={() => handleOrderBy("level")}
+                        sx={{ cursor: "pointer" }}
+                      >
+                        Level
+                      </Link>
+                    </TableCell>
+                    <TableCell className={classes.hideCol} align="center">
+                      <Link
+                        underline="hover"
+                        onClick={() => handleOrderBy("created")}
+                        sx={{ cursor: "pointer" }}
+                      >
+                        Created
+                      </Link>
                     </TableCell>
                     <TableCell align="center">Tools</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {cardDeck
-                    .slice()
-                    .reverse() // display newest cards first
-                    .map((card) => (
-                      <TableRow key={card.front}>
-                        <TableCell align="center" width="120px">
-                          {card.front}
-                        </TableCell>
-                        <TableCell align="center">{card.back}</TableCell>
-                        <TableCell align="center" className={classes.hint}>
-                          {card.hint}
-                        </TableCell>
-                        <TableCell className={classes.hideCol} align="center">
-                          {card.image && (
-                            <Box
-                              sx={{
-                                overflow: "hidden",
-                                width: "100px",
-                                height: "80px",
-                                display: "flex",
-                                border: card.image[2] && "2px solid #5c5c5c",
-                                borderRadius: "4px",
-                                padding: "1px",
-                                ":hover": { borderColor: "white" },
-                              }}
-                            >
-                              {card.image[2] && (
-                                <img
-                                  alt="hint"
-                                  onClick={() => toggleModal(card.image[2])} //expand image to be visible
-                                  src={card.image[2]}
-                                  style={{
-                                    width: "100%",
-                                    objectFit: "cover",
-                                  }}
-                                />
-                              )}
-                            </Box>
-                          )}
-                        </TableCell>
-                        <TableCell align="center">
-                          {readableDate(card.nextReview)}
-                        </TableCell>
-                        <TableCell className={classes.hideCol} align="center">
-                          {card.level}
-                        </TableCell>
-                        <TableCell className={classes.hideCol} align="center">
-                          {readableDate(card.created)}
-                        </TableCell>
-                        <TableCell align="center">
-                          <Button
-                            variant="outlined"
-                            onClick={() => handleEditCard(card)}
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            variant="outlined"
-                            onClick={() => {
-                              if (
-                                window.confirm(
-                                  `Are you sure you want to delete this card? [${card.front}]`
-                                )
-                              ) {
-                                handleDeleteCard(card);
-                              }
+                  {displayDeck.map((card) => (
+                    <TableRow key={card.front}>
+                      <TableCell align="center" width="120px">
+                        {card.front}
+                      </TableCell>
+                      <TableCell align="center">{card.back}</TableCell>
+                      <TableCell align="center" className={classes.hint}>
+                        {card.hint}
+                      </TableCell>
+                      <TableCell className={classes.hideCol} align="center">
+                        {card.image && (
+                          <Box
+                            sx={{
+                              overflow: "hidden",
+                              width: "100px",
+                              height: "80px",
+                              display: "flex",
+                              border: card.image[2] && "2px solid #5c5c5c",
+                              borderRadius: "4px",
+                              padding: "1px",
+                              ":hover": { borderColor: "white" },
                             }}
                           >
-                            Delete
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                            {card.image[2] && (
+                              <img
+                                alt="hint"
+                                onClick={() => toggleModal(card.image[2])} //expand image to be visible
+                                src={card.image[2]}
+                                style={{
+                                  width: "100%",
+                                  objectFit: "cover",
+                                }}
+                              />
+                            )}
+                          </Box>
+                        )}
+                      </TableCell>
+                      <TableCell align="center">
+                        {readableDate(card.nextReview)}
+                      </TableCell>
+                      <TableCell className={classes.hideCol} align="center">
+                        {card.level}
+                      </TableCell>
+                      <TableCell className={classes.hideCol} align="center">
+                        {readableDate(card.created)}
+                      </TableCell>
+                      <TableCell align="center">
+                        <Button
+                          variant="outlined"
+                          onClick={() => handleEditCard(card)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          onClick={() => {
+                            if (
+                              window.confirm(
+                                `Are you sure you want to delete this card? [${card.front}]`
+                              )
+                            ) {
+                              handleDeleteCard(card);
+                            }
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </TableContainer>

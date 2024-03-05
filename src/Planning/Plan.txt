@@ -2,7 +2,6 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
--review input space
 -test and use
 -download deck?
 -settings?
@@ -16,7 +15,6 @@ Refactoring:
 Extra [OP] Functionality:
 -replace localStorage with DB storage, CRUD
 -browser search function
--browser order by next review?
 -export deck as xls? / notepad?
 
 Settings [OBSOLETE?]

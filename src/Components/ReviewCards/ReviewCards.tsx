@@ -41,6 +41,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
     const updatedDeck = [...reviewDeck];
     const currentCard = updatedDeck[currentIndex];
     let newLevel = card.level + 1;
+    let newReviewDate = new Date();
     if (
       answer.toLowerCase().replaceAll(" ", "") !== // ignore capitals and spaces
       card.back.toLowerCase().replaceAll(" ", "")
@@ -51,15 +52,13 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
     } else {
       setScore((p) => p + 1);
       setError(false);
+      const newInterval =
+        newLevel < 3 ? 2 * Math.pow(2, newLevel) : Math.pow(2, newLevel - 3);
+      // set new date/times
+      newLevel < 3
+        ? newReviewDate.setHours(newReviewDate.getHours() + newInterval)
+        : newReviewDate.setDate(newReviewDate.getDate() + newInterval);
     }
-
-    let newReviewDate = new Date();
-    const newInterval =
-      newLevel < 3 ? 2 * Math.pow(2, newLevel) : Math.pow(2, newLevel - 3);
-    // set new date/times
-    newLevel < 3
-      ? newReviewDate.setHours(newReviewDate.getHours() + newInterval)
-      : newReviewDate.setDate(newReviewDate.getDate() + newInterval);
 
     if (card.level === 10) {
       setDeck(() => {
