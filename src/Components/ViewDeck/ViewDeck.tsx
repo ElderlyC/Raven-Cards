@@ -21,11 +21,13 @@ import AddFlashcard from "../AddFlashcard/AddFlashcard";
 type ViewDeckProps = {
   deck: Deck;
   onLeaveBrowser: () => void;
+  onImportExport: () => void;
   onRemovePair: (source: string) => void;
 };
 
 const ViewDeck: React.FC<ViewDeckProps> = ({
   onLeaveBrowser,
+  onImportExport,
   onRemovePair,
   deck,
 }) => {
@@ -266,10 +268,30 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
               No cards yet!
             </Typography>
           )}
-
-          <Button variant="contained" onClick={() => onLeaveBrowser()}>
-            Go Back
-          </Button>
+          <Box className={classes.buttonBox}>
+            <Button variant="contained" onClick={() => onImportExport()}>
+              Import / Upload
+            </Button>
+            <Button variant="contained" onClick={() => onLeaveBrowser()}>
+              Go Back
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                if (
+                  window.confirm("Are you sure you want to delete your deck?")
+                )
+                  if (
+                    window.confirm(
+                      "Are you REALLY sure you want to DELETE your DECK?"
+                    )
+                  )
+                    setDeck([]); // Set deck to empty array
+              }}
+            >
+              Delete Deck
+            </Button>
+          </Box>
         </div>
       )}
     </div>

@@ -3,7 +3,9 @@ hosting using google cloud functions!
 
 To Finish:
 -test and use
+-accounts+secrets
 -download deck?
+-delete deck
 -settings?
 -refactor code
 -prettify?

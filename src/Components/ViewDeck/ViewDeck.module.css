@@ -68,6 +68,16 @@
   max-height: 560px;
 }
 
+.buttonBox {
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+}
+
+.buttonBox button {
+  width: 180px;
+}
+
 @media (max-width: 1400px) {
   .backdrop {
     padding: 10px;
@@ -112,7 +122,10 @@
     font-size: 0.8rem;
     padding: 2px;
   }
-  .container button {
-    font-size: 0.6rem;
+  .container {
+    max-height: 75vh;
+  }
+  .buttonBox button {
+    font-weight: 700;
   }
 }

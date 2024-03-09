@@ -11,6 +11,7 @@ import { Button, Typography, Badge } from "@mui/material";
 import QuizIcon from "@mui/icons-material/Quiz";
 import ReviewCards from "./Components/ReviewCards/ReviewCards";
 import ViewDeck from "./Components/ViewDeck/ViewDeck";
+import ImportExport from "./Components/ImportExport/ImportExport";
 
 const darkTheme = createTheme({
   palette: {
@@ -201,16 +202,6 @@ function App() {
                       </Button>
                     </Badge>
                   </div>
-                  {/* <div>
-                    <Button
-                      size="large"
-                      variant="contained"
-                      sx={{ fontWeight: "bold", width: "170px" }}
-                      onClick={() => setView("")}
-                    >
-                      Settings
-                    </Button>
-                  </div> */}
                 </div>
               </div>
             </div>
@@ -235,8 +226,16 @@ function App() {
             <ViewDeck
               deck={initialDeck}
               onLeaveBrowser={() => setView("home")}
+              onImportExport={() => setView("import")}
               onRemovePair={handleRemovePair}
             />
+          ) : view === "import" ? (
+            <div>
+              <ImportExport deck={initialDeck} />
+              <Button variant="outlined" onClick={() => setView("view")}>
+                Done!
+              </Button>
+            </div>
           ) : (
             <div>
               <Typography variant="h3">View not set [WIP]</Typography>
