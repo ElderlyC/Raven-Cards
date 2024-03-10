@@ -1,18 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Deck } from "../../App";
 import { TextField, InputLabel, Button } from "@mui/material";
 
-// compare importedDeck and current deck, there are x new cards, add them?
+// if (importedDeck.length === 0) window.alert("No new cards!");
 
 type ImportExportProps = {
+  onImport: (importedDeck: Deck) => void;
   deck: Deck;
 };
 
-const ImportExport: React.FC<ImportExportProps> = ({ deck }) => {
+const ImportExport: React.FC<ImportExportProps> = ({ deck, onImport }) => {
   const [code, setCode] = useState("");
   const [password, setPass] = useState("");
   const [showPassword, setShowPass] = useState(true);
   const [importedDeck, setImportedDeck] = useState<Deck>([]);
+  const importProcessed = useRef(false);
+
   const emptyVals = code === "" || password === "";
   const url = "https://ko-en-cards-server-default-rtdb.firebaseio.com/";
 
@@ -29,7 +32,7 @@ const ImportExport: React.FC<ImportExportProps> = ({ deck }) => {
   const uploadDeck = async () => {
     try {
       const response = await fetch(url + code + password + ".json", {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -47,17 +50,34 @@ const ImportExport: React.FC<ImportExportProps> = ({ deck }) => {
       const response = await fetch(url + code + password + ".json");
       const data = await response.json();
       if (data) {
-        window.alert("Deck imported successfully from Firebase");
-        console.log("Deck retrieved successfully:", Object.values(data)[0]);
-        setImportedDeck(Object.values(data)[0] as Deck);
-        window.confirm(`There are ${"ten"} new cards`);
+        setImportedDeck(
+          data.filter((importedCard) => {
+            return !deck.some(
+              (deckCard) => deckCard.front === importedCard.front
+            );
+          })
+        );
       } else {
-        window.alert("There is no deck that match those details.");
+        window.alert("There is no deck that matches those details.");
       }
     } catch (error: any) {
       console.error("Error retrieving data from Firebase:", error.message);
     }
   };
+
+  useEffect(() => {
+    if (!importProcessed.current && importedDeck.length > 0) {
+      if (
+        window.confirm(
+          `There are ${importedDeck.length} new cards. Add to current deck?`
+        )
+      ) {
+        onImport(importedDeck);
+        window.alert(`New cards added to deck.`);
+      }
+      importProcessed.current = true;
+    }
+  }, [importedDeck, onImport]);
 
   return (
     <div>

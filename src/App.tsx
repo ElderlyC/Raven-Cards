@@ -47,8 +47,8 @@ function App() {
   const [view, setView] = useState("home");
   const [hoursUntilNextReview, setNext] = useState([0, "hrs"]);
 
-  const [initialDeck, setInitialDeck] = useState([]);
-  const [reviewCards, setReviewCards] = useState([]);
+  const [initialDeck, setInitialDeck] = useState<Deck>([]);
+  const [reviewCards, setReviewCards] = useState<Deck>([]);
   const emptyDeck = reviewCards.length === 0;
 
   const handleRemovePair = (source: string) => {
@@ -231,7 +231,12 @@ function App() {
             />
           ) : view === "import" ? (
             <div>
-              <ImportExport deck={initialDeck} />
+              <ImportExport
+                deck={initialDeck}
+                onImport={(importedDeck) =>
+                  setInitialDeck((deck: Deck) => [...deck, ...importedDeck])
+                }
+              />
               <Button variant="outlined" onClick={() => setView("view")}>
                 Done!
               </Button>
