@@ -1,0 +1,25 @@
+h2 {
+  margin-top: 30px;
+  margin-bottom: 0;
+}
+
+.container {
+  max-height: 300px;
+  border: 1px white solid;
+  margin-bottom: 10px;
+}
+
+.head th,
+.body td {
+  text-align: center;
+}
+
+@media (max-width: 500px) {
+  .container {
+    max-height: 200px;
+  }
+  .body td,
+  .head th {
+    padding: 5px;
+  }
+}

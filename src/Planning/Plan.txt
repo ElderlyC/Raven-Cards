@@ -2,12 +2,13 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
--test and use
 -accounts+secrets
--download deck?
 -settings?
+--3 guesses
+--multiple correct answers
 -refactor code
 -prettify?
+--icons
 
 Refactoring:
 -check each component, remove fat

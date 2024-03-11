@@ -163,9 +163,12 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
         </div>
       )}
 
-      <Typography variant={"h4"} margin={2}>
+      <Typography color="lime" margin={2}>
         Correct: {score}
       </Typography>
+      <Button variant="contained" onClick={onEndReview}>
+        Quit Review
+      </Button>
     </div>
   );
 };

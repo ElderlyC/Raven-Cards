@@ -245,6 +245,7 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
                         </Button>
                         <Button
                           variant="outlined"
+                          color="error"
                           onClick={() => {
                             if (
                               window.confirm(
@@ -273,17 +274,19 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
               Import / Upload
             </Button>
             <Button variant="contained" onClick={() => onLeaveBrowser()}>
-              Go Back
+              Home
             </Button>
             <Button
+              disabled={cardDeck.length === 0}
               variant="contained"
+              color="error"
               onClick={() => {
                 if (
                   window.confirm("Are you sure you want to delete your deck?")
                 )
                   if (
                     window.confirm(
-                      "Are you REALLY sure you want to DELETE your DECK?"
+                      "Are you REALLY sure you want to DELETE your DECK? (Consider uploading your deck first)"
                     )
                   )
                     setDeck([]); // Set deck to empty array

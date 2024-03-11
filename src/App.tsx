@@ -237,8 +237,8 @@ function App() {
                   setInitialDeck((deck: Deck) => [...deck, ...importedDeck])
                 }
               />
-              <Button variant="outlined" onClick={() => setView("view")}>
-                Done!
+              <Button variant="contained" onClick={() => setView("view")}>
+                Done
               </Button>
             </div>
           ) : (
