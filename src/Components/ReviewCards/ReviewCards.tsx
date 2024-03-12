@@ -20,11 +20,13 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
   const [card, setCard] = useState<Card>(reviewDeck[0]);
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState(false);
+  const [wrong, setWrong] = useState(0);
 
   const currentIndex = reviewDeck.indexOf(card);
 
   const handleSkipCard = () => {
     if (currentIndex === reviewDeck.length - 1) onEndReview();
+    setWrong(0);
     setAnswer("");
     setCard(reviewDeck[currentIndex + 1]);
   };
@@ -49,6 +51,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
       setError(true);
       if (currentCard.level === 0) return;
       newLevel = card.level - 1;
+      setWrong((p) => p + 1);
     } else {
       setScore((p) => p + 1);
       setError(false);
@@ -59,6 +62,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
         ? newReviewDate.setHours(newReviewDate.getHours() + newInterval)
         : newReviewDate.setDate(newReviewDate.getDate() + newInterval);
     }
+    if (wrong !== 2) return;
 
     if (card.level === 10) {
       setDeck(() => {
@@ -79,6 +83,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
         onEndReview();
       }, 100);
     } else {
+      setWrong(0);
       setCard(reviewDeck[currentIndex + 1]);
     }
   };
@@ -166,6 +171,11 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
       <Typography color="lime" margin={2}>
         Correct: {score}
       </Typography>
+      {wrong > 0 && (
+        <Typography color="error" margin={2}>
+          Incorrect: {wrong}
+        </Typography>
+      )}
       <Button variant="contained" onClick={onEndReview}>
         Quit Review
       </Button>

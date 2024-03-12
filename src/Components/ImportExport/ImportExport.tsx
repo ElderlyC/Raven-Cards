@@ -201,10 +201,12 @@ const ImportExport: React.FC<ImportExportProps> = ({ deck, onImport }) => {
         <TableContainer className={classes.container}>
           <Table className={classes.table} stickyHeader>
             <TableHead className={classes.head}>
-              <TableCell>Deck Name</TableCell>
-              <TableCell>Card Number</TableCell>
-              <TableCell>Password</TableCell>
-              <TableCell width="80px"></TableCell>
+              <TableRow>
+                <TableCell>Deck Name</TableCell>
+                <TableCell>Card Number</TableCell>
+                <TableCell>Password</TableCell>
+                <TableCell width="80px"></TableCell>
+              </TableRow>
             </TableHead>
             <TableBody className={classes.body}>
               {uploadedDecksArray.map((deck, index) => (
