@@ -24,11 +24,16 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
 
   const currentIndex = reviewDeck.indexOf(card);
 
-  const handleSkipCard = () => {
-    if (currentIndex === reviewDeck.length - 1) onEndReview();
-    setWrong(0);
-    setAnswer("");
-    setCard(reviewDeck[currentIndex + 1]);
+  const handleSkipCard = (method: string) => {
+    if (currentIndex === reviewDeck.length - 1) {
+      if (method === "button") onEndReview();
+      else
+        setTimeout(() => {
+          onEndReview();
+        }, 100);
+    } else {
+      setCard(reviewDeck[currentIndex + 1]);
+    }
   };
 
   const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
@@ -49,9 +54,9 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
       card.back.toLowerCase().replaceAll(" ", "")
     ) {
       setError(true);
+      setWrong((p) => p + 1);
       if (currentCard.level === 0) return;
       newLevel = card.level - 1;
-      setWrong((p) => p + 1);
     } else {
       setScore((p) => p + 1);
       setError(false);
@@ -62,7 +67,6 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
         ? newReviewDate.setHours(newReviewDate.getHours() + newInterval)
         : newReviewDate.setDate(newReviewDate.getDate() + newInterval);
     }
-    if (wrong !== 2) return;
 
     if (card.level === 10) {
       setDeck(() => {
@@ -77,15 +81,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
       });
     }
 
-    if (currentIndex === reviewDeck.length - 1) {
-      event.preventDefault();
-      setTimeout(() => {
-        onEndReview();
-      }, 100);
-    } else {
-      setWrong(0);
-      setCard(reviewDeck[currentIndex + 1]);
-    }
+    if (newLevel === card.level + 1 || wrong === 2) handleSkipCard("auto");
   };
 
   useEffect(() => {
@@ -102,6 +98,8 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
   }, [deck, reviewDeck]);
 
   useEffect(() => {
+    setWrong(0);
+    setAnswer("");
     setError(false);
   }, [card]);
 
@@ -135,7 +133,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
           {hint ? "Hints Off" : "Hints On"}
         </Button>
 
-        <Button variant="outlined" onClick={handleSkipCard}>
+        <Button variant="outlined" onClick={() => handleSkipCard("button")}>
           Skip Card
         </Button>
       </Box>
