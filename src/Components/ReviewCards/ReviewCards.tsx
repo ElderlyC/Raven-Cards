@@ -58,7 +58,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
       setError(true);
       setWrong((p) => p + 1);
       newLevel = card.level - 1;
-      if (currentCard.level === 0) newLevel = 0;
+      if (currentCard.level === 0 || wrong < 2) newLevel = card.level;
     } else {
       setScore((p) => p + 1);
       setError(false);
