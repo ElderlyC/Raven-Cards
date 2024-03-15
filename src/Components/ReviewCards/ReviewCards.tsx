@@ -14,7 +14,9 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
   reviewCards,
   onEndReview,
 }) => {
-  const [reviewDeck, setDeck] = useState(reviewCards);
+  const [reviewDeck, setDeck] = useState(
+    reviewCards.slice().sort(() => Math.random() - 0.5)
+  );
   const [hint, setHint] = useState(false);
   const [score, setScore] = useState(0);
   const [card, setCard] = useState<Card>(reviewDeck[0]);
@@ -55,8 +57,8 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
     ) {
       setError(true);
       setWrong((p) => p + 1);
-      if (currentCard.level === 0) return;
       newLevel = card.level - 1;
+      if (currentCard.level === 0) newLevel = 0;
     } else {
       setScore((p) => p + 1);
       setError(false);
@@ -171,7 +173,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
       </Typography>
       {wrong > 0 && (
         <Typography color="error" margin={2}>
-          Incorrect: {wrong}
+          Incorrect: {wrong === 1 ? "2 tries remaining" : "1 try remaining"}
         </Typography>
       )}
       <Button variant="contained" onClick={onEndReview}>
