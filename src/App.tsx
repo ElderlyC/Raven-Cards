@@ -7,7 +7,7 @@ import AddFlashcard from "./Components/AddFlashcard/AddFlashcard";
 import { WordPair } from "./types";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Button, Typography, Badge } from "@mui/material";
+import { Button, Typography, Badge, useMediaQuery } from "@mui/material";
 import QuizIcon from "@mui/icons-material/Quiz";
 import ReviewCards from "./Components/ReviewCards/ReviewCards";
 import ViewDeck from "./Components/ViewDeck/ViewDeck";
@@ -35,6 +35,7 @@ export type Card = {
 export type Deck = Card[];
 
 function App() {
+  const smallScreen = useMediaQuery("(max-width:740px)");
   const wordlistString = localStorage.getItem("wordlist");
   const [wordList, setWordlist] = useState<WordPair[]>(
     wordlistString ? JSON.parse(wordlistString) : []
@@ -168,18 +169,23 @@ function App() {
                     display: "flex",
                   }}
                 >
-                  <div style={{ flex: 1 }}>
+                  <div style={{ flex: 1, width: "33%" }}>
                     <Button
                       fullWidth
                       size="large"
                       variant="contained"
-                      sx={{ fontWeight: "bold" }}
+                      sx={{
+                        fontWeight: "bold",
+                        padding: 0,
+                        height: "42.25px",
+                        lineHeight: "1rem",
+                      }}
                       onClick={() => setView("view")}
                     >
                       Browse Deck
                     </Button>
                   </div>
-                  <div style={{ flex: 1 }}>
+                  <div style={{ flex: 1, width: "33%" }}>
                     <Button
                       size="large"
                       disabled={emptyDeck}
@@ -188,26 +194,38 @@ function App() {
                       fullWidth
                       sx={{
                         fontWeight: "bold",
-                        paddingRight: "30px",
                       }}
                     >
-                      <QuizIcon sx={{ margin: "0 10px 0 5px" }} />
-                      {(hoursUntilNextReview[0] as number) > 0
-                        ? `in ~${hoursUntilNextReview[0]} ${hoursUntilNextReview[1]}`
-                        : "Review!"}
-                      <Badge
-                        badgeContent={reviewCards.length}
-                        color="success"
+                      <QuizIcon
+                        className="quiz"
                         sx={{
-                          marginLeft: "20px",
-                          "& .MuiBadge-badge": {
-                            fontWeight: "bold",
+                          "@media (max-width: 740px)": {
+                            margin: !emptyDeck ? "0 0 0 -10px" : "0 10px 0 5px",
                           },
                         }}
                       />
+                      <span style={{ paddingRight: "5px" }}>
+                        {(hoursUntilNextReview[0] as number) > 0
+                          ? `${smallScreen ? "" : "in "}~${
+                              hoursUntilNextReview[0]
+                            } ${hoursUntilNextReview[1]}`
+                          : "Review!"}
+                      </span>
+                      {!emptyDeck && (
+                        <Badge
+                          badgeContent={reviewCards.length}
+                          color="success"
+                          className="badge"
+                          sx={{
+                            "& .MuiBadge-badge": {
+                              fontWeight: "bold",
+                            },
+                          }}
+                        />
+                      )}
                     </Button>
                   </div>
-                  <div style={{ flex: 1 }}>
+                  <div style={{ flex: 1, width: "33%" }}>
                     <Button
                       fullWidth
                       size="large"

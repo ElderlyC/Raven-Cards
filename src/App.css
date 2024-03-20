@@ -50,6 +50,29 @@ iframe#webpack-dev-server-client-overlay {
   flex: 1;
   max-width: 600px;
 }
+.wordlist-container button {
+  height: 42.25px;
+}
+
+.quiz {
+  margin: 0 10px 0 5px;
+}
+
+.badge {
+  padding-right: 20px;
+}
+
+@media (max-width: 1200px) {
+  .wordlist-container button {
+    padding: 0;
+  }
+  .quiz {
+    margin: 0;
+  }
+  .badge {
+    padding-right: 0;
+  }
+}
 
 @media (max-width: 740px) {
   .home {
@@ -65,5 +88,8 @@ iframe#webpack-dev-server-client-overlay {
     font-size: 0.8rem;
     font-weight: 800;
     height: 40px;
+  }
+  .badge {
+    padding-right: 0;
   }
 }
