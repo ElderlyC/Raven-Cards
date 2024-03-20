@@ -4,8 +4,8 @@ hosting using google cloud functions!
 To Finish:
 -accounts+secrets
 -settings?
---3 guesses (ADDED, needs testing)
---multiple correct answers
+--3 guesses (testing)
+--multiple correct answers?
 -refactor code
 -prettify?
 --icons

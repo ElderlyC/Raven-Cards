@@ -12,6 +12,7 @@ import QuizIcon from "@mui/icons-material/Quiz";
 import ReviewCards from "./Components/ReviewCards/ReviewCards";
 import ViewDeck from "./Components/ViewDeck/ViewDeck";
 import ImportExport from "./Components/ImportExport/ImportExport";
+import Settings from "./Components/Settings/Settings";
 
 const darkTheme = createTheme({
   palette: {
@@ -179,28 +180,43 @@ function App() {
                     </Button>
                   </div>
                   <div style={{ flex: 1 }}>
-                    <Badge
-                      badgeContent={reviewCards.length}
-                      color="success"
-                      sx={{ width: "100%" }}
+                    <Button
+                      size="large"
+                      disabled={emptyDeck}
+                      onClick={() => setView("review")}
+                      variant="contained"
+                      fullWidth
+                      sx={{
+                        fontWeight: "bold",
+                        paddingRight: "30px",
+                      }}
                     >
-                      <Button
-                        size="large"
-                        disabled={emptyDeck}
-                        onClick={() => setView("review")}
-                        variant="contained"
-                        fullWidth
+                      <QuizIcon sx={{ margin: "0 10px 0 5px" }} />
+                      {(hoursUntilNextReview[0] as number) > 0
+                        ? `in ~${hoursUntilNextReview[0]} ${hoursUntilNextReview[1]}`
+                        : "Review!"}
+                      <Badge
+                        badgeContent={reviewCards.length}
+                        color="success"
                         sx={{
-                          fontWeight: "bold",
-                          paddingRight: "30px",
+                          marginLeft: "20px",
+                          "& .MuiBadge-badge": {
+                            fontWeight: "bold",
+                          },
                         }}
-                      >
-                        <QuizIcon sx={{ marginRight: "10px" }} />
-                        {(hoursUntilNextReview[0] as number) > 0
-                          ? `in ~${hoursUntilNextReview[0]} ${hoursUntilNextReview[1]}`
-                          : "Review!"}
-                      </Button>
-                    </Badge>
+                      />
+                    </Button>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <Button
+                      fullWidth
+                      size="large"
+                      variant="contained"
+                      sx={{ fontWeight: "bold" }}
+                      onClick={() => setView("settings")}
+                    >
+                      Settings
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -239,6 +255,13 @@ function App() {
               />
               <Button variant="contained" onClick={() => setView("view")}>
                 Done
+              </Button>
+            </div>
+          ) : view === "settings" ? (
+            <div>
+              <Settings />
+              <Button variant="contained" onClick={() => setView("home")}>
+                Save
               </Button>
             </div>
           ) : (

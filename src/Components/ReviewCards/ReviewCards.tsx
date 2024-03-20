@@ -23,6 +23,10 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState(false);
   const [wrong, setWrong] = useState(0);
+  const options = localStorage.getItem("options");
+  const oddFlipOn = options
+    ? JSON.parse(options).oddLevelFlip && card.level % 2 === 1
+    : false; // front and back are swapped on odd levels
 
   const currentIndex = reviewDeck.indexOf(card);
 
@@ -51,9 +55,12 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
     const currentCard = updatedDeck[currentIndex];
     let newLevel = card.level + 1;
     let newReviewDate = new Date();
+    const cardAnswer = oddFlipOn
+      ? card.front.toLowerCase().replaceAll(" ", "")
+      : card.back.toLowerCase().replaceAll(" ", "");
     if (
       answer.toLowerCase().replaceAll(" ", "") !== // ignore capitals and spaces
-      card.back.toLowerCase().replaceAll(" ", "")
+      cardAnswer
     ) {
       setError(true);
       setWrong((p) => p + 1);
@@ -108,7 +115,9 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
   return (
     <div className={classes.container}>
       <Box key={card.created}>
-        <Typography variant={"h3"}>{card.front}</Typography>
+        <Typography variant={"h3"}>
+          {oddFlipOn ? card.back : card.front}
+        </Typography>
         <TextField
           multiline
           margin="normal"
