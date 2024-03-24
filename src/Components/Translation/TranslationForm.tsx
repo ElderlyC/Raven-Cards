@@ -11,12 +11,14 @@ type TranslationFormTypes = {
 const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
   const [text, setText] = useState("");
   const [langs, setLangs] = useState(["ko", "en"]);
+  const [loading, setLoading] = useState(false);
 
   const langNames = { ko: "Korean", en: "English" };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!text) return;
+    setLoading(true);
     try {
       const response = await axios.post<{
         translation: string;
@@ -31,6 +33,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
       console.error(error);
     }
     setText("");
+    setLoading(false);
   };
 
   const handleSwap = () => {
@@ -81,12 +84,13 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
           color="primary"
           type="submit"
           size="large"
+          disabled={loading}
           sx={{
             width: "100%",
             fontWeight: "bold",
           }}
         >
-          Translate
+          {loading ? "Translating..." : "Translate"}
         </Button>
       </form>
     </div>

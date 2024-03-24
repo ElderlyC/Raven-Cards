@@ -257,7 +257,9 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             </Box>
           </Box>
 
-          <Button onClick={handleSwapInputs}>Swap Inputs</Button>
+          <Button onClick={handleSwapInputs} variant="outlined">
+            Swap Inputs
+          </Button>
 
           <FormControlLabel
             control={
@@ -279,7 +281,9 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             }
             onItemList={(arr) => setImgData(arr)}
           />
-          <Button onClick={() => setImage("")}>Remove Image</Button>
+          <Button onClick={() => setImage("")} variant="outlined">
+            Remove Image
+          </Button>
 
           {!editMode ? (
             <Box className={classes.submitButtons}>

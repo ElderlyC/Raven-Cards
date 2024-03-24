@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@mui/material";
 import axios from "axios";
 
@@ -9,8 +10,10 @@ type GenImageProps = {
 };
 
 const GenerateImage = ({ word, onItemList }: GenImageProps) => {
+  const [loading, setLoading] = useState(false);
   const getImage = async () => {
     try {
+      setLoading(true);
       const response: {
         data: { title: string; link: string; thumbnail: string }[];
       } = await axios.get(
@@ -29,9 +32,14 @@ const GenerateImage = ({ word, onItemList }: GenImageProps) => {
     } catch (error) {
       console.error("Error fetching definition:", error);
     }
+    setLoading(false);
   };
 
-  return <Button onClick={getImage}>Image Search</Button>;
+  return (
+    <Button onClick={getImage} variant="outlined">
+      {loading ? "Loading..." : "Image Search"}
+    </Button>
+  );
 };
 
 export default GenerateImage;

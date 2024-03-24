@@ -4,7 +4,7 @@ hosting using google cloud functions!
 To Finish:
 -accounts+secrets
 -settings?
---3 guesses (testing)
+-test front and back on level 0?
 --multiple correct answers?
 -refactor code
 -prettify?
