@@ -178,6 +178,9 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                   >
                     Reset
                   </Button>
+                  <Button onClick={() => setImage("")} variant="outlined">
+                    Remove Image
+                  </Button>
                 </div>
 
                 <Box className={classes.imageContainer}>
@@ -281,9 +284,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             }
             onItemList={(arr) => setImgData(arr)}
           />
-          <Button onClick={() => setImage("")} variant="outlined">
-            Remove Image
-          </Button>
 
           {!editMode ? (
             <Box className={classes.submitButtons}>
