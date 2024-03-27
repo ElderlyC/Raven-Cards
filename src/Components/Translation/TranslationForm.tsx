@@ -6,9 +6,13 @@ import classes from "./TranslationForm.module.css";
 
 type TranslationFormTypes = {
   onTranslation: ({ source, target }: WordPair) => void;
+  smallScreen: boolean;
 };
 
-const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
+const TranslationForm: React.FC<TranslationFormTypes> = ({
+  onTranslation,
+  smallScreen,
+}) => {
   const [text, setText] = useState("");
   const [langs, setLangs] = useState(["ko", "en"]);
   const [loading, setLoading] = useState(false);
@@ -67,7 +71,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({ onTranslation }) => {
         <Box>
           <TextField
             fullWidth
-            autoFocus
+            autoFocus={!smallScreen}
             label="Text to translate"
             placeholder="Enter words/phrases here, separated by line"
             variant="outlined"

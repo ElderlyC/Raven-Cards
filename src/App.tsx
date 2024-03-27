@@ -156,7 +156,10 @@ function App() {
         <header className="App-header">
           {view === "home" ? (
             <div className="home">
-              <TranslationForm onTranslation={handleAddToWordlist} />
+              <TranslationForm
+                onTranslation={handleAddToWordlist}
+                smallScreen={smallScreen}
+              />
 
               <div className="wordlist-container">
                 <Wordlist
