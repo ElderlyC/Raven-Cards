@@ -4,8 +4,6 @@ import { TextField, Button, Typography, Box } from "@mui/material";
 import axios from "axios";
 import classes from "./TranslationForm.module.css";
 
-// handle japanese translation
-
 type TranslationFormTypes = {
   onTranslation: ({ source, target }: WordPair) => void;
   smallScreen: boolean;
@@ -31,8 +29,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
         meaning: string;
       }>(
         "https://australia-southeast1-ko-en-cards.cloudfunctions.net/Ko-En-Cards",
-        // { source: langs[0], target: langs[1], text: text } // testing japanese
-        { source: "auto", target: "en", text: text } // testing japanese
+        { source: langs[0], target: langs[1], text: text }
       );
 
       onTranslation({ source: text, target: response.data.translation });
@@ -43,8 +40,9 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
     setLoading(false);
   };
 
-  const handleShuffle = () => {
-    setLangs(([lang1, lang2, lang3]) => [lang3, lang1, lang2]);
+  const handleShuffle = (index: number) => {
+    if (index === 0) setLangs(([lang1, lang2, lang3]) => [lang3, lang2, lang1]);
+    else setLangs(([lang1, lang2, lang3]) => [lang1, lang3, lang2]);
   };
 
   const handleSwap = () => {
@@ -52,12 +50,13 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
   };
 
   const handleTextChange = (e) => {
-    const koReg = /[\u3131-\uD79D]/giu; // regex for korean 한글
-    if (
-      (/[a-zA-Z+]/.test(text.slice(-1)) && langs[0] === "ko") ||
-      (koReg.test(text.slice(-1)) && langs[0] === "en")
-    )
-      handleSwap(); // this code is now broken
+    const lastChar = e.target.value.slice(-1);
+    const koReg = /[\u3131-\uD79D]/giu; // regex for Korean 한글
+    const jaReg = /[\u3040-\u30FF\u3400-\u4DBF\u4E00-\u9FFF]/gu; // regex for Japanese characters
+    if (koReg.test(lastChar) && langs[0] !== "ko") setLangs(["ko", "en", "ja"]);
+    if (jaReg.test(lastChar) && langs[0] !== "ja") setLangs(["ja", "en", "ko"]);
+    if (/[a-zA-Z+]/.test(lastChar) && langs[0] !== "en")
+      setLangs(["en", "ko", "ja"]);
     setText(e.target.value);
   };
 
@@ -66,20 +65,21 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
       <Typography variant="h2">Translate</Typography>
       <Box className={classes.langs}>
         <Typography variant="h5" fontWeight={"bold"}>
-          {langNames[langs[0] as keyof typeof langNames]}
-          <Button onClick={handleSwap} size="large">
-            {"<  to  >"}
-          </Button>
-          {langNames[langs[1] as keyof typeof langNames]}
-        </Typography>
-        <Typography variant="h5" fontWeight={"bold"}>
-          <Button onClick={handleShuffle} size="large">
+          <Button
+            size="large"
+            variant="outlined"
+            onClick={() => handleShuffle(0)}
+          >
             {langNames[langs[0] as keyof typeof langNames]}
           </Button>
           <Button onClick={handleSwap} size="large">
             {"<  to  >"}
           </Button>
-          <Button onClick={handleShuffle} size="large">
+          <Button
+            onClick={() => handleShuffle(1)}
+            size="large"
+            variant="outlined"
+          >
             {langNames[langs[1] as keyof typeof langNames]}
           </Button>
         </Typography>

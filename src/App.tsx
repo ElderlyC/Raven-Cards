@@ -85,7 +85,9 @@ function App() {
     setHanja("");
     setMeaning("");
     setExamples([{ translatedText: "", text: "" }]);
-    const updatedToLang = /[a-zA-Z+]/.test(searchWord) ? "ko" : "en";
+    // if searchWord is 한글 (not hanja), translate to english, otherwise translate to korean
+    const updatedToLang = /[\uAC00-\uD7AF]/gu.test(searchWord) ? "en" : "ko";
+
     try {
       const response = await axios.get<{
         meaning: string;

@@ -2,6 +2,7 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
+-addcard jap integration
 -accounts+secrets
 -settings?
 -test front and back on level 0?

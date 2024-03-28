@@ -16,6 +16,8 @@ import { Deck } from "../../App";
 import GenerateImage from "./GenerateImage";
 import classes from "./AddFlashcard.module.css";
 // refactor: file TOO BIG
+// handle japanese 예, non-hanja image search?
+// different image search tool for english and japanese
 
 type AddCardProps = {
   image?: [zoom: number, verticalOffset: number, imageLink: string];
