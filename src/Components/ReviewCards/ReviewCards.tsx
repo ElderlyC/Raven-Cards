@@ -115,7 +115,10 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
   return (
     <div className={classes.container}>
       <Box key={card.created}>
-        <Typography variant={"h3"}>
+        <Typography
+          variant={"h3"}
+          sx={{ fontSize: card.front.length > 15 ? "2rem" : "3rem" }}
+        >
           {oddFlipOn ? card.back : card.front}
         </Typography>
         <TextField

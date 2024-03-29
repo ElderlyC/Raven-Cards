@@ -2,7 +2,8 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
--addcard jap integration
+-addcard jap integration/fixes
+-auto upload to firebase after review?
 -accounts+secrets
 -settings?
 -test front and back on level 0?
