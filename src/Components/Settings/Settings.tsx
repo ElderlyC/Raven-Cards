@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { InputLabel, Switch, Typography } from "@mui/material";
 
-// overlay mod (grey out background, close button, ok button, cancel, some settings to adjust)
+// review intervals/frequency
 
 const Settings = () => {
   const storedOptions = JSON.parse(localStorage.getItem("options") || "{}");
@@ -30,14 +30,6 @@ const Settings = () => {
         <Switch checked={oddLevelFlip} onChange={(e) => handleOddLevel(e)} />
         <Typography marginLeft="10px">Swap</Typography>
       </div>
-
-      {/* <div>
-        <div>
-          <InputLabel>Maximum cards to review in a day:</InputLabel>
-          <input type="number" min="1" max="300" defaultValue={30} />
-          <TextField inputProps={{ sx: { textAlign: "center" } }} />
-        </div>
-      </div> */}
     </div>
   );
 };

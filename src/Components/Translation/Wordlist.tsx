@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Paper, Grid, Button, styled, Typography, Box } from "@mui/material";
+import { Paper, Grid, Button, Typography, Box } from "@mui/material";
 import { WordPair } from "../../types";
 import classes from "./Wordlist.module.css";
 
@@ -26,20 +26,6 @@ const Wordlist: React.FC<WordListProps> = ({
     onAddCard(pair);
   };
 
-  const StyledScrollbar = styled("div")({
-    overflowY: "auto",
-    "&::-webkit-scrollbar": {
-      width: "6px",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "#4c4c4c",
-      borderRadius: "3px",
-    },
-    "&::-webkit-scrollbar-track": {
-      backgroundColor: "#1c1c1c",
-    },
-  });
-
   useEffect(() => {
     scrollbarRef?.current?.scrollTo(0, scrollPosition);
   }, [wordlist, scrollPosition]);
@@ -60,8 +46,8 @@ const Wordlist: React.FC<WordListProps> = ({
       </Typography>
 
       <Box className={classes.wordlist}>
-        <StyledScrollbar className={classes.scroll} ref={scrollbarRef}>
-          <div>
+        <div className={classes.scroll} ref={scrollbarRef}>
+          <div className={classes.scroll2}>
             {wordlist.map((pair) => (
               <Paper
                 key={pair.source + Math.random() * 10000}
@@ -95,7 +81,7 @@ const Wordlist: React.FC<WordListProps> = ({
               </Paper>
             ))}
           </div>
-        </StyledScrollbar>
+        </div>
       </Box>
     </Box>
   );

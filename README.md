@@ -1,8 +1,8 @@
-# Ko-En Cards - Translation and Flashcard Maker
+# Raven Cards - Translation and Flashcard Maker
 
 ### Try it out here!
 
-https://elderlyc.github.io/Ko-En-Cards/
+https://elderlyc.github.io/Raven-Cards/
 
 ## Introduction
 
@@ -22,7 +22,7 @@ Master new vocabulary and concepts with our customizable flashcard system. Creat
 
 Here is a gif showing how my app functions:
 
-<img src="./src/Planning/Ko-En Cards.gif" width="786">
+<img src="./src/Planning/Raven Cards.gif" width="786">
 
 ## The Programmer
 

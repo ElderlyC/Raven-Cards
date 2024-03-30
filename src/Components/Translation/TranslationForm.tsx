@@ -49,15 +49,27 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
     setLangs(([lang1, lang2, lang3]) => [lang2, lang1, lang3]);
   };
 
+  const koReg = /[\uAC00-\uD7AF]/gu; // regex for Korean 한글 (no hanja)
+  const jaReg = /[\u3040-\u30FF\u3400-\u4DBF\u4E00-\u9FFF]/gu; // regex for Japanese characters
+
   const handleTextChange = (e) => {
     const lastChar = e.target.value.slice(-1);
-    const koReg = /[\u3131-\uD79D]/giu; // regex for Korean 한글
-    const jaReg = /[\u3040-\u30FF\u3400-\u4DBF\u4E00-\u9FFF]/gu; // regex for Japanese characters
+
     if (koReg.test(lastChar) && langs[0] !== "ko") setLangs(["ko", "en", "ja"]);
     if (jaReg.test(lastChar) && langs[0] !== "ja") setLangs(["ja", "en", "ko"]);
     if (/[a-zA-Z+]/.test(lastChar) && langs[0] !== "en")
       setLangs(["en", "ko", "ja"]);
     setText(e.target.value);
+  };
+
+  const handlePaste = (e) => {
+    const pastedText = e.clipboardData.getData("text");
+    if (koReg.test(pastedText) && langs[0] !== "ko")
+      setLangs(["ko", "en", "ja"]);
+    if (jaReg.test(pastedText) && langs[0] !== "ja")
+      setLangs(["ja", "en", "ko"]);
+    if (/[a-zA-Z+]/.test(pastedText) && langs[0] !== "en")
+      setLangs(["en", "ko", "ja"]);
   };
 
   return (
@@ -86,7 +98,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
       </Box>
 
       <form onSubmit={handleSubmit}>
-        <Box>
+        <Box className={classes.scroll}>
           <TextField
             fullWidth
             autoFocus={!smallScreen}
@@ -98,6 +110,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
             value={text}
             rows={7}
             onChange={handleTextChange}
+            onPaste={handlePaste}
             className={classes.textfield}
           />
         </Box>

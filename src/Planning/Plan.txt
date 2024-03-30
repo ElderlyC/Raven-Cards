@@ -2,7 +2,9 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
+-Rebrand to 'Raven Cards'
 -addcard jap integration/fixes
+-settings: 복습 빈도/간격
 -auto upload to firebase after review?
 -accounts+secrets
 -settings?
