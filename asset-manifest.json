@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Ko-En-Cards/static/css/main.ef9b33cd.css",
-    "main.js": "/Ko-En-Cards/static/js/main.372e0425.js",
-    "static/js/787.f4ab7052.chunk.js": "/Ko-En-Cards/static/js/787.f4ab7052.chunk.js",
-    "index.html": "/Ko-En-Cards/index.html",
-    "main.ef9b33cd.css.map": "/Ko-En-Cards/static/css/main.ef9b33cd.css.map",
-    "main.372e0425.js.map": "/Ko-En-Cards/static/js/main.372e0425.js.map",
-    "787.f4ab7052.chunk.js.map": "/Ko-En-Cards/static/js/787.f4ab7052.chunk.js.map"
+    "main.css": "/Raven-Cards/static/css/main.534627e3.css",
+    "main.js": "/Raven-Cards/static/js/main.2956ff00.js",
+    "static/js/787.f4ab7052.chunk.js": "/Raven-Cards/static/js/787.f4ab7052.chunk.js",
+    "index.html": "/Raven-Cards/index.html",
+    "main.534627e3.css.map": "/Raven-Cards/static/css/main.534627e3.css.map",
+    "main.2956ff00.js.map": "/Raven-Cards/static/js/main.2956ff00.js.map",
+    "787.f4ab7052.chunk.js.map": "/Raven-Cards/static/js/787.f4ab7052.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ef9b33cd.css",
-    "static/js/main.372e0425.js"
+    "static/css/main.534627e3.css",
+    "static/js/main.2956ff00.js"
   ]
 }
