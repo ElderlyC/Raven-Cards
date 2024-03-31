@@ -13,6 +13,7 @@ import {
 import { WordPair } from "../../types";
 import { useState, useEffect, useRef } from "react";
 import { Deck } from "../../App";
+import { jaReg, koReg } from "../../utilities";
 import GenerateImage from "./GenerateImage";
 import classes from "./AddFlashcard.module.css";
 // refactor: file TOO BIG
@@ -60,6 +61,12 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   const editingCardName = useRef(input1).current;
 
   const matches = useMediaQuery("(min-width:800px)");
+
+  const displayLang = (input: string) =>
+    jaReg.test(input) ? "ja" : koReg.test(input) ? "ko" : "en";
+
+  //array of terms objects, select element based on display lang
+  // e.g. display lang = 'en', display[n].hint = 'Hint', ... 'E.g.', etc.
 
   const handleSwapInputs = () => {
     setInput1(input2);
@@ -235,14 +242,18 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 <span>
                   Hint{" "}
                   <Link
-                    href={`https://${
-                      /[a-zA-Z+]/.test(input1) ? "en" : "ko"
-                    }.dict.naver.com/#/search?range=example&query=${input1}`}
+                    href={`https://${displayLang(
+                      input1
+                    )}.dict.naver.com/#/search?range=example&query=${input1}`}
                     underline="hover"
                     rel="noopener"
                     target="_blank"
                   >
-                    예
+                    {displayLang(input2) === "ja"
+                      ? "例文"
+                      : displayLang(input2) === "ko"
+                      ? "예문"
+                      : "E.g."}
                   </Link>
                 </span>
                 <TextField

@@ -1,6 +1,7 @@
 import React, { useState, FormEvent } from "react";
 import { WordPair } from "../../types";
 import { TextField, Button, Typography, Box } from "@mui/material";
+import { enReg, koReg, jaReg } from "../../utilities";
 import axios from "axios";
 import classes from "./TranslationForm.module.css";
 
@@ -49,16 +50,12 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
     setLangs(([lang1, lang2, lang3]) => [lang2, lang1, lang3]);
   };
 
-  const koReg = /[\uAC00-\uD7AF]/gu; // regex for Korean 한글 (no hanja)
-  const jaReg = /[\u3040-\u30FF\u3400-\u4DBF\u4E00-\u9FFF]/gu; // regex for Japanese characters
-
   const handleTextChange = (e) => {
     const lastChar = e.target.value.slice(-1);
 
     if (koReg.test(lastChar) && langs[0] !== "ko") setLangs(["ko", "en", "ja"]);
     if (jaReg.test(lastChar) && langs[0] !== "ja") setLangs(["ja", "en", "ko"]);
-    if (/[a-zA-Z+]/.test(lastChar) && langs[0] !== "en")
-      setLangs(["en", "ko", "ja"]);
+    if (enReg.test(lastChar) && langs[0] !== "en") setLangs(["en", "ko", "ja"]);
     setText(e.target.value);
   };
 
@@ -68,7 +65,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
       setLangs(["ko", "en", "ja"]);
     if (jaReg.test(pastedText) && langs[0] !== "ja")
       setLangs(["ja", "en", "ko"]);
-    if (/[a-zA-Z+]/.test(pastedText) && langs[0] !== "en")
+    if (enReg.test(pastedText) && langs[0] !== "en")
       setLangs(["en", "ko", "ja"]);
   };
 

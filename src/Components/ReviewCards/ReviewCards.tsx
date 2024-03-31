@@ -44,6 +44,10 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
 
   const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.key === "Enter") {
+      if (answer === "") {
+        event.preventDefault();
+        return;
+      }
       handleSubmit(event);
     }
   };

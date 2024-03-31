@@ -1,34 +1,65 @@
-import { useState } from "react";
-import { InputLabel, Switch, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
+import { InputLabel, Switch, Typography, Button } from "@mui/material";
+import { pageContent } from "./SettingsText";
 
 // review intervals/frequency
+// dictionary links (use other dictionaries than naver)
+// auto upload to firebase after review?
 
 const Settings = () => {
   const storedOptions = JSON.parse(localStorage.getItem("options") || "{}");
   const [oddLevelFlip, setOddFlip] = useState(
     storedOptions.oddLevelFlip || false
   );
+  const languages: string[] = ["English", "Korean", "Japanese"];
+  const [displayLang, setLang] = useState(storedOptions.language || "English");
+  const { title, displayLabel, oddLabel, switchOff, switchSwap } =
+    pageContent[displayLang];
 
   const handleOddLevel = (event) => {
     const { checked } = event.target;
     setOddFlip(checked);
-    localStorage.setItem("options", JSON.stringify({ oddLevelFlip: checked }));
   };
+
+  const changeLang = () => {
+    const currentIndex = languages.findIndex((lang) => lang === displayLang);
+    setLang(languages[(currentIndex + 1) % languages.length]);
+  };
+
+  useEffect(() => {
+    localStorage.setItem(
+      "options",
+      JSON.stringify({
+        oddLevelFlip: oddLevelFlip,
+        language: displayLang,
+      })
+    );
+  }, [oddLevelFlip, displayLang]);
 
   return (
     <div>
-      <h1>Settings</h1>
-      <InputLabel>Swap question and answer on odd card levels</InputLabel>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Typography margin="0 10px 0 15px">Off</Typography>
-        <Switch checked={oddLevelFlip} onChange={(e) => handleOddLevel(e)} />
-        <Typography marginLeft="10px">Swap</Typography>
+      <h1>{title}</h1>
+      <div style={{ margin: "20px" }}>
+        <InputLabel>{displayLabel}</InputLabel>
+        <div>
+          <Button variant="outlined" onClick={changeLang}>
+            {displayLang}
+          </Button>
+        </div>
+      </div>
+      <div>
+        <InputLabel>{oddLabel}</InputLabel>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography margin="0 10px 0 15px">{switchOff}</Typography>
+          <Switch checked={oddLevelFlip} onChange={(e) => handleOddLevel(e)} />
+          <Typography marginLeft="10px">{switchSwap}</Typography>
+        </div>
       </div>
     </div>
   );

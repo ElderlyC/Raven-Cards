@@ -2,12 +2,13 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
--'flashcard-mini?'
+-display langs (pageContent objects) 'xxxText.tsx'
 -addcard jap integration/fixes
--settings: 복습 빈도/간격
--auto upload to firebase after review?
+-settings: 
+--복습 빈도/간격
+--dictionary links (use other dictionaries than naver)
+--auto upload to firebase after review?
 -accounts+secrets
--settings?
 -test front and back on level 0?
 --multiple correct answers?
 -refactor code
