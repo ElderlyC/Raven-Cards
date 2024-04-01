@@ -1,5 +1,5 @@
 import React, { useState, useEffect, KeyboardEventHandler } from "react";
-import { Button, Typography, TextField, Box } from "@mui/material";
+import { Button, Typography, TextField, Box, Tooltip } from "@mui/material";
 import { Deck, Card } from "../../App";
 import classes from "./ReviewCards.module.css";
 
@@ -30,7 +30,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
 
   const currentIndex = reviewDeck.indexOf(card);
 
-  const handleSkipCard = (method: string) => {
+  const handleNextCard = (method: string) => {
     if (currentIndex === reviewDeck.length - 1) {
       if (method === "button") onEndReview();
       else
@@ -43,11 +43,17 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
   };
 
   const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
+    if (event.key === "Tab") {
+      event.preventDefault();
+      setHint((p) => !p);
+    }
     if (event.key === "Enter") {
-      if (answer === "") {
-        event.preventDefault();
+      event.preventDefault();
+      if (event.shiftKey) {
+        handleNextCard("button");
         return;
       }
+      if (answer === "") return;
       handleSubmit(event);
     }
   };
@@ -94,7 +100,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
       });
     }
 
-    if (newLevel === card.level + 1 || wrong === 2) handleSkipCard("auto");
+    if (newLevel === card.level + 1 || wrong === 2) handleNextCard("auto");
   };
 
   useEffect(() => {
@@ -147,13 +153,16 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
         Enter
       </Button>
       <Box>
-        <Button variant="outlined" onClick={() => setHint((p) => !p)}>
-          {hint ? "Hints Off" : "Hints On"}
-        </Button>
-
-        <Button variant="outlined" onClick={() => handleSkipCard("button")}>
-          Skip Card
-        </Button>
+        <Tooltip title="Tab">
+          <Button variant="outlined" onClick={() => setHint((p) => !p)}>
+            {hint ? "Hints Off" : "Hints On"}
+          </Button>
+        </Tooltip>
+        <Tooltip title="Shift+Enter">
+          <Button variant="outlined" onClick={() => handleNextCard("button")}>
+            Skip Card
+          </Button>
+        </Tooltip>
       </Box>
 
       {hint && (

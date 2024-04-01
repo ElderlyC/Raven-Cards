@@ -61,6 +61,29 @@ const Settings = () => {
           <Typography marginLeft="10px">{switchSwap}</Typography>
         </div>
       </div>
+      <div style={{ margin: "20px" }}>
+        <InputLabel>{"Keyboard Shortcuts:"}</InputLabel>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography>Hint Toggle:</Typography>
+          <Button>Tab</Button>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography>Skip Card:</Typography>
+          <Button>Shift+Enter</Button>
+        </div>
+      </div>
     </div>
   );
 };

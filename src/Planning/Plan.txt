@@ -2,8 +2,12 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
+-jp kanji furigana?
+-audio?
+-skip is right arrow? shift+enter, hint toggle with TAB
 -display langs (pageContent objects) 'xxxText.tsx'
 -addcard jap integration/fixes
+--hanja, definition search '뜻', etc.
 -settings: 
 --복습 빈도/간격
 --dictionary links (use other dictionaries than naver)
@@ -14,6 +18,7 @@ To Finish:
 -refactor code
 -prettify?
 --icons
+-image translation feature (papago)
 
 Refactoring:
 -check each component, remove fat
