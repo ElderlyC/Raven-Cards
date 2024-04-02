@@ -32,7 +32,6 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
         "https://australia-southeast1-ko-en-cards.cloudfunctions.net/Ko-En-Cards",
         { source: langs[0], target: langs[1], text: text }
       );
-
       onTranslation({ source: text, target: response.data.translation });
     } catch (error) {
       console.error(error);

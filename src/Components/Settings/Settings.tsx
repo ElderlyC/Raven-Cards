@@ -5,6 +5,7 @@ import { pageContent } from "./SettingsText";
 // review intervals/frequency
 // dictionary links (use other dictionaries than naver)
 // auto upload to firebase after review?
+// settings text, swap TAB and SHIFT ENTER onClick?
 
 const Settings = () => {
   const storedOptions = JSON.parse(localStorage.getItem("options") || "{}");

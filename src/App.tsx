@@ -13,6 +13,7 @@ import ReviewCards from "./Components/ReviewCards/ReviewCards";
 import ViewDeck from "./Components/ViewDeck/ViewDeck";
 import ImportExport from "./Components/ImportExport/ImportExport";
 import Settings from "./Components/Settings/Settings";
+import { koReg, jaReg } from "./utilities";
 
 const darkTheme = createTheme({
   palette: {
@@ -86,7 +87,8 @@ function App() {
     setMeaning("");
     setExamples([{ translatedText: "", text: "" }]);
     // if searchWord is 한글 (not hanja), translate to english, otherwise translate to korean
-    const updatedToLang = /[\uAC00-\uD7AF]/gu.test(searchWord) ? "en" : "ko";
+    const updatedToLang = koReg.test(searchWord) ? "en" : "ko";
+    const isJapanese = jaReg.test(searchWord);
 
     try {
       const response = await axios.get<{
@@ -100,9 +102,21 @@ function App() {
           params: { word: searchWord, to: updatedToLang },
         }
       );
-      setMeaning(response.data.meaning);
-      response.data.examples && setExamples(response.data.examples);
-      setHanja(response.data.hanjaEntry);
+      if (isJapanese) {
+        const firstItem = response.data.object.items[0];
+
+        const jaData = firstItem?.pos[0]?.meanings[1]
+          ? firstItem?.pos[0]?.meanings[1]
+          : response.data.object.items[1]?.pos[0]?.meanings[1]; //2nd item when first missing
+
+        setMeaning(jaData?.meaning);
+        jaData.examples && setExamples(jaData.examples);
+        setHanja(`${firstItem?.entry} ${firstItem?.subEntry}`); //kanji + furigana
+      } else {
+        setMeaning(response.data.meaning);
+        response.data.examples && setExamples(response.data.examples);
+        setHanja(response.data.hanjaEntry);
+      }
     } catch (error) {
       console.error("Error fetching definition:", error);
     }

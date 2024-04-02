@@ -22,6 +22,7 @@ import classes from "./AddFlashcard.module.css";
 // non-hanja image search?
 // different image search tool for english and japanese
 // def switch spacing
+// different dictionary for jp?
 
 type AddCardProps = {
   image?: [zoom: number, verticalOffset: number, imageLink: string];
@@ -227,7 +228,9 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             )}
 
             <Link
-              href={"https://hanja.dict.naver.com/#/search?query=" + hanja}
+              href={`https://${
+                displayLang(input1) === "ja" ? "ja" : "hanja"
+              }.dict.naver.com/#/search?query=${hanja}`}
               variant="h3"
               underline="hover"
               rel="noopener"
