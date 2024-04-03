@@ -7,14 +7,13 @@ import { pageContent } from "./SettingsText";
 // auto upload to firebase after review?
 // settings text, swap TAB and SHIFT ENTER onClick?
 
-const Settings = () => {
-  const storedOptions = JSON.parse(localStorage.getItem("options") || "{}");
+const Settings = ({ storedOptions, onSave }) => {
+  const [displayLang, setLang] = useState(storedOptions.language || "English");
   const [oddLevelFlip, setOddFlip] = useState(
     storedOptions.oddLevelFlip || false
   );
   const languages: string[] = ["English", "Korean", "Japanese"];
-  const [displayLang, setLang] = useState(storedOptions.language || "English");
-  const { title, displayLabel, oddLabel, switchOff, switchSwap } =
+  const { title, displayLabel, oddLabel, switchOff, switchSwap, save } =
     pageContent[displayLang];
 
   const handleOddLevel = (event) => {
@@ -85,6 +84,9 @@ const Settings = () => {
           <Button>Shift+Enter</Button>
         </div>
       </div>
+      <Button variant="contained" onClick={onSave}>
+        {save}
+      </Button>
     </div>
   );
 };

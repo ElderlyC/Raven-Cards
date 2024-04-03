@@ -54,6 +54,8 @@ function App() {
   const [reviewCards, setReviewCards] = useState<Deck>([]);
   const emptyDeck = reviewCards.length === 0;
 
+  const storedOptions = JSON.parse(localStorage.getItem("options") || "{}");
+
   const handleRemovePair = (source: string) => {
     setWordlist((wordlist) =>
       wordlist.filter((element) => element.source !== source)
@@ -102,6 +104,7 @@ function App() {
           params: { word: searchWord, to: updatedToLang },
         }
       );
+      console.log(response);
       if (isJapanese) {
         const firstItem = response.data.object.items[0];
 
@@ -109,9 +112,13 @@ function App() {
           ? firstItem?.pos[0]?.meanings[1]
           : response.data.object.items[1]?.pos[0]?.meanings[1]; //2nd item when first missing
 
+        /// ご飯 results in error (no meaning), 財布, こうはい＝nothing (where is the data?)
         setMeaning(jaData?.meaning);
+
+        // set examples to object.examples[0] when not in meanings
+
         jaData.examples && setExamples(jaData.examples);
-        setHanja(`${firstItem?.entry} ${firstItem?.subEntry}`); //kanji + furigana
+        setHanja(`${firstItem?.entry} ${firstItem?.subEntry}`); //kanji + furigana (non ordered) -test, order these (hiragana regex?)
       } else {
         setMeaning(response.data.meaning);
         response.data.examples && setExamples(response.data.examples);
@@ -296,10 +303,10 @@ function App() {
             </div>
           ) : view === "settings" ? (
             <div>
-              <Settings />
-              <Button variant="contained" onClick={() => setView("home")}>
-                Save
-              </Button>
+              <Settings
+                storedOptions={storedOptions}
+                onSave={() => setView("home")}
+              />
             </div>
           ) : (
             <div>
