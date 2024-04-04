@@ -14,11 +14,16 @@ import {
 import classes from "./ImportExport.module.css";
 
 type ImportExportProps = {
+  onSave: () => void;
   onImport: (importedDeck: Deck) => void;
   deck: Deck;
 };
 
-const ImportExport: React.FC<ImportExportProps> = ({ deck, onImport }) => {
+const ImportExport: React.FC<ImportExportProps> = ({
+  onSave,
+  deck,
+  onImport,
+}) => {
   const [code, setCode] = useState("");
   const [password, setPass] = useState("");
   const [showPassword, setShowPass] = useState(false);
@@ -231,6 +236,9 @@ const ImportExport: React.FC<ImportExportProps> = ({ deck, onImport }) => {
             </TableBody>
           </Table>
         </TableContainer>
+        <Button variant="contained" onClick={onSave}>
+          Done
+        </Button>
       </div>
     </div>
   );

@@ -1,24 +1,41 @@
 import React, { useState, FormEvent } from "react";
 import { WordPair } from "../../types";
 import { TextField, Button, Typography, Box } from "@mui/material";
+import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
+import SwapHoriz from "@mui/icons-material/SwapHoriz";
 import { enReg, koReg, jaReg } from "../../utilities";
+import { pageContent } from "./TranslationText";
 import axios from "axios";
 import classes from "./TranslationForm.module.css";
 
 type TranslationFormTypes = {
+  displayLang: string;
   onTranslation: ({ source, target }: WordPair) => void;
   smallScreen: boolean;
 };
 
 const TranslationForm: React.FC<TranslationFormTypes> = ({
+  displayLang,
   onTranslation,
   smallScreen,
 }) => {
   const [text, setText] = useState("");
   const [langs, setLangs] = useState(["ko", "en", "ja"]);
   const [loading, setLoading] = useState(false);
+  const [changedIcon, setChangeIcon] = useState(false);
 
-  const langNames = { ko: "Korean", en: "English", ja: "Japanese" };
+  const {
+    title,
+    language1,
+    language2,
+    language3,
+    inputLabel,
+    placeholder,
+    translating,
+    translate,
+  } = pageContent[displayLang];
+
+  const langNames = { en: language1, ko: language2, ja: language3 };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -70,7 +87,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
 
   return (
     <div className={classes.container}>
-      <Typography variant="h2">Translate</Typography>
+      <Typography variant="h2">{title}</Typography>
       <Box className={classes.langs}>
         <Typography variant="h5" fontWeight={"bold"}>
           <Button
@@ -80,8 +97,13 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
           >
             {langNames[langs[0] as keyof typeof langNames]}
           </Button>
-          <Button onClick={handleSwap} size="large">
-            {"<  to  >"}
+          <Button
+            onClick={handleSwap}
+            size="large"
+            onMouseEnter={() => setChangeIcon(true)}
+            onMouseLeave={() => setChangeIcon(false)}
+          >
+            {changedIcon ? <SwapHoriz /> : <TrendingFlatIcon />}
           </Button>
           <Button
             onClick={() => handleShuffle(1)}
@@ -98,8 +120,8 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
           <TextField
             fullWidth
             autoFocus={!smallScreen}
-            label="Text to translate"
-            placeholder="Enter words/phrases here, separated by line"
+            label={inputLabel}
+            placeholder={placeholder}
             variant="outlined"
             color="primary"
             multiline
@@ -121,7 +143,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
             fontWeight: "bold",
           }}
         >
-          {loading ? "Translating..." : "Translate"}
+          {loading ? translating : translate}
         </Button>
       </form>
     </div>

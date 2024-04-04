@@ -2,6 +2,14 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
+-settings button icon
+-display text files
+--wordlist
+--browser
+--add card
+--import
+--review
+
 -check costs cloud functions
 -korean display lang
 

@@ -13,8 +13,17 @@ const Settings = ({ storedOptions, onSave }) => {
     storedOptions.oddLevelFlip || false
   );
   const languages: string[] = ["English", "Korean", "Japanese"];
-  const { title, displayLabel, oddLabel, switchOff, switchSwap, save } =
-    pageContent[displayLang];
+  const {
+    title,
+    displayLabel,
+    oddLabel,
+    switchOff,
+    switchSwap,
+    shortcuts,
+    hint,
+    skip,
+    save,
+  } = pageContent[displayLang];
 
   const handleOddLevel = (event) => {
     const { checked } = event.target;
@@ -62,7 +71,7 @@ const Settings = ({ storedOptions, onSave }) => {
         </div>
       </div>
       <div style={{ margin: "20px" }}>
-        <InputLabel>{"Keyboard Shortcuts:"}</InputLabel>
+        <InputLabel>{shortcuts}</InputLabel>
         <div
           style={{
             display: "flex",
@@ -70,7 +79,7 @@ const Settings = ({ storedOptions, onSave }) => {
             alignItems: "center",
           }}
         >
-          <Typography>Hint Toggle:</Typography>
+          <Typography>{hint}</Typography>
           <Button>Tab</Button>
         </div>
         <div
@@ -80,7 +89,7 @@ const Settings = ({ storedOptions, onSave }) => {
             alignItems: "center",
           }}
         >
-          <Typography>Skip Card:</Typography>
+          <Typography>{skip}</Typography>
           <Button>Shift+Enter</Button>
         </div>
       </div>

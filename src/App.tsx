@@ -182,6 +182,7 @@ function App() {
               <TranslationForm
                 onTranslation={handleAddToWordlist}
                 smallScreen={smallScreen}
+                displayLang={storedOptions.language}
               />
 
               <div className="wordlist-container">
@@ -190,6 +191,8 @@ function App() {
                   onRemovePair={handleRemovePair}
                   onAddCard={handleAddCard}
                 />
+
+                {/* this should be its own component */}
                 <div
                   style={{
                     display: "flex",
@@ -292,14 +295,12 @@ function App() {
           ) : view === "import" ? (
             <div>
               <ImportExport
+                onSave={() => setView("view")}
                 deck={initialDeck}
                 onImport={(importedDeck) =>
                   setInitialDeck((deck: Deck) => [...deck, ...importedDeck])
                 }
               />
-              <Button variant="contained" onClick={() => setView("view")}>
-                Done
-              </Button>
             </div>
           ) : view === "settings" ? (
             <div>

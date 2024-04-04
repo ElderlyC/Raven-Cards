@@ -1,0 +1,32 @@
+export const pageContent = {
+  English: {
+    title: "Translate",
+    language1: "English",
+    language2: "Korean",
+    language3: "Japanese",
+    inputLabel: "Text to translate",
+    placeholder: "Enter words/phrases here, separated by line",
+    translating: "Translating...",
+    translate: "Translate",
+  },
+  Korean: {
+    title: "번역하기",
+    language1: "영어",
+    language2: "한국어",
+    language3: "일본어",
+    inputLabel: "번역할 내용",
+    placeholder: "행별로 구분하여 단어/구를 입력하세요",
+    translating: "번역 중...",
+    translate: "번역하기",
+  },
+  Japanese: {
+    title: "翻訳する",
+    language1: "英語",
+    language2: "韓国語",
+    language3: "日本語",
+    inputLabel: "翻訳する内容",
+    placeholder: "行別に区分して単語/句を入力してください",
+    translating: "翻訳中...",
+    translate: "翻訳する",
+  },
+};
