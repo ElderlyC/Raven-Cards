@@ -2,6 +2,7 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
+-global vars 'displayLang'
 -settings button icon
 -display text files
 --wordlist
@@ -16,9 +17,9 @@ To Finish:
 -App.tsx: missing jp meaning data
 --fill empty examples
 -audio?
--skip is right arrow? shift+enter, hint toggle with TAB
 -display langs (pageContent objects) 'xxxText.tsx'
--addcard jap integration/fixes
+-addcard jap integration/fixes 
+--furigana in examples?
 --hanja, definition search '뜻', etc.
 -settings: 
 --복습 빈도/간격

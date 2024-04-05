@@ -16,6 +16,7 @@ const Settings = ({ storedOptions, onSave }) => {
   const {
     title,
     displayLabel,
+    langButtonLabel,
     oddLabel,
     switchOff,
     switchSwap,
@@ -52,7 +53,7 @@ const Settings = ({ storedOptions, onSave }) => {
         <InputLabel>{displayLabel}</InputLabel>
         <div>
           <Button variant="outlined" onClick={changeLang}>
-            {displayLang}
+            {langButtonLabel}
           </Button>
         </div>
       </div>

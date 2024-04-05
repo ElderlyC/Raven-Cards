@@ -1,0 +1,32 @@
+export const pageContent = {
+  English: {
+    browse: "Browse Deck",
+    review: "Review!",
+    days: "days",
+    hours: "hrs",
+    minutes: "mins",
+    seconds: "secs",
+    later: "in ",
+    settings: "Settings",
+  },
+  Korean: {
+    browse: "데크 보기",
+    review: "복습하기!",
+    days: "일",
+    hours: "시간",
+    minutes: "분",
+    seconds: "초",
+    later: "후",
+    settings: "설정",
+  },
+  Japanese: {
+    browse: "デッキ検索",
+    review: "復習する！",
+    days: "日",
+    hours: "時間",
+    minutes: "分",
+    seconds: "秒",
+    later: "後",
+    settings: "設定",
+  },
+};

@@ -2,18 +2,22 @@ import React, { useState, useEffect, useRef } from "react";
 import { Paper, Grid, Button, Typography, Box } from "@mui/material";
 import { WordPair } from "../../types";
 import classes from "./Wordlist.module.css";
+import { pageContent } from "./WordlistText";
 
 type WordListProps = {
   wordlist: WordPair[];
   onRemovePair: (source: string) => void;
   onAddCard: (pair: WordPair) => void;
+  displayLang: string;
 };
 
 const Wordlist: React.FC<WordListProps> = ({
   wordlist,
   onRemovePair,
   onAddCard,
+  displayLang,
 }) => {
+  const { title, front, back, tools, del, add } = pageContent[displayLang];
   const [scrollPosition, setScrollPosition] = useState(0);
   const scrollbarRef = useRef<HTMLDivElement>(null);
 
@@ -32,7 +36,7 @@ const Wordlist: React.FC<WordListProps> = ({
 
   return (
     <Box className={classes.container}>
-      <Typography variant="h2">Word List</Typography>
+      <Typography variant="h2">{title}</Typography>
       <Typography
         variant="h5"
         className={classes.titles}
@@ -40,9 +44,9 @@ const Wordlist: React.FC<WordListProps> = ({
           margin: "10px",
         }}
       >
-        <span>Front</span>
-        <span>Back</span>
-        <span>Tools</span>
+        <span>{front}</span>
+        <span>{back}</span>
+        <span>{tools}</span>
       </Typography>
 
       <Box className={classes.wordlist}>
@@ -68,13 +72,13 @@ const Wordlist: React.FC<WordListProps> = ({
                       variant="outlined"
                       onClick={() => handleDeletePair(pair.source)}
                     >
-                      DEL
+                      {del}
                     </Button>
                     <Button
                       variant="outlined"
                       onClick={() => handleAddFlashcard(pair)}
                     >
-                      ADD
+                      {add}
                     </Button>
                   </Grid>
                 </Grid>

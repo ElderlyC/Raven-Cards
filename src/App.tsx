@@ -2,18 +2,18 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
 import TranslationForm from "./Components/Translation/TranslationForm";
-import Wordlist from "./Components/Translation/Wordlist";
+import Wordlist from "./Components/Wordlist/Wordlist";
 import AddFlashcard from "./Components/AddFlashcard/AddFlashcard";
 import { WordPair } from "./types";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Button, Typography, Badge, useMediaQuery } from "@mui/material";
-import QuizIcon from "@mui/icons-material/Quiz";
+import { Button, Typography, useMediaQuery } from "@mui/material";
 import ReviewCards from "./Components/ReviewCards/ReviewCards";
 import ViewDeck from "./Components/ViewDeck/ViewDeck";
 import ImportExport from "./Components/ImportExport/ImportExport";
 import Settings from "./Components/Settings/Settings";
 import { koReg, jaReg } from "./utilities";
+import ActionButtons from "./Components/ActionButtons/ActionButtons";
 
 const darkTheme = createTheme({
   palette: {
@@ -48,11 +48,9 @@ function App() {
   >([]);
   const [hanja, setHanja] = useState("");
   const [view, setView] = useState("home");
-  const [hoursUntilNextReview, setNext] = useState([0, "hrs"]);
 
   const [initialDeck, setInitialDeck] = useState<Deck>([]);
   const [reviewCards, setReviewCards] = useState<Deck>([]);
-  const emptyDeck = reviewCards.length === 0;
 
   const storedOptions = JSON.parse(localStorage.getItem("options") || "{}");
 
@@ -147,26 +145,6 @@ function App() {
 
   useEffect(() => {
     const now = new Date();
-    if (initialDeck.length > 0 && reviewCards.length === 0) {
-      const timeSortedDeck: Deck = initialDeck.slice();
-      timeSortedDeck.sort(
-        (a: Card, b: Card) =>
-          new Date(a.nextReview).getTime() - new Date(b.nextReview).getTime()
-      );
-      const nextTime = new Date(timeSortedDeck[0].nextReview);
-      const timeDifferenceSecs = (nextTime.getTime() - now.getTime()) / 1000;
-      const timeDifferenceMins = timeDifferenceSecs / 60;
-      setNext(
-        timeDifferenceMins / 60 > 24
-          ? [Math.ceil(timeDifferenceMins / 1440), "days"]
-          : timeDifferenceMins > 90
-          ? [Math.ceil(timeDifferenceMins / 60), "hrs"]
-          : timeDifferenceMins < 1.5
-          ? [timeDifferenceSecs.toFixed(), "secs"]
-          : [timeDifferenceMins.toFixed(), "mins"]
-      );
-    }
-
     setReviewCards(
       initialDeck.filter((card: Card) => new Date(card.nextReview) < now)
     );
@@ -190,82 +168,15 @@ function App() {
                   wordlist={wordList}
                   onRemovePair={handleRemovePair}
                   onAddCard={handleAddCard}
+                  displayLang={storedOptions.language}
                 />
-
-                {/* this should be its own component */}
-                <div
-                  style={{
-                    display: "flex",
-                  }}
-                >
-                  <div style={{ flex: 1, width: "33%" }}>
-                    <Button
-                      fullWidth
-                      size="large"
-                      variant="contained"
-                      sx={{
-                        fontWeight: "bold",
-                        padding: 0,
-                        height: "42.25px",
-                        lineHeight: "1rem",
-                      }}
-                      onClick={() => setView("view")}
-                    >
-                      Browse Deck
-                    </Button>
-                  </div>
-                  <div style={{ flex: 1, width: "33%" }}>
-                    <Button
-                      size="large"
-                      disabled={emptyDeck}
-                      onClick={() => setView("review")}
-                      variant="contained"
-                      fullWidth
-                      sx={{
-                        fontWeight: "bold",
-                      }}
-                    >
-                      <QuizIcon
-                        className="quiz"
-                        sx={{
-                          "@media (max-width: 740px)": {
-                            margin: !emptyDeck ? "0 0 0 -10px" : "0 10px 0 5px",
-                          },
-                        }}
-                      />
-                      <span style={{ paddingRight: "5px" }}>
-                        {(hoursUntilNextReview[0] as number) > 0
-                          ? `${smallScreen ? "" : "in "}~${
-                              hoursUntilNextReview[0]
-                            } ${hoursUntilNextReview[1]}`
-                          : "Review!"}
-                      </span>
-                      {!emptyDeck && (
-                        <Badge
-                          badgeContent={reviewCards.length}
-                          color="success"
-                          className="badge"
-                          sx={{
-                            "& .MuiBadge-badge": {
-                              fontWeight: "bold",
-                            },
-                          }}
-                        />
-                      )}
-                    </Button>
-                  </div>
-                  <div style={{ flex: 1, width: "33%" }}>
-                    <Button
-                      fullWidth
-                      size="large"
-                      variant="contained"
-                      sx={{ fontWeight: "bold" }}
-                      onClick={() => setView("settings")}
-                    >
-                      Settings
-                    </Button>
-                  </div>
-                </div>
+                <ActionButtons
+                  onChangeView={(view) => setView(view)}
+                  initialDeck={initialDeck}
+                  reviewCards={reviewCards}
+                  smallScreen={smallScreen}
+                  displayLang={storedOptions.language}
+                />
               </div>
             </div>
           ) : view === "newcard" ? (
