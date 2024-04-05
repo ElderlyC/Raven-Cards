@@ -52,7 +52,12 @@ function App() {
   const [initialDeck, setInitialDeck] = useState<Deck>([]);
   const [reviewCards, setReviewCards] = useState<Deck>([]);
 
-  const storedOptions = JSON.parse(localStorage.getItem("options") || "{}");
+  const storedOptions = localStorage.getItem("options")
+    ? JSON.parse(localStorage.getItem("options") as string)
+    : {
+        oddLevelFlip: false,
+        language: "English",
+      };
 
   const handleRemovePair = (source: string) => {
     setWordlist((wordlist) =>
