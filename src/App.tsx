@@ -207,6 +207,7 @@ function App() {
               onLeaveBrowser={() => setView("home")}
               onImportExport={() => setView("import")}
               onRemovePair={handleRemovePair}
+              displayLang={storedOptions.language}
             />
           ) : view === "import" ? (
             <div>

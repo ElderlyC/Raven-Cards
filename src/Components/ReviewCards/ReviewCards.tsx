@@ -2,6 +2,7 @@ import React, { useState, useEffect, KeyboardEventHandler } from "react";
 import { Button, Typography, TextField, Box, Tooltip } from "@mui/material";
 import { Deck, Card } from "../../App";
 import classes from "./ReviewCards.module.css";
+import { pageContent } from "./ReviewText";
 
 type ReviewCardsProps = {
   deck: Deck;
@@ -27,6 +28,18 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
   const oddFlipOn = options
     ? JSON.parse(options).oddLevelFlip && card.level % 2 === 1
     : false; // front and back are swapped on odd levels
+  const displayLang = options ? JSON.parse(options).language : "English";
+  const {
+    enter,
+    hintsOn,
+    hintsOff,
+    skip,
+    quit,
+    correct,
+    incorrect,
+    twotries,
+    onetry,
+  } = pageContent[displayLang];
 
   const currentIndex = reviewDeck.indexOf(card);
 
@@ -150,17 +163,17 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
         />
       </Box>
       <Button variant="outlined" onClick={handleSubmit}>
-        Enter
+        {enter}
       </Button>
       <Box>
         <Tooltip title="Tab">
           <Button variant="outlined" onClick={() => setHint((p) => !p)}>
-            {hint ? "Hints Off" : "Hints On"}
+            {hint ? hintsOff : hintsOn}
           </Button>
         </Tooltip>
         <Tooltip title="Shift+Enter">
           <Button variant="outlined" onClick={() => handleNextCard("button")}>
-            Skip Card
+            {skip}
           </Button>
         </Tooltip>
       </Box>
@@ -194,15 +207,15 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
       )}
 
       <Typography color="lime" margin={2}>
-        Correct: {score}
+        {correct} {score}
       </Typography>
       {wrong > 0 && (
         <Typography color="error" margin={2}>
-          Incorrect: {wrong === 1 ? "2 tries remaining" : "1 try remaining"}
+          {incorrect} {wrong === 1 ? twotries : onetry}
         </Typography>
       )}
       <Button variant="contained" onClick={onEndReview}>
-        Quit Review
+        {quit}
       </Button>
     </div>
   );

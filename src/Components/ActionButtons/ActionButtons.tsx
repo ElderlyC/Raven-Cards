@@ -19,9 +19,11 @@ const ActionButtons = ({
 
   const reviewText =
     (hoursUntilNextReview[0] as number) > 0
-      ? `${!smallScreen && displayLang === "English" ? later : ""}~${
-          hoursUntilNextReview[0]
-        } ${hoursUntilNextReview[1]} ${displayLang !== "English" ? later : ""}`
+      ? `${
+          !smallScreen && displayLang === "English" ? later : ""
+        }~${hoursUntilNextReview.join("")}${
+          displayLang !== "English" ? later : ""
+        }`
       : review;
 
   useEffect(() => {
@@ -35,7 +37,6 @@ const ActionButtons = ({
       const nextTime = new Date(timeSortedDeck[0].nextReview);
       const timeDifferenceSecs = (nextTime.getTime() - now.getTime()) / 1000;
       const timeDifferenceMins = timeDifferenceSecs / 60;
-      // put calculation outside of setState, use switch case to check 1 number: (time left in mins)
       setNext(
         timeDifferenceMins / 60 > 24
           ? [Math.ceil(timeDifferenceMins / 1440), days]

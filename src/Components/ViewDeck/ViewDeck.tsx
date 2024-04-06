@@ -16,9 +16,11 @@ import {
 import { Deck, Card } from "../../App";
 import classes from "./ViewDeck.module.css";
 import AddFlashcard from "../AddFlashcard/AddFlashcard";
+import { pageContent } from "./ViewDeckText";
 // browser search function
 
 type ViewDeckProps = {
+  displayLang: string;
   deck: Deck;
   onLeaveBrowser: () => void;
   onImportExport: () => void;
@@ -30,7 +32,9 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
   onImportExport,
   onRemovePair,
   deck,
+  displayLang,
 }) => {
+  const textContent = pageContent[displayLang];
   const [cardDeck, setDeck] = useState(deck || []);
   const [showModal, setShowModal] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
@@ -128,8 +132,10 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
             </div>
           </Modal>
 
-          <Typography variant={"h2"}>Browse Deck</Typography>
-          <span>Total Cards: {cardDeck.length}</span>
+          <Typography variant={"h2"}>{textContent.title}</Typography>
+          <span>
+            {textContent.total} {cardDeck.length}
+          </span>
           {cardDeck.length > 0 ? (
             <TableContainer component={Paper} className={classes.container}>
               <Table>
@@ -141,7 +147,7 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
                         onClick={() => handleOrderBy("front")}
                         sx={{ cursor: "pointer" }}
                       >
-                        Front
+                        {textContent.front}
                       </Link>
                     </TableCell>
                     <TableCell align="center">
@@ -150,14 +156,14 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
                         onClick={() => handleOrderBy("back")}
                         sx={{ cursor: "pointer" }}
                       >
-                        Back
+                        {textContent.back}
                       </Link>
                     </TableCell>
                     <TableCell className={classes.hideCol} align="center">
-                      Hint
+                      {textContent.hint}
                     </TableCell>
                     <TableCell className={classes.hideCol} align="center">
-                      Image
+                      {textContent.image}
                     </TableCell>
                     <TableCell align="center">
                       <Link
@@ -165,7 +171,7 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
                         onClick={() => handleOrderBy("nextReview")}
                         sx={{ cursor: "pointer" }}
                       >
-                        Next Review
+                        {textContent.nextReview}
                       </Link>
                     </TableCell>
                     <TableCell className={classes.hideCol} align="center">
@@ -174,7 +180,7 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
                         onClick={() => handleOrderBy("level")}
                         sx={{ cursor: "pointer" }}
                       >
-                        Level
+                        {textContent.level}
                       </Link>
                     </TableCell>
                     <TableCell className={classes.hideCol} align="center">
@@ -183,19 +189,25 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
                         onClick={() => handleOrderBy("created")}
                         sx={{ cursor: "pointer" }}
                       >
-                        Created
+                        {textContent.createdDate}
                       </Link>
                     </TableCell>
-                    <TableCell align="center">Tools</TableCell>
+                    <TableCell align="center">{textContent.tools}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {displayDeck.map((card) => (
                     <TableRow key={card.front}>
-                      <TableCell align="center" width="120px">
+                      <TableCell
+                        align="center"
+                        width="120px"
+                        className={classes.front}
+                      >
                         {card.front}
                       </TableCell>
-                      <TableCell align="center">{card.back}</TableCell>
+                      <TableCell align="center" className={classes.back}>
+                        {card.back}
+                      </TableCell>
                       <TableCell align="center" className={classes.hint}>
                         {card.hint}
                       </TableCell>
@@ -215,7 +227,7 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
                           >
                             {card.image[2] && (
                               <img
-                                alt="hint"
+                                alt={textContent.hint}
                                 onClick={() => toggleModal(card.image[2])} //expand image to be visible
                                 src={card.image[2]}
                                 style={{
@@ -230,7 +242,11 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
                       <TableCell align="center">
                         {readableDate(card.nextReview)}
                       </TableCell>
-                      <TableCell className={classes.hideCol} align="center">
+                      <TableCell
+                        className={classes.hideCol}
+                        align="center"
+                        sx={{ width: "90px" }}
+                      >
                         {card.level}
                       </TableCell>
                       <TableCell className={classes.hideCol} align="center">
@@ -238,25 +254,27 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
                       </TableCell>
                       <TableCell align="center">
                         <Button
+                          sx={{ width: "80px" }}
                           variant="outlined"
                           onClick={() => handleEditCard(card)}
                         >
-                          Edit
+                          {textContent.edit}
                         </Button>
                         <Button
+                          sx={{ width: "80px" }}
                           variant="outlined"
                           color="error"
                           onClick={() => {
                             if (
                               window.confirm(
-                                `Are you sure you want to delete this card? [${card.front}]`
+                                `${textContent.delConfirm} [${card.front}]`
                               )
                             ) {
                               handleDeleteCard(card);
                             }
                           }}
                         >
-                          Delete
+                          {textContent.del}
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -266,33 +284,27 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
             </TableContainer>
           ) : (
             <Typography variant={"h4"} sx={{ margin: "30px" }}>
-              No cards yet!
+              {textContent.noCards}
             </Typography>
           )}
           <Box className={classes.buttonBox}>
             <Button variant="contained" onClick={() => onImportExport()}>
-              Import / Upload
+              {textContent.import}
             </Button>
             <Button variant="contained" onClick={() => onLeaveBrowser()}>
-              Home
+              {textContent.home}
             </Button>
             <Button
               disabled={cardDeck.length === 0}
               variant="contained"
               color="error"
               onClick={() => {
-                if (
-                  window.confirm("Are you sure you want to delete your deck?")
-                )
-                  if (
-                    window.confirm(
-                      "Are you REALLY sure you want to DELETE your DECK? (Consider uploading your deck first)"
-                    )
-                  )
+                if (window.confirm(textContent.delDeckConfirm))
+                  if (window.confirm(textContent.delDeckDoubleCheck))
                     setDeck([]); // Set deck to empty array
               }}
             >
-              Delete Deck
+              {textContent.delDeck}
             </Button>
           </Box>
         </div>

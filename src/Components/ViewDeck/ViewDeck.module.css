@@ -30,7 +30,7 @@
 }
 
 .container td.hint {
-  min-width: 150px;
+  max-width: 250px;
   font-size: 1rem;
 }
 
