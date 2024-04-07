@@ -121,7 +121,7 @@ function App() {
         // set examples to object.examples[0] when not in meanings
 
         jaData.examples && setExamples(jaData.examples);
-        setHanja(`${firstItem?.entry} ${firstItem?.subEntry}`); //kanji + furigana (non ordered) -test, order these (hiragana regex?)
+        setHanja(`${firstItem?.entry} ${firstItem?.subEntry}`); //kanji + furigana (non ordered) -test, order these (hiragana regex?) (can be null!)
       } else {
         setMeaning(response.data.meaning);
         response.data.examples && setExamples(response.data.examples);
@@ -194,6 +194,7 @@ function App() {
               onEndEditing={() => setView("home")}
               deck={initialDeck}
               onRemovePair={handleRemovePair}
+              displayLang={storedOptions.language}
             />
           ) : view === "review" ? (
             <ReviewCards

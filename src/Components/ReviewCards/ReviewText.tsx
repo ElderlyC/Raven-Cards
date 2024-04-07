@@ -17,8 +17,8 @@ export const pageContent = {
     skip: "건너뛰기",
     correct: "정답:",
     incorrect: "오답:",
-    twotries: "남은 시도 2번",
-    onetry: "남은 시도 1번",
+    twotries: "남은 시도 2회",
+    onetry: "남은 시도 1회",
     quit: "그만두기",
   },
   Japanese: {

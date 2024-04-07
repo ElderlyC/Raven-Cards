@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { Button } from "@mui/material";
 import axios from "axios";
+import { pageContent } from "./GenerateImageText";
 
 type GenImageProps = {
+  displayLang: string;
   word: string;
   onItemList: (
     arr: { title: string; link: string; thumbnail: string }[]
   ) => void;
 };
 
-const GenerateImage = ({ word, onItemList }: GenImageProps) => {
+const GenerateImage = ({ displayLang, word, onItemList }: GenImageProps) => {
+  const textContent = pageContent[displayLang];
   const [loading, setLoading] = useState(false);
   const getImage = async () => {
     try {
@@ -37,7 +40,7 @@ const GenerateImage = ({ word, onItemList }: GenImageProps) => {
 
   return (
     <Button onClick={getImage} variant="outlined">
-      {loading ? "Loading..." : "Image Search"}
+      {loading ? textContent.imageButtonLoading : textContent.imageSearchButton}
     </Button>
   );
 };

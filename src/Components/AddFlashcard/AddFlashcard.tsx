@@ -16,7 +16,8 @@ import { Deck } from "../../App";
 import { jaReg, koReg } from "../../utilities";
 import GenerateImage from "./GenerateImage";
 import classes from "./AddFlashcard.module.css";
-// refactor: file TOO BIG
+import { pageContent } from "./AddFlashcardText";
+// refactor: file TOO BIG - cut into 3 sections
 // handle japanese 예
 // definition '뜻' to '意味'
 // non-hanja image search?
@@ -34,6 +35,7 @@ type AddCardProps = {
   onEndEditing: () => void;
   deck: Deck;
   onRemovePair: (source: string) => void;
+  displayLang: string;
 };
 
 const AddFlashcard: React.FC<AddCardProps> = ({
@@ -46,6 +48,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   onEndEditing,
   deck,
   onRemovePair,
+  displayLang,
 }) => {
   const [input1, setInput1] = useState(pair.source);
   const [input2, setInput2] = useState(pair.target);
@@ -63,7 +66,8 @@ const AddFlashcard: React.FC<AddCardProps> = ({
 
   const matches = useMediaQuery("(min-width:800px)");
 
-  const displayLang = (input: string) =>
+  const textContent = pageContent[displayLang];
+  const searchLang = (input: string) =>
     jaReg.test(input) ? "ja" : koReg.test(input) ? "ko" : "en";
 
   //array of terms objects, select element based on display lang
@@ -132,18 +136,16 @@ const AddFlashcard: React.FC<AddCardProps> = ({
       {imgData[0].link === "" ? (
         <div className={classes.container}>
           <Typography variant={"h3"}>
-            {editMode ? "Editing Card" : "New Card"}
+            {editMode ? textContent.editTitle : textContent.newCardTitle}
           </Typography>
           <Box>
             <Box className={classes.inputBox}>
               <TextField
                 error={existingCard && !editMode}
-                helperText={
-                  existingCard && !editMode && "Card already in deck."
-                }
+                helperText={existingCard && !editMode && textContent.error}
                 className={classes.front}
                 id="source"
-                label="Front"
+                label={textContent.frontLabel}
                 variant="outlined"
                 value={input1}
                 onChange={(e) => setInput1(e.target.value)}
@@ -153,7 +155,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               <TextField
                 className={classes.back}
                 id="target"
-                label="Back"
+                label={textContent.backLabel}
                 variant="outlined"
                 value={input2}
                 onChange={(e) => setInput2(e.target.value)}
@@ -164,13 +166,13 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             <Box className={classes.meaning}>
               {meaning ? (
                 <span>
-                  {"Meaning: "}
+                  {textContent.meaning}
                   {meaning}
                 </span>
               ) : disableButton ? (
-                "Searching for Definition..."
+                textContent.searching
               ) : (
-                "No definition found."
+                textContent.noDef
               )}
             </Box>
             {imageLink && (
@@ -180,7 +182,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                     onClick={() => setVertical((p) => p + 5)}
                     variant="contained"
                   >
-                    Up
+                    {textContent.upButton}
                   </Button>
                   <Button
                     onClick={() => {
@@ -189,10 +191,10 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                     }}
                     variant="contained"
                   >
-                    Reset
+                    {textContent.resetButton}
                   </Button>
                   <Button onClick={() => setImage("")} variant="outlined">
-                    Remove Image
+                    {textContent.removeButton}
                   </Button>
                 </div>
 
@@ -215,13 +217,13 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                     onClick={() => setVertical((p) => p - 5)}
                     variant="contained"
                   >
-                    Down
+                    {textContent.downButton}
                   </Button>
                   <Button
                     onClick={() => setZoom((p) => (p <= 1 ? 4 : p - 0.1))}
                     variant="contained"
                   >
-                    Zoom-Out
+                    {textContent.zoomOutButton}
                   </Button>
                 </div>
               </Box>
@@ -229,7 +231,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
 
             <Link
               href={`https://${
-                displayLang(input1) === "ja" ? "ja" : "hanja"
+                searchLang(input1) === "ja" ? "ja" : "hanja"
               }.dict.naver.com/#/search?query=${hanja}`}
               variant="h3"
               underline="hover"
@@ -243,20 +245,16 @@ const AddFlashcard: React.FC<AddCardProps> = ({
             <Box className={classes.hintBox}>
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <span>
-                  Hint{" "}
+                  {textContent.hint}
                   <Link
-                    href={`https://${displayLang(
+                    href={`https://${searchLang(
                       input1
                     )}.dict.naver.com/#/search?range=example&query=${input1}`}
                     underline="hover"
                     rel="noopener"
                     target="_blank"
                   >
-                    {displayLang(input2) === "ja"
-                      ? "例文"
-                      : displayLang(input2) === "ko"
-                      ? "예문"
-                      : "E.g."}
+                    {textContent.example}
                   </Link>
                 </span>
                 <TextField
@@ -280,7 +278,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
           </Box>
 
           <Button onClick={handleSwapInputs} variant="outlined">
-            Swap Inputs
+            {textContent.swapButton}
           </Button>
 
           <FormControlLabel
@@ -290,7 +288,9 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 onChange={() => setSearch((p) => !p)}
               />
             }
-            label={definitionSearch ? "Definition" : "General"}
+            label={
+              definitionSearch ? textContent.imageType1 : textContent.imageType2
+            }
           />
 
           <GenerateImage
@@ -302,6 +302,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 : input1
             }
             onItemList={(arr) => setImgData(arr)}
+            displayLang={displayLang}
           />
 
           {!editMode ? (
@@ -312,14 +313,14 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 disabled={existingCard || (meaning === "" && disableButton)}
                 onClick={() => handleSubmitCard(false)}
               >
-                Add New Card
+                {textContent.addButton}
               </Button>
               <Button
                 size="large"
                 variant="outlined"
                 onClick={() => handleSubmitCard(true)}
               >
-                Cancel
+                {textContent.cancelButton}
               </Button>
             </Box>
           ) : (
@@ -330,14 +331,14 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 variant="contained"
                 sx={{ width: "110px" }}
               >
-                Save
+                {textContent.saveButton}
               </Button>
               <Button
                 size="large"
                 variant="outlined"
                 onClick={() => onEndEditing()}
               >
-                Cancel
+                {textContent.cancelButton}
               </Button>
             </Box>
           )}
@@ -392,7 +393,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               setImgData([{ title: "", link: "", thumbnail: "" }]);
             }}
           >
-            Exit
+            {textContent.exitButton}
           </Button>
         </div>
       )}

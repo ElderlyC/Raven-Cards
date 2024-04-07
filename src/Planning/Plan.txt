@@ -3,8 +3,8 @@ hosting using google cloud functions!
 
 To Finish:
 -display text files
---add card
---import
+--add card (jp)
+--import (kr/jp)
 
 -check costs cloud functions
 -korean display lang

@@ -118,6 +118,7 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
           onEndEditing={() => setEditing(false)}
           deck={cardDeck}
           onRemovePair={onRemovePair}
+          displayLang={displayLang}
         />
       ) : (
         <div className={classes.backdrop}>
