@@ -12,18 +12,22 @@ import {
   TableContainer,
 } from "@mui/material";
 import classes from "./ImportExport.module.css";
+import { pageContent } from "./ImportExportText";
 
 type ImportExportProps = {
+  displayLang: string;
   onSave: () => void;
   onImport: (importedDeck: Deck) => void;
   deck: Deck;
 };
 
 const ImportExport: React.FC<ImportExportProps> = ({
+  displayLang,
   onSave,
   deck,
   onImport,
 }) => {
+  const textContent = pageContent[displayLang];
   const [code, setCode] = useState("");
   const [password, setPass] = useState("");
   const [showPassword, setShowPass] = useState(false);
@@ -40,7 +44,11 @@ const ImportExport: React.FC<ImportExportProps> = ({
   const url = "https://ko-en-cards-server-default-rtdb.firebaseio.com/";
 
   const handlePort = (type: string) => {
-    if (window.confirm(`Are you sure you want to ${type}?`)) {
+    if (
+      window.confirm(
+        type === "Import" ? textContent.checkImport : textContent.checkExport
+      )
+    ) {
       setCode("");
       setPass("");
       if (type === "Import") {
@@ -62,14 +70,14 @@ const ImportExport: React.FC<ImportExportProps> = ({
     } else {
       if (uploadedDecksArray.find((deck) => deck.deckName === code)) {
         if (uploadedDecksArray.find((deck) => deck.password === password)) {
-          if (window.confirm("Overwrite current upload?")) {
+          if (window.confirm(textContent.overwrite)) {
             setUploaded((p) => [
               deckDetails,
               ...p.filter((deck) => deck.deckName !== code),
             ]);
           } else return;
         } else {
-          window.alert("Incorrect Password!");
+          window.alert(textContent.badPassword);
           return;
         }
       } else {
@@ -86,9 +94,9 @@ const ImportExport: React.FC<ImportExportProps> = ({
         body: JSON.stringify(deck),
       });
 
-      if (response.ok) window.alert("Deck uploaded successfully to Firebase");
+      if (response.ok) window.alert(textContent.uploadSuccess);
     } catch (error: any) {
-      window.alert("Error sending data to Firebase:" + error.message);
+      window.alert(textContent.errorSend + error.message);
     }
   };
 
@@ -106,15 +114,15 @@ const ImportExport: React.FC<ImportExportProps> = ({
         );
         importAttempted.current = true;
       } else {
-        window.alert("There is no deck that matches those details.");
+        window.alert(textContent.badDetails);
       }
     } catch (error: any) {
-      console.error("Error retrieving data from Firebase:", error.message);
+      console.error(textContent.errorRetrieve, error.message);
     }
   };
 
   const deleteUpload = async (name, pass) => {
-    if (!window.confirm("Are you sure you want to delete this deck?")) return;
+    if (!window.confirm(textContent.delDeck)) return;
     setUploaded((p) => p.filter((deck) => deck.deckName !== name));
     try {
       const response = await fetch(url + name + pass + ".json", {
@@ -125,30 +133,30 @@ const ImportExport: React.FC<ImportExportProps> = ({
       });
 
       if (!response.ok) {
-        console.error("Failed to delete deck");
+        console.error(textContent.delFail);
       }
     } catch (error) {
-      console.error("Error deleting deck:", error);
+      console.error(textContent.delError, error);
     }
   };
 
   useEffect(() => {
     if (importAttempted.current && importedDeck.length === 0) {
       importAttempted.current = false;
-      window.alert("No new cards!");
+      window.alert(textContent.noNew);
     }
     if (!importProcessed.current && importedDeck.length > 0) {
       if (
         window.confirm(
-          `There are ${importedDeck.length} new cards. Add to current deck?`
+          `${textContent.newCards} ${importedDeck.length} ${textContent.newCards2}`
         )
       ) {
         onImport(importedDeck);
-        window.alert(`New cards added to deck.`);
+        window.alert(textContent.addedCards);
       }
       importProcessed.current = true;
     }
-  }, [importedDeck, onImport]);
+  }, [importedDeck, onImport, textContent]);
 
   useEffect(() => {
     localStorage.setItem("uploadedDecks", JSON.stringify(uploadedDecksArray));
@@ -156,10 +164,10 @@ const ImportExport: React.FC<ImportExportProps> = ({
 
   return (
     <div>
-      <h1>Import / Upload Cards</h1>
+      <h1>{textContent.title}</h1>
       <div>
         <div>
-          <InputLabel>Deck Name</InputLabel>
+          <InputLabel>{textContent.deckName}</InputLabel>
           <TextField
             value={code}
             onChange={(e) => setCode(e.target.value)}
@@ -174,7 +182,7 @@ const ImportExport: React.FC<ImportExportProps> = ({
             margin: "10px",
           }}
         >
-          <InputLabel>Deck Password</InputLabel>
+          <InputLabel>{textContent.deckPassword}</InputLabel>
           <TextField
             sx={{ width: "223px" }}
             value={password}
@@ -183,7 +191,7 @@ const ImportExport: React.FC<ImportExportProps> = ({
             type={showPassword ? "" : "password"}
           />
           <Button variant="outlined" onClick={() => setShowPass((p) => !p)}>
-            {showPassword ? "Hide" : "Show"}
+            {showPassword ? textContent.hide : textContent.show}
           </Button>
         </div>
         <div style={{ display: "flex", justifyContent: "space-evenly" }}>
@@ -192,24 +200,24 @@ const ImportExport: React.FC<ImportExportProps> = ({
             variant="contained"
             onClick={() => handlePort("Import")}
           >
-            Import
+            {textContent.import}
           </Button>
           <Button
             disabled={emptyVals}
             variant="outlined"
             onClick={() => handlePort("Upload")}
           >
-            Upload
+            {textContent.upload}
           </Button>
         </div>
-        <h2>Uploaded Decks</h2>
+        <h2>{textContent.uploadedDecks}</h2>
         <TableContainer className={classes.container}>
           <Table className={classes.table} stickyHeader>
             <TableHead className={classes.head}>
               <TableRow>
-                <TableCell>Deck Name</TableCell>
-                <TableCell>Card Number</TableCell>
-                <TableCell>Password</TableCell>
+                <TableCell>{textContent.deckName}</TableCell>
+                <TableCell>{textContent.cardNumber}</TableCell>
+                <TableCell>{textContent.password}</TableCell>
                 <TableCell width="80px"></TableCell>
               </TableRow>
             </TableHead>
@@ -228,7 +236,7 @@ const ImportExport: React.FC<ImportExportProps> = ({
                       color="error"
                       onClick={() => deleteUpload(deck.deckName, deck.password)}
                     >
-                      Delete
+                      {textContent.del}
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -237,7 +245,7 @@ const ImportExport: React.FC<ImportExportProps> = ({
           </Table>
         </TableContainer>
         <Button variant="contained" onClick={onSave}>
-          Done
+          {textContent.done}
         </Button>
       </div>
     </div>

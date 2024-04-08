@@ -218,6 +218,7 @@ function App() {
                 onImport={(importedDeck) =>
                   setInitialDeck((deck: Deck) => [...deck, ...importedDeck])
                 }
+                displayLang={storedOptions.language}
               />
             </div>
           ) : view === "settings" ? (

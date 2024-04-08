@@ -8,7 +8,7 @@ export const pageContent = {
     imageButtonLoading: "로딩 중...",
   },
   Japanese: {
-    imageSearchButton: "Image Search",
-    imageButtonLoading: "Loading...",
+    imageSearchButton: "画像検索",
+    imageButtonLoading: "ローディング中···",
   },
 };
