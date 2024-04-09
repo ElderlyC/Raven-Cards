@@ -71,11 +71,7 @@ function App() {
       .filter(
         (word) => word !== "" && !wordList.some((pair) => pair.source === word)
       );
-    const targetArray = wordPair.target
-      .split("\n")
-      .filter(
-        (word) => word !== "" && !wordList.some((pair) => pair.target === word)
-      );
+    const targetArray = wordPair.target.split("\n"); // only ^ source is checked for dupes
     const newWordsTuples = sourceArray.map((element, index) => [
       element,
       targetArray[index],
@@ -107,7 +103,6 @@ function App() {
           params: { word: searchWord, to: updatedToLang },
         }
       );
-      console.log(response);
       if (isJapanese) {
         const firstItem = response.data.object.items[0];
 

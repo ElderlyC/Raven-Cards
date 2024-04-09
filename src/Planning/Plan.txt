@@ -2,19 +2,17 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
--display text files
---import (jp)
 
 -check costs cloud functions
--korean display lang
 
 -App.tsx: missing jp meaning data
 --fill empty examples
--audio?
--display langs (pageContent objects) 'xxxText.tsx'
 -addcard jap integration/fixes 
 --furigana in examples?
---hanja, definition search '뜻', etc.
+
+-audio? 
+
+
 -settings: 
 --복습 빈도/간격
 --dictionary links (use other dictionaries than naver)
