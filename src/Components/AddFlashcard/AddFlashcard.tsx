@@ -9,6 +9,7 @@ import {
   Switch,
   Link,
   useMediaQuery,
+  Tooltip,
 } from "@mui/material";
 import { WordPair } from "../../types";
 import { useState, useEffect, useRef } from "react";
@@ -17,12 +18,9 @@ import { jaReg, koReg } from "../../utilities";
 import GenerateImage from "./GenerateImage";
 import classes from "./AddFlashcard.module.css";
 import { pageContent } from "./AddFlashcardText";
-// refactor: file TOO BIG - cut into 3 sections
-// handle japanese 예
-// definition '뜻' to '意味'
-// non-hanja image search?
+// refactor: file TOO BIG - cut into sections
 // different image search tool for english and japanese
-// def switch spacing
+// def switch button spacing
 // different dictionary for jp?
 
 type AddCardProps = {
@@ -57,6 +55,10 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   const [imgData, setImgData] = useState([
     { title: "", link: "", thumbnail: "" },
   ]);
+  const kanji = hanja.split(" ")[1]; //derive from hanja
+  const furigana = hanja.split(" ")[0];
+  const [selected, setSelected] = useState("");
+
   const [definitionSearch, setSearch] = useState(true);
   const [hint, setHint] = useState("");
   const [zoom, setZoom] = useState(image ? image[0] : 1.0);
@@ -69,9 +71,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   const textContent = pageContent[displayLang];
   const searchLang = (input: string) =>
     jaReg.test(input) ? "ja" : koReg.test(input) ? "ko" : "en";
-
-  //array of terms objects, select element based on display lang
-  // e.g. display lang = 'en', display[n].hint = 'Hint', ... 'E.g.', etc.
 
   const handleSwapInputs = () => {
     setInput1(input2);
@@ -129,10 +128,46 @@ const AddFlashcard: React.FC<AddCardProps> = ({
     }, 2500);
 
     setHint(convertExample(examples[0]?.text));
-  }, [examples, input1]); //input1 necessary?
+  }, [examples]); //input1 necessary?
+
+  const [contextMenuPosition, setContextMenuPosition] = useState({
+    x: 0,
+    y: 0,
+  });
+  const handleSelect = (e) => {
+    setSelected(window?.getSelection()?.toString().trim() || "");
+    // find the highlighted text center, not the mouse
+    //console.log(e);
+    setContextMenuPosition({ x: e.clientX, y: e.clientY });
+  };
+
+  useEffect(() => {
+    document.body.addEventListener("mouseup", handleSelect);
+
+    return () => {
+      document.body.removeEventListener("mouseup", handleSelect);
+    };
+  }, []);
 
   return (
     <div>
+      {/* {selected && (
+        <div
+          style={{
+            position: "fixed",
+            top: contextMenuPosition.y,
+            left: contextMenuPosition.x,
+            backgroundColor: "black",
+            border: "1px solid black",
+            borderRadius: "10px",
+            padding: "5px",
+            zIndex: 9999,
+          }}
+        >
+          {selected}
+        </div>
+      )} */}
+
       {imgData[0].link === "" ? (
         <div className={classes.container}>
           <Typography variant={"h3"}>
@@ -228,19 +263,42 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 </div>
               </Box>
             )}
-
             <Link
               href={`https://${
                 searchLang(input1) === "ja" ? "ja" : "hanja"
-              }.dict.naver.com/#/search?query=${hanja}`}
+              }.dict.naver.com/#/search?query=${kanji || furigana}`} // use different dictionary for jp
               variant="h3"
               underline="hover"
               rel="noopener"
               target="_blank"
               className={classes.hanja}
             >
-              {hanja}
+              {
+                <Tooltip
+                  followCursor
+                  title={<span style={{ fontSize: "2rem" }}>{furigana}</span>}
+                >
+                  <span>
+                    {kanji && <p style={{ margin: 0 }}>{furigana}</p>}
+                  </span>
+                </Tooltip>
+              }
+              {kanji || furigana}
             </Link>
+
+            {/* work in progress - sends selected word to be translated, make wordPairs
+            {selected && (
+              <Button
+                variant="outlined"
+                sx={{
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {selected.length > 10
+                  ? `${selected.substring(0, 10)}...`
+                  : selected}
+              </Button>
+            )} */}
 
             <Box className={classes.hintBox}>
               <div style={{ display: "flex", flexDirection: "column" }}>
@@ -249,7 +307,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                   <Link
                     href={`https://${searchLang(
                       input1
-                    )}.dict.naver.com/#/search?range=example&query=${input1}`}
+                    )}.dict.naver.com/#/search?range=example&query=${input1}`} // diff dictionary for jp?
                     underline="hover"
                     rel="noopener"
                     target="_blank"
@@ -276,12 +334,12 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               </div>
             </Box>
           </Box>
-
           <Button onClick={handleSwapInputs} variant="outlined">
             {textContent.swapButton}
           </Button>
 
           <FormControlLabel
+            sx={{ margin: "0 15px 0 5px" }}
             control={
               <Switch
                 checked={definitionSearch}
@@ -296,9 +354,11 @@ const AddFlashcard: React.FC<AddCardProps> = ({
           <GenerateImage
             word={
               definitionSearch
-                ? /[a-zA-Z+]/.test(input1)
-                  ? input1 + "+definition"
-                  : input1 + "+뜻"
+                ? searchLang(input1) === "ja"
+                  ? `${input1}+意味`
+                  : searchLang(input1) === "ko"
+                  ? `${input1}+뜻`
+                  : `${input1}+definition`
                 : input1
             }
             onItemList={(arr) => setImgData(arr)}

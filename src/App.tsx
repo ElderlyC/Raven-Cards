@@ -110,13 +110,18 @@ function App() {
           ? firstItem?.pos[0]?.meanings[1]
           : response.data.object.items[1]?.pos[0]?.meanings[1]; //2nd item when first missing
 
-        /// ご飯 results in error (no meaning), 財布, こうはい＝nothing (where is the data?)
-        setMeaning(jaData?.meaning);
+        if (jaData?.meaning) setMeaning(jaData.meaning);
+        else setMeaning(response.data.meaning);
 
-        // set examples to object.examples[0] when not in meanings
+        if (jaData?.examples) setExamples(jaData.examples);
+        else if (response.data.examples) setExamples(response.data.examples);
 
-        jaData.examples && setExamples(jaData.examples);
-        setHanja(`${firstItem?.entry} ${firstItem?.subEntry}`); //kanji + furigana (non ordered) -test, order these (hiragana regex?) (can be null!)
+        if (firstItem)
+          setHanja(
+            `${firstItem?.entry} ${
+              firstItem?.subEntry ? firstItem.subEntry : ""
+            }`
+          ); //kanji + furigana (non ordered) -test, order these (hiragana regex?) (can be null!)
       } else {
         setMeaning(response.data.meaning);
         response.data.examples && setExamples(response.data.examples);

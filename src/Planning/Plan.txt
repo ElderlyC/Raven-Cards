@@ -2,6 +2,10 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
+-create card within card (double click translates word)
+-jp image searching (Add Cards)
+
+-kanji search function
 
 -check costs cloud functions
 

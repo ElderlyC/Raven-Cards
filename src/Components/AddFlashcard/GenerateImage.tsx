@@ -3,6 +3,8 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import { pageContent } from "./GenerateImageText";
 
+// handle using different sources of images (for en/jp searches)
+
 type GenImageProps = {
   displayLang: string;
   word: string;
