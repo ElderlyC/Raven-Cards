@@ -8,11 +8,18 @@
   width: 300px;
   text-align: center;
 }
+.inputSwap {
+  margin: 20px 0;
+}
+.swapButton {
+  height: 25px;
+  display: flex;
+  justify-content: center;
+}
 .inputBox {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 20px;
 }
 .dataContainer {
   font-size: 1.2rem;
@@ -58,7 +65,9 @@
   .container h3 {
     font-size: 2.5rem;
   }
-
+  .inputSwap {
+    margin: 10px 0;
+  }
   .front input {
     font-size: 2rem;
     padding: 10px;
@@ -69,7 +78,7 @@
     padding: 10px;
   }
   .inputBox {
-    margin: 10px;
+    margin: 0;
   }
 
   .meaning {

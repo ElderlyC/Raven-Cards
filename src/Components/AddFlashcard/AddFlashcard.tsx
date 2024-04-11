@@ -11,6 +11,7 @@ import {
   useMediaQuery,
   Tooltip,
 } from "@mui/material";
+import SwapVertIcon from "@mui/icons-material/SwapVert";
 import { WordPair } from "../../types";
 import { useState, useEffect, useRef } from "react";
 import { Deck } from "../../App";
@@ -55,8 +56,8 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   const [imgData, setImgData] = useState([
     { title: "", link: "", thumbnail: "" },
   ]);
-  const kanji = hanja.split(" ")[1]; //derive from hanja
-  const furigana = hanja.split(" ")[0];
+  const kanji = hanja?.split(" ")[1];
+  const furigana = hanja?.split(" ")[0];
   const [selected, setSelected] = useState("");
 
   const [definitionSearch, setSearch] = useState(true);
@@ -173,7 +174,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
           <Typography variant={"h3"}>
             {editMode ? textContent.editTitle : textContent.newCardTitle}
           </Typography>
-          <Box>
+          <Box className={classes.inputSwap}>
             <Box className={classes.inputBox}>
               <TextField
                 error={existingCard && !editMode}
@@ -185,6 +186,11 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 value={input1}
                 onChange={(e) => setInput1(e.target.value)}
               />
+            </Box>
+            <Box className={classes.swapButton}>
+              <Button onClick={handleSwapInputs}>
+                <SwapVertIcon />
+              </Button>
             </Box>
             <Box className={classes.inputBox}>
               <TextField
@@ -334,9 +340,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               </div>
             </Box>
           </Box>
-          <Button onClick={handleSwapInputs} variant="outlined">
-            {textContent.swapButton}
-          </Button>
 
           <FormControlLabel
             sx={{ margin: "0 15px 0 5px" }}
