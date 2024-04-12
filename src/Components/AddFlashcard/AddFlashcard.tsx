@@ -12,6 +12,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { WordPair } from "../../types";
 import { useState, useEffect, useRef } from "react";
 import { Deck } from "../../App";
@@ -118,6 +119,11 @@ const AddFlashcard: React.FC<AddCardProps> = ({
     onEndEditing();
   };
 
+  const handleSelectTranslation = () => {
+    setSelected("");
+    console.log(selected);
+  };
+
   useEffect(() => {
     setInput1(pair.source);
     setInput2(pair.target);
@@ -131,44 +137,18 @@ const AddFlashcard: React.FC<AddCardProps> = ({
     setHint(convertExample(examples[0]?.text));
   }, [examples]); //input1 necessary?
 
-  const [contextMenuPosition, setContextMenuPosition] = useState({
-    x: 0,
-    y: 0,
-  });
-  const handleSelect = (e) => {
-    setSelected(window?.getSelection()?.toString().trim() || "");
-    // find the highlighted text center, not the mouse
-    //console.log(e);
-    setContextMenuPosition({ x: e.clientX, y: e.clientY });
-  };
-
   useEffect(() => {
-    document.body.addEventListener("mouseup", handleSelect);
+    document.body.addEventListener("mouseup", () =>
+      setSelected(window?.getSelection()?.toString().trim() || "")
+    );
 
     return () => {
-      document.body.removeEventListener("mouseup", handleSelect);
+      document.body.removeEventListener("mouseup", () => setSelected(""));
     };
   }, []);
 
   return (
     <div>
-      {/* {selected && (
-        <div
-          style={{
-            position: "fixed",
-            top: contextMenuPosition.y,
-            left: contextMenuPosition.x,
-            backgroundColor: "black",
-            border: "1px solid black",
-            borderRadius: "10px",
-            padding: "5px",
-            zIndex: 9999,
-          }}
-        >
-          {selected}
-        </div>
-      )} */}
-
       {imgData[0].link === "" ? (
         <div className={classes.container}>
           <Typography variant={"h3"}>
@@ -292,20 +272,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               {kanji || furigana}
             </Link>
 
-            {/* work in progress - sends selected word to be translated, make wordPairs
-            {selected && (
-              <Button
-                variant="outlined"
-                sx={{
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {selected.length > 10
-                  ? `${selected.substring(0, 10)}...`
-                  : selected}
-              </Button>
-            )} */}
-
             <Box className={classes.hintBox}>
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <span>
@@ -353,7 +319,13 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               definitionSearch ? textContent.imageType1 : textContent.imageType2
             }
           />
-
+          {selected && (
+            <Tooltip title={selected} followCursor placement="right">
+              <Button onClick={handleSelectTranslation} variant="outlined">
+                <AddCircleIcon />
+              </Button>
+            </Tooltip>
+          )}
           <GenerateImage
             word={
               definitionSearch
