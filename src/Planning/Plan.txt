@@ -2,7 +2,10 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
--animate review Correct!
+-lock the translating languages (no auto change)?
+-in edit card - search for meaning etc. again?
+
+
 -translate from within add card screen (send strings to translation form, show sent words in list)?
 -image btn width/margin
 

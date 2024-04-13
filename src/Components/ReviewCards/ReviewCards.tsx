@@ -1,5 +1,6 @@
 import React, { useState, useEffect, KeyboardEventHandler } from "react";
 import { Button, Typography, TextField, Box, Tooltip } from "@mui/material";
+import { FaTimes, FaCheck } from "react-icons/fa";
 import { Deck, Card } from "../../App";
 import classes from "./ReviewCards.module.css";
 import { pageContent } from "./ReviewText";
@@ -20,6 +21,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
   );
   const [hint, setHint] = useState(false);
   const [score, setScore] = useState(0);
+  const [scoreBump, setScoreBump] = useState(false);
   const [card, setCard] = useState<Card>(reviewDeck[0]);
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState(false);
@@ -93,6 +95,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
       if (currentCard.level === 0 || wrong < 2) newLevel = card.level;
     } else {
       setScore((p) => p + 1);
+      setScoreBump(true);
       setError(false);
       const newInterval =
         newLevel < 3 ? 2 * Math.pow(2, newLevel) : Math.pow(2, newLevel - 3);
@@ -138,16 +141,26 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
   }, [card]);
 
   useEffect(() => {
-    if (wrong > 0) {
-      setTimeout(() => {
-        setBump(false);
-      }, 500);
-    }
-  }, [wrong]);
+    setTimeout(() => {
+      setBump(false);
+      setScoreBump(false);
+    }, 500);
+  }, [wrong, score]);
 
   return (
     <div className={classes.container}>
-      {/* {bump && <Box className={bump ? classes.fadeOut : ""}>Big X</Box>} */}
+      {(bump || scoreBump) && (
+        <Box
+          className={`${classes.bigX} ${
+            bump || scoreBump ? classes.fadeOut : ""
+          }`}
+        >
+          {bump && <FaTimes style={{ color: "red", fontSize: "14rem" }} />}
+          {scoreBump && (
+            <FaCheck style={{ color: "green", fontSize: "14rem" }} />
+          )}
+        </Box>
+      )}
       <Box key={card.created}>
         <Typography
           variant={"h3"}
@@ -220,7 +233,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
       <Typography
         color="lime"
         margin={2}
-        className={score > 0 ? classes.bumpAnimation : ""}
+        className={scoreBump ? classes.bumpAnimation : ""}
       >
         {correct} {score}
       </Typography>

@@ -1,3 +1,6 @@
+.container {
+  position: relative;
+}
 .container button {
   width: 140px;
   margin: 10px;
@@ -30,8 +33,16 @@
   }
 }
 
+.bigX {
+  position: absolute;
+  top: 50%; /* Place it at the top of the container */
+  left: 50%; /* Center it horizontally */
+  transform: translate(-50%, -50%);
+  z-index: 999;
+}
+
 .fadeOut {
-  animation: fadeOut 1s forwards;
+  animation: fadeOut 500ms forwards;
 }
 
 @keyframes fadeOut {
@@ -40,5 +51,21 @@
   }
   100% {
     opacity: 0;
+  }
+}
+
+.bumpAnimation {
+  animation: bump 0.5s ease-in-out;
+}
+
+@keyframes bump {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(2);
+  }
+  100% {
+    transform: scale(1);
   }
 }
