@@ -2,17 +2,16 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
--plus button next to image button
--image btn width
 -animate review Correct!
+-translate from within add card screen (send strings to translation form, show sent words in list)?
+-image btn width/margin
+
 -chat ->flashcards (RT cards)
 -translate -> insta card
 -Make All add card mode
 -create card within card (double click translates word)
 --highlight shows button / invasive. 
 -jp image searching (Add Cards)
-
--kanji search function
 
 -check costs cloud functions
 

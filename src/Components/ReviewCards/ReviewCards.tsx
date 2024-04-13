@@ -24,6 +24,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState(false);
   const [wrong, setWrong] = useState(0);
+  const [bump, setBump] = useState(false);
   const options = localStorage.getItem("options");
   const oddFlipOn = options
     ? JSON.parse(options).oddLevelFlip && card.level % 2 === 1
@@ -87,6 +88,7 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
     ) {
       setError(true);
       setWrong((p) => p + 1);
+      setBump(true);
       newLevel = card.level - 1;
       if (currentCard.level === 0 || wrong < 2) newLevel = card.level;
     } else {
@@ -135,8 +137,17 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
     setError(false);
   }, [card]);
 
+  useEffect(() => {
+    if (wrong > 0) {
+      setTimeout(() => {
+        setBump(false);
+      }, 500);
+    }
+  }, [wrong]);
+
   return (
     <div className={classes.container}>
+      {/* {bump && <Box className={bump ? classes.fadeOut : ""}>Big X</Box>} */}
       <Box key={card.created}>
         <Typography
           variant={"h3"}
@@ -206,7 +217,11 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
         </div>
       )}
 
-      <Typography color="lime" margin={2}>
+      <Typography
+        color="lime"
+        margin={2}
+        className={score > 0 ? classes.bumpAnimation : ""}
+      >
         {correct} {score}
       </Typography>
       {wrong > 0 && (

@@ -1,10 +1,10 @@
 export const pageContent = {
   English: {
-    imageSearchButton: "Image Search",
+    imageSearchButton: "Images",
     imageButtonLoading: "Loading...",
   },
   Korean: {
-    imageSearchButton: "이미지 검색",
+    imageSearchButton: "이미지",
     imageButtonLoading: "로딩 중...",
   },
   Japanese: {

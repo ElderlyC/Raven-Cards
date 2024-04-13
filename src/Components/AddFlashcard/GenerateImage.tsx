@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@mui/material";
 import axios from "axios";
 import { pageContent } from "./GenerateImageText";
+import SearchIcon from "@mui/icons-material/Search";
 
 // handle using different sources of images (for en/jp searches)
 
@@ -43,6 +44,7 @@ const GenerateImage = ({ displayLang, word, onItemList }: GenImageProps) => {
   return (
     <Button onClick={getImage} variant="outlined">
       {loading ? textContent.imageButtonLoading : textContent.imageSearchButton}
+      <SearchIcon />
     </Button>
   );
 };
