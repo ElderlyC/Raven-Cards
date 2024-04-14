@@ -52,6 +52,8 @@ function App() {
   const [initialDeck, setInitialDeck] = useState<Deck>([]);
   const [reviewCards, setReviewCards] = useState<Deck>([]);
 
+  const [initialWords, setInitWords] = useState("");
+
   const storedOptions = localStorage.getItem("options")
     ? JSON.parse(localStorage.getItem("options") as string)
     : {
@@ -166,6 +168,8 @@ function App() {
                 onTranslation={handleAddToWordlist}
                 smallScreen={smallScreen}
                 displayLang={storedOptions.language}
+                initialWords={initialWords}
+                onTextChange={(text) => setInitWords(text)}
               />
 
               <div className="wordlist-container">
@@ -195,6 +199,7 @@ function App() {
               deck={initialDeck}
               onRemovePair={handleRemovePair}
               displayLang={storedOptions.language}
+              onSendWords={(newWord) => setInitWords((p) => p.concat(newWord))}
             />
           ) : view === "review" ? (
             <ReviewCards

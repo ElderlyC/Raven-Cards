@@ -2,6 +2,7 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
+-/n + string sent to translation form
 -lock the translating languages (no auto change)?
 -in edit card - search for meaning etc. again?
 

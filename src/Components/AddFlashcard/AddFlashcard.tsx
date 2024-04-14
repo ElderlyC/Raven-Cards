@@ -36,6 +36,7 @@ type AddCardProps = {
   deck: Deck;
   onRemovePair: (source: string) => void;
   displayLang: string;
+  onSendWords?: (word: string) => void;
 };
 
 const AddFlashcard: React.FC<AddCardProps> = ({
@@ -49,6 +50,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   deck,
   onRemovePair,
   displayLang,
+  onSendWords,
 }) => {
   const [input1, setInput1] = useState(pair.source);
   const [input2, setInput2] = useState(pair.target);
@@ -120,8 +122,8 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   };
 
   const handleSelectTranslation = () => {
+    onSendWords && onSendWords("\n" + selected);
     setSelected("");
-    console.log(selected);
   };
 
   useEffect(() => {

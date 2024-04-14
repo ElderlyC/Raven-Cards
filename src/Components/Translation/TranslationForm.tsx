@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, useEffect, FormEvent } from "react";
 import { WordPair } from "../../types";
 import { TextField, Button, Typography, Box } from "@mui/material";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
@@ -12,14 +12,18 @@ type TranslationFormTypes = {
   displayLang: string;
   onTranslation: ({ source, target }: WordPair) => void;
   smallScreen: boolean;
+  initialWords: string;
+  onTextChange: (text: string) => void;
 };
 
 const TranslationForm: React.FC<TranslationFormTypes> = ({
   displayLang,
   onTranslation,
   smallScreen,
+  initialWords,
+  onTextChange,
 }) => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState(initialWords || "");
   const [langs, setLangs] = useState(["ko", "en", "ja"]);
   const [loading, setLoading] = useState(false);
   const [changedIcon, setChangeIcon] = useState(false);
@@ -54,6 +58,7 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
       console.error(error);
     }
     setText("");
+    onTextChange("");
     setLoading(false);
   };
 
@@ -67,6 +72,8 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
   };
 
   const handleTextChange = (e) => {
+    // save changes to the inital words
+    onTextChange(e.target.value);
     const lastChar = e.target.value.slice(-1);
 
     if (koReg.test(lastChar) && langs[0] !== "ko") setLangs(["ko", "en", "ja"]);
@@ -84,6 +91,15 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
     if (enReg.test(pastedText) && langs[0] !== "en")
       setLangs(["en", "ko", "ja"]);
   };
+
+  useEffect(() => {
+    if (initialWords) {
+      const lastChar = initialWords.slice(-1);
+      if (koReg.test(lastChar)) setLangs(["ko", "en", "ja"]);
+      else if (jaReg.test(lastChar)) setLangs(["ja", "en", "ko"]);
+      else if (enReg.test(lastChar)) setLangs(["en", "ko", "ja"]);
+    }
+  }, [initialWords]);
 
   return (
     <div className={classes.container}>
