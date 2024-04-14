@@ -137,15 +137,14 @@ const AddFlashcard: React.FC<AddCardProps> = ({
     }, 2500);
 
     setHint(convertExample(examples[0]?.text));
-  }, [examples]); //input1 necessary?
+  }, [examples]);
 
   useEffect(() => {
-    document.body.addEventListener("mouseup", () =>
+    document.body.addEventListener("touchend", () =>
       setSelected(window?.getSelection()?.toString().trim() || "")
     );
-
     return () => {
-      document.body.removeEventListener("mouseup", () => setSelected(""));
+      document.body.removeEventListener("touchend", () => setSelected(""));
     };
   }, []);
 
