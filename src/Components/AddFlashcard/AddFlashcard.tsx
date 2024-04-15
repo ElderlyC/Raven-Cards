@@ -140,11 +140,15 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   }, [examples]);
 
   useEffect(() => {
-    document.body.addEventListener("touchend", () =>
-      setSelected(window?.getSelection()?.toString().trim() || "")
-    );
+    const handleSelectionChange = () => {
+      setSelected(window?.getSelection()?.toString().trim() || "");
+    };
+    document.body.addEventListener("touchend", handleSelectionChange);
+    document.body.addEventListener("mouseup", handleSelectionChange);
+
     return () => {
-      document.body.removeEventListener("touchend", () => setSelected(""));
+      document.body.removeEventListener("touchend", handleSelectionChange);
+      document.body.removeEventListener("mouseup", handleSelectionChange);
     };
   }, []);
 
