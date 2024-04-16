@@ -70,6 +70,7 @@ const Wordlist: React.FC<WordListProps> = ({
                   <Grid item xs={4}>
                     <Button
                       variant="outlined"
+                      color="error"
                       onClick={() => handleDeletePair(pair.source)}
                     >
                       {del}

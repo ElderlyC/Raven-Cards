@@ -42,9 +42,13 @@ const GenerateImage = ({ displayLang, word, onItemList }: GenImageProps) => {
   };
 
   return (
-    <Button onClick={getImage} variant="outlined">
+    <Button
+      onClick={getImage}
+      variant="outlined"
+      sx={{ minWidth: "130px", paddingLeft: "25px" }}
+    >
       {loading ? textContent.imageButtonLoading : textContent.imageSearchButton}
-      <SearchIcon />
+      <SearchIcon sx={{ marginLeft: "5px" }} />
     </Button>
   );
 };

@@ -1,3 +1,9 @@
+.container {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
 .front input {
   font-size: 2.5rem;
   width: 300px;
@@ -59,6 +65,9 @@
 }
 .image:hover {
   border-color: white;
+}
+.submitButtons {
+  min-width: 280px;
 }
 
 @media (max-width: 500px) {

@@ -4,7 +4,7 @@ hosting using google cloud functions!
 To Finish:
 
 -check costs cloud functions
--image btn width/margin
+
 -alternate image/dictionary search
 
 -lock the translating languages (no auto change)?

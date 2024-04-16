@@ -311,40 +311,42 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               </div>
             </Box>
           </Box>
-
-          <FormControlLabel
-            sx={{ margin: "0 15px 0 5px" }}
-            control={
-              <Switch
-                checked={definitionSearch}
-                onChange={() => setSearch((p) => !p)}
-              />
-            }
-            label={
-              definitionSearch ? textContent.imageType1 : textContent.imageType2
-            }
-          />
-          {selected && (
-            <Tooltip title={selected} followCursor placement="right">
-              <Button onClick={handleSelectTranslation} variant="outlined">
-                <AddCircleIcon />
-              </Button>
-            </Tooltip>
-          )}
-          <GenerateImage
-            word={
-              definitionSearch
-                ? searchLang(input1) === "ja"
-                  ? `${input1}+意味`
-                  : searchLang(input1) === "ko"
-                  ? `${input1}+뜻`
-                  : `${input1}+definition`
-                : input1
-            }
-            onItemList={(arr) => setImgData(arr)}
-            displayLang={displayLang}
-          />
-
+          <Box>
+            <FormControlLabel
+              sx={{ margin: "0 15px 0 5px", minWidth: "130px" }}
+              control={
+                <Switch
+                  checked={definitionSearch}
+                  onChange={() => setSearch((p) => !p)}
+                />
+              }
+              label={
+                definitionSearch
+                  ? textContent.imageType1
+                  : textContent.imageType2
+              }
+            />
+            {selected && (
+              <Tooltip title={selected} followCursor placement="right">
+                <Button onClick={handleSelectTranslation} variant="outlined">
+                  <AddCircleIcon />
+                </Button>
+              </Tooltip>
+            )}
+            <GenerateImage
+              word={
+                definitionSearch
+                  ? searchLang(input1) === "ja"
+                    ? `${input1}+意味`
+                    : searchLang(input1) === "ko"
+                    ? `${input1}+뜻`
+                    : `${input1}+definition`
+                  : input1
+              }
+              onItemList={(arr) => setImgData(arr)}
+              displayLang={displayLang}
+            />
+          </Box>
           {!editMode ? (
             <Box className={classes.submitButtons}>
               <Button
