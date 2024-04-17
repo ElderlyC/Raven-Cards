@@ -115,7 +115,8 @@ function App() {
         if (jaData?.meaning) setMeaning(jaData.meaning);
         else setMeaning(response.data.meaning);
 
-        if (jaData?.examples) setExamples(jaData.examples);
+        //empty objects are not falsy
+        if (jaData.examples.text) setExamples(jaData.examples);
         else if (response.data.examples) setExamples(response.data.examples);
 
         if (firstItem)

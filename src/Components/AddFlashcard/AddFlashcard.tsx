@@ -313,7 +313,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
           </Box>
           <Box>
             <FormControlLabel
-              sx={{ margin: "0 15px 0 5px", minWidth: "130px" }}
+              sx={{ margin: "0 15px 0 5px" }}
               control={
                 <Switch
                   checked={definitionSearch}
