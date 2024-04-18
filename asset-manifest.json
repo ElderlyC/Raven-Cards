@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Raven-Cards/static/css/main.0e917705.css",
-    "main.js": "/Raven-Cards/static/js/main.d29ae7ff.js",
+    "main.js": "/Raven-Cards/static/js/main.22f97ad9.js",
     "static/js/787.f4ab7052.chunk.js": "/Raven-Cards/static/js/787.f4ab7052.chunk.js",
     "index.html": "/Raven-Cards/index.html",
     "main.0e917705.css.map": "/Raven-Cards/static/css/main.0e917705.css.map",
-    "main.d29ae7ff.js.map": "/Raven-Cards/static/js/main.d29ae7ff.js.map",
+    "main.22f97ad9.js.map": "/Raven-Cards/static/js/main.22f97ad9.js.map",
     "787.f4ab7052.chunk.js.map": "/Raven-Cards/static/js/787.f4ab7052.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.0e917705.css",
-    "static/js/main.d29ae7ff.js"
+    "static/js/main.22f97ad9.js"
   ]
 }
