@@ -92,7 +92,6 @@ function App() {
     // if searchWord is 한글 (not hanja), translate to english, otherwise translate to korean
     const updatedToLang = koReg.test(searchWord) ? "en" : "ko";
     const isJapanese = jaReg.test(searchWord);
-
     try {
       const response = await axios.get<{
         meaning: string;
@@ -116,15 +115,15 @@ function App() {
         else setMeaning(response.data.meaning);
 
         //empty objects are not falsy
-        if (jaData.examples.text) setExamples(jaData.examples);
+        if (jaData.examples[0]?.text) setExamples(jaData.examples);
         else if (response.data.examples) setExamples(response.data.examples);
 
         if (firstItem)
           setHanja(
-            `${firstItem?.entry} ${
-              firstItem?.subEntry ? firstItem.subEntry : ""
-            }`
-          ); //kanji + furigana (non ordered) -test, order these (hiragana regex?) (can be null!)
+            /[一-龯]/.test(firstItem?.entry)
+              ? `${firstItem?.subEntry} ${firstItem?.entry}`
+              : `${firstItem?.entry} ${firstItem?.subEntry}` || ""
+          );
       } else {
         setMeaning(response.data.meaning);
         response.data.examples && setExamples(response.data.examples);

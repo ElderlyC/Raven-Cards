@@ -3,7 +3,7 @@ hosting using google cloud functions!
 
 To Finish:
 
--check costs cloud functions
+-jp dictionary
 
 -alternate image/dictionary search
 

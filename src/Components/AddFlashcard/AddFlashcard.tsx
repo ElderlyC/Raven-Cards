@@ -22,8 +22,7 @@ import classes from "./AddFlashcard.module.css";
 import { pageContent } from "./AddFlashcardText";
 // refactor: file TOO BIG - cut into sections
 // different image search tool for english and japanese
-// def switch button spacing
-// different dictionary for jp?
+// def switch button spacing?
 
 type AddCardProps = {
   image?: [zoom: number, verticalOffset: number, imageLink: string];
@@ -255,9 +254,13 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               </Box>
             )}
             <Link
-              href={`https://${
-                searchLang(input1) === "ja" ? "ja" : "hanja"
-              }.dict.naver.com/#/search?query=${kanji || furigana}`} // use different dictionary for jp
+              href={
+                searchLang(input1) === "ja"
+                  ? `https://jisho.org/search/${input1}%23kanji`
+                  : `https://hanja.dict.naver.com/#/search?query=${
+                      kanji || furigana
+                    }`
+              }
               variant="h3"
               underline="hover"
               rel="noopener"
@@ -282,9 +285,13 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 <span>
                   {textContent.hint}
                   <Link
-                    href={`https://${searchLang(
-                      input1
-                    )}.dict.naver.com/#/search?range=example&query=${input1}`} // diff dictionary for jp?
+                    href={
+                      searchLang(input1) === "ja"
+                        ? `https://jisho.org/search/${input1}%23sentences`
+                        : `https://${searchLang(
+                            input1
+                          )}.dict.naver.com/#/search?range=example&query=${input1}`
+                    }
                     underline="hover"
                     rel="noopener"
                     target="_blank"
