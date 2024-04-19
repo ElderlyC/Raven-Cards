@@ -3,7 +3,9 @@ hosting using google cloud functions!
 
 To Finish:
 
+-keep adding words in wordlist until none left ?
 -jp dictionary
+-selection not working
 
 -alternate image/dictionary search
 
