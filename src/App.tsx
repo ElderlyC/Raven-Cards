@@ -140,6 +140,22 @@ function App() {
     handleGenerateDefinition(pair.source);
   };
 
+  const handleFinishCard = () => {
+    if (wordList.length === 1) goHome();
+    else {
+      const cardIndex = wordList.findIndex(
+        (pair) => pair.source === cardPair.source
+      );
+      const newWordList = wordList.filter(
+        (pair) => pair.source !== cardPair.source
+      );
+      setWordlist(newWordList);
+      handleAddCard(newWordList[cardIndex] || newWordList[0]);
+    }
+  };
+
+  const goHome = () => setView("home");
+
   useEffect(() => {
     localStorage.setItem("wordlist", JSON.stringify(wordList));
   }, [wordList]);
@@ -148,7 +164,7 @@ function App() {
     const localDeck = localStorage.getItem("deck");
     const parsedDeck = localDeck ? JSON.parse(localDeck) : [];
     setInitialDeck(parsedDeck);
-  }, [view]);
+  }, [view, cardPair]);
 
   useEffect(() => {
     const now = new Date();
@@ -195,22 +211,23 @@ function App() {
               meaning={meaning}
               examples={examples}
               hanja={hanja}
-              onEndEditing={() => setView("home")}
+              onEndEditing={goHome}
               deck={initialDeck}
               onRemovePair={handleRemovePair}
               displayLang={storedOptions.language}
               onSendWords={(newWord) => setInitWords((p) => p.concat(newWord))}
+              onFinishCard={handleFinishCard}
             />
           ) : view === "review" ? (
             <ReviewCards
               deck={initialDeck}
               reviewCards={reviewCards}
-              onEndReview={() => setView("home")}
+              onEndReview={goHome}
             />
           ) : view === "view" ? (
             <ViewDeck
               deck={initialDeck}
-              onLeaveBrowser={() => setView("home")}
+              onLeaveBrowser={goHome}
               onImportExport={() => setView("import")}
               onRemovePair={handleRemovePair}
               displayLang={storedOptions.language}
@@ -228,15 +245,12 @@ function App() {
             </div>
           ) : view === "settings" ? (
             <div>
-              <Settings
-                storedOptions={storedOptions}
-                onSave={() => setView("home")}
-              />
+              <Settings storedOptions={storedOptions} onSave={goHome} />
             </div>
           ) : (
             <div>
               <Typography variant="h3">View not set [WIP]</Typography>
-              <Button onClick={() => setView("home")}>Go Back!</Button>
+              <Button onClick={goHome}>Go Back!</Button>
             </div>
           )}
         </header>

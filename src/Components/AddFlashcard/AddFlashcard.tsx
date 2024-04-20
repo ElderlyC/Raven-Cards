@@ -36,6 +36,7 @@ type AddCardProps = {
   onRemovePair: (source: string) => void;
   displayLang: string;
   onSendWords?: (word: string) => void;
+  onFinishCard?: () => void;
 };
 
 const AddFlashcard: React.FC<AddCardProps> = ({
@@ -50,6 +51,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   onRemovePair,
   displayLang,
   onSendWords,
+  onFinishCard,
 }) => {
   const [input1, setInput1] = useState(pair.source);
   const [input2, setInput2] = useState(pair.target);
@@ -80,24 +82,22 @@ const AddFlashcard: React.FC<AddCardProps> = ({
     setInput2(input1);
   };
 
-  const handleSubmitCard = (cancel: boolean) => {
-    if (!cancel) {
-      const newCard = [
-        {
-          front: input1,
-          back: input2,
-          created: new Date(),
-          nextReview: new Date(),
-          level: 0,
-          hint,
-          image: [zoom, verticalOffset, imageLink],
-          meaning,
-        },
-      ];
-      localStorage.setItem("deck", JSON.stringify([...deck, ...newCard]));
-      onRemovePair(input1);
-    }
-    onEndEditing();
+  const handleSubmitCard = () => {
+    const newCard = [
+      {
+        front: input1,
+        back: input2,
+        created: new Date(),
+        nextReview: new Date(),
+        level: 0,
+        hint,
+        image: [zoom, verticalOffset, imageLink],
+        meaning,
+      },
+    ];
+    localStorage.setItem("deck", JSON.stringify([...deck, ...newCard]));
+    onRemovePair(input1);
+    onFinishCard && onFinishCard();
   };
 
   const convertExample = (sentence: string) => {
@@ -360,15 +360,11 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 size="large"
                 variant="contained"
                 disabled={existingCard || (meaning === "" && disableButton)}
-                onClick={() => handleSubmitCard(false)}
+                onClick={handleSubmitCard}
               >
                 {textContent.addButton}
               </Button>
-              <Button
-                size="large"
-                variant="outlined"
-                onClick={() => handleSubmitCard(true)}
-              >
+              <Button size="large" variant="outlined" onClick={onEndEditing}>
                 {textContent.cancelButton}
               </Button>
             </Box>
@@ -382,11 +378,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
               >
                 {textContent.saveButton}
               </Button>
-              <Button
-                size="large"
-                variant="outlined"
-                onClick={() => onEndEditing()}
-              >
+              <Button size="large" variant="outlined" onClick={onEndEditing}>
                 {textContent.cancelButton}
               </Button>
             </Box>
