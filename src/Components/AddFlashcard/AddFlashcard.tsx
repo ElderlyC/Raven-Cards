@@ -97,6 +97,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
     ];
     localStorage.setItem("deck", JSON.stringify([...deck, ...newCard]));
     onRemovePair(input1);
+    setImage("");
     onFinishCard && onFinishCard();
   };
 
@@ -253,32 +254,34 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 </div>
               </Box>
             )}
-            <Link
-              href={
-                searchLang(input1) === "ja"
-                  ? `https://jisho.org/search/${input1}%23kanji`
-                  : `https://hanja.dict.naver.com/#/search?query=${
-                      kanji || furigana
-                    }`
-              }
-              variant="h3"
-              underline="hover"
-              rel="noopener"
-              target="_blank"
-              className={classes.hanja}
-            >
-              {
-                <Tooltip
-                  followCursor
-                  title={<span style={{ fontSize: "2rem" }}>{furigana}</span>}
-                >
-                  <span>
-                    {kanji && <p style={{ margin: 0 }}>{furigana}</p>}
-                  </span>
-                </Tooltip>
-              }
-              {kanji || furigana}
-            </Link>
+            {kanji !== "null" && (
+              <Link
+                href={
+                  searchLang(input1) === "ja"
+                    ? `https://jisho.org/search/${input1}%23kanji`
+                    : `https://hanja.dict.naver.com/#/search?query=${
+                        kanji || furigana
+                      }`
+                }
+                variant="h3"
+                underline="hover"
+                rel="noopener"
+                target="_blank"
+                className={classes.hanja}
+              >
+                {
+                  <Tooltip
+                    followCursor
+                    title={<span style={{ fontSize: "2rem" }}>{furigana}</span>}
+                  >
+                    <span>
+                      {kanji && <p style={{ margin: 0 }}>{furigana}</p>}
+                    </span>
+                  </Tooltip>
+                }
+                {kanji || furigana}
+              </Link>
+            )}
 
             <Box className={classes.hintBox}>
               <div style={{ display: "flex", flexDirection: "column" }}>

@@ -115,9 +115,8 @@ function App() {
         else setMeaning(response.data.meaning);
 
         //empty objects are not falsy
-        if (jaData.examples[0]?.text) setExamples(jaData.examples);
+        if (jaData?.examples[0]?.text) setExamples(jaData.examples);
         else if (response.data.examples) setExamples(response.data.examples);
-
         if (firstItem)
           setHanja(
             /[一-龯]/.test(firstItem?.entry)
