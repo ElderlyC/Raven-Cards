@@ -14,6 +14,7 @@ import ImportExport from "./Components/ImportExport/ImportExport";
 import Settings from "./Components/Settings/Settings";
 import { koReg, jaReg } from "./utilities";
 import ActionButtons from "./Components/ActionButtons/ActionButtons";
+import PassageForm from "./Components/Passage/PassageForm";
 
 const darkTheme = createTheme({
   palette: {
@@ -104,6 +105,7 @@ function App() {
           params: { word: searchWord, to: updatedToLang },
         }
       );
+      //console.log(response);
       if (isJapanese) {
         const firstItem = response.data.object.items[0];
 
@@ -179,13 +181,14 @@ function App() {
         <header className="App-header">
           {view === "home" ? (
             <div className="home">
-              <TranslationForm
+              {/* <TranslationForm
                 onTranslation={handleAddToWordlist}
                 smallScreen={smallScreen}
                 displayLang={storedOptions.language}
                 initialWords={initialWords}
                 onTextChange={(text) => setInitWords(text)}
-              />
+              /> */}
+              <PassageForm />
 
               <div className="wordlist-container">
                 <Wordlist

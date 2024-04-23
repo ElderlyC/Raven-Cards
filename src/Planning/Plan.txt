@@ -2,27 +2,21 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
--あっさり　null kanji
-null kanji bug
-examples undefined bug
-retained img link bug
+23/4
+button swaps translation form with passage form
+-input paragraph in passage mode
+-known words (이다,本当に) are blank (known words array)
+-card words are highlighted in yellow (from Deck)
+-new words are highlighted blue
+--click to open popup / add to translate form list
+--buttons click to highlight selected?
 
--keep adding words in wordlist until none left ?
--jp dictionary
--selection not working
 
--alternate image/dictionary search
-
--lock the translating languages (no auto change)?
--in edit card - search for meaning etc. again?
+-alternate image/dictionary search ?
 
 -chat ->flashcards (RT cards)
 -translate -> insta card
--Make All add card mode
 -jp image searching (Add Cards)
-
-
--audio? 
 
 
 -settings: 
