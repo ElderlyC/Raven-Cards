@@ -15,6 +15,7 @@ import Settings from "./Components/Settings/Settings";
 import { koReg, jaReg } from "./utilities";
 import ActionButtons from "./Components/ActionButtons/ActionButtons";
 import PassageForm from "./Components/Passage/PassageForm";
+import PassageViewer from "./Components/PassageViewer/PassageViewer";
 
 const darkTheme = createTheme({
   palette: {
@@ -54,6 +55,8 @@ function App() {
   const [reviewCards, setReviewCards] = useState<Deck>([]);
 
   const [initialWords, setInitWords] = useState("");
+  const [form, setForm] = useState(true); // default translation form
+  const [passage, setPassage] = useState("");
 
   const storedOptions = localStorage.getItem("options")
     ? JSON.parse(localStorage.getItem("options") as string)
@@ -155,6 +158,12 @@ function App() {
     }
   };
 
+  const handleConvert = (passage: string) => {
+    console.log("convert", passage);
+    setPassage(passage);
+    setView("passage");
+  };
+
   const goHome = () => setView("home");
 
   useEffect(() => {
@@ -181,14 +190,25 @@ function App() {
         <header className="App-header">
           {view === "home" ? (
             <div className="home">
-              {/* <TranslationForm
-                onTranslation={handleAddToWordlist}
-                smallScreen={smallScreen}
-                displayLang={storedOptions.language}
-                initialWords={initialWords}
-                onTextChange={(text) => setInitWords(text)}
-              /> */}
-              <PassageForm />
+              {form && (
+                <TranslationForm
+                  onTranslation={handleAddToWordlist}
+                  smallScreen={smallScreen}
+                  displayLang={storedOptions.language}
+                  initialWords={initialWords}
+                  onTextChange={(text) => setInitWords(text)}
+                />
+              )}
+              {!form && <PassageForm onConvert={handleConvert} />}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Button onClick={() => setForm((p) => !p)}>Mode</Button>
+              </div>
 
               <div className="wordlist-container">
                 <Wordlist
@@ -248,6 +268,10 @@ function App() {
           ) : view === "settings" ? (
             <div>
               <Settings storedOptions={storedOptions} onSave={goHome} />
+            </div>
+          ) : view === "passage" ? (
+            <div>
+              <PassageViewer onExit={goHome} passage={passage} />
             </div>
           ) : (
             <div>

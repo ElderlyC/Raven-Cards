@@ -45,7 +45,7 @@ iframe#webpack-dev-server-client-overlay {
   justify-content: center;
 }
 
-.wordlist-container {
+.home .wordlist-container {
   margin: 20px;
   flex: 1;
   max-width: 600px;
