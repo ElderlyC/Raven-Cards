@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import classes from "./PassageViewer.module.css";
 
 // lingq-like paragraph view
 // highlighted words
@@ -7,10 +8,21 @@ import { Button, TextField } from "@mui/material";
 
 const PassageViewer = ({ onExit, passage }) => {
   return (
-    <div>
-      PassageViewer<Button onClick={onExit}>Exit</Button>
-      <TextField value={passage} />
-    </div>
+    <Box className={classes.container}>
+      <Typography>Passage</Typography>
+      <Box className={classes.scroll}>
+        <TextField
+          value={passage}
+          className={classes.textfield}
+          fullWidth
+          variant="outlined"
+          color="primary"
+          multiline
+          rows={7}
+        />
+      </Box>
+      <Button onClick={onExit}>Exit</Button>
+    </Box>
   );
 };
 
