@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import classes from "./PassageViewer.module.css";
 
 // lingq-like paragraph view
@@ -7,11 +7,27 @@ import classes from "./PassageViewer.module.css";
 // clickable, separated words
 
 const PassageViewer = ({ onExit, passage }) => {
+  const lines = passage.trim().split("\n");
+  const wordArr = lines.map((line) => line.split(/\s+/));
+
+  console.log(wordArr);
   return (
     <Box className={classes.container}>
-      <Typography>Passage</Typography>
+      <Typography variant="h2">Passage</Typography>
       <Box className={classes.scroll}>
-        <TextField
+        {wordArr.map((line) => (
+          <Box>
+            {line.map((word) => (
+              <Button
+                style={{ fontSize: "1.5rem", textTransform: "none" }}
+                variant="outlined"
+              >
+                {word}
+              </Button>
+            ))}
+          </Box>
+        ))}
+        {/* <TextField
           value={passage}
           className={classes.textfield}
           fullWidth
@@ -19,9 +35,11 @@ const PassageViewer = ({ onExit, passage }) => {
           color="primary"
           multiline
           rows={7}
-        />
+        /> */}
       </Box>
-      <Button onClick={onExit}>Exit</Button>
+      <Button onClick={onExit} variant="contained">
+        Exit
+      </Button>
     </Box>
   );
 };
