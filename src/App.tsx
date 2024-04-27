@@ -159,7 +159,6 @@ function App() {
   };
 
   const handleConvert = (passage: string) => {
-    console.log("convert", passage);
     setPassage(passage);
     setView("passage");
   };
@@ -200,15 +199,7 @@ function App() {
                 />
               )}
               {!form && <PassageForm onConvert={handleConvert} />}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Button onClick={() => setForm((p) => !p)}>Mode</Button>
-              </div>
+              <Button onClick={() => setForm((p) => !p)}>Mode</Button>
 
               <div className="wordlist-container">
                 <Wordlist

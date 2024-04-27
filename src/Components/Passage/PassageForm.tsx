@@ -11,7 +11,7 @@ const PassageForm = ({ onConvert }) => {
     //unknown words highlighted in blue
     //card words in yellow
     console.log(passage);
-    onConvert(passage);
+    passage && onConvert(passage);
     setPassage("");
   };
   return (
@@ -67,7 +67,7 @@ const PassageForm = ({ onConvert }) => {
           color="primary"
           type="submit"
           size="large"
-          //   disabled={loading}
+          disabled={!passage}
           sx={{
             width: "100%",
             fontWeight: "bold",

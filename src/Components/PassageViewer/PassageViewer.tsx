@@ -2,20 +2,41 @@ import React from "react";
 import { Box, Button, Typography } from "@mui/material";
 import classes from "./PassageViewer.module.css";
 
-// lingq-like paragraph view
+// lingq-like (use pic)
 // highlighted words
 // clickable, separated words
+// translate by word / by sentence
+// words are separated not by spaces but non-letters
 
 const PassageViewer = ({ onExit, passage }) => {
-  const lines = passage.trim().split("\n");
-  const wordArr = lines.map((line) => line.split(/\s+/));
+  // const lines = passage.trim().split("\n");
+  // const wordArr = lines.map((line) =>
+  //   line.split(/\s+/).filter((word) => word !== "")
+  // );
 
-  console.log(wordArr);
+  const wordArr = passage.split(/(\w+|[^\w\s])/).filter(Boolean);
+
   return (
     <Box className={classes.container}>
       <Typography variant="h2">Passage</Typography>
       <Box className={classes.scroll}>
-        {wordArr.map((line) => (
+        {wordArr.map((word) =>
+          /^[a-zA-Z]+$/.test(word) ? (
+            <Button
+              style={{
+                fontSize: "1.5rem",
+                textTransform: "none",
+                minWidth: "20px",
+              }}
+              variant="text"
+            >
+              {word}
+            </Button>
+          ) : (
+            <span style={{ fontSize: "1.5rem" }}>{word}</span>
+          )
+        )}
+        {/* {wordArr.map((line) => (
           <Box>
             {line.map((word) => (
               <Button
@@ -26,17 +47,9 @@ const PassageViewer = ({ onExit, passage }) => {
               </Button>
             ))}
           </Box>
-        ))}
-        {/* <TextField
-          value={passage}
-          className={classes.textfield}
-          fullWidth
-          variant="outlined"
-          color="primary"
-          multiline
-          rows={7}
-        /> */}
+        ))} */}
       </Box>
+      <Box>Word List</Box>
       <Button onClick={onExit} variant="contained">
         Exit
       </Button>
