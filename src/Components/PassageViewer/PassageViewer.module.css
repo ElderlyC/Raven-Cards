@@ -1,6 +1,7 @@
 .container {
   margin: 20px;
-  width: 1000px;
+  width: 1200px;
+  display: flex;
 }
 .scroll {
   border: 2px white solid;
