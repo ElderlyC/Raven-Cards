@@ -16,8 +16,11 @@ import {
 import { enReg, koReg, jaReg } from "../../utilities";
 import classes from "./PassageViewer.module.css";
 
-// lingq-like (use pic)
-// work for 한글 and Japanese chars
+// work on English text first!
+// sentence separator
+// lingq-like (use pic, check site)
+// work for 한글 and Japanese chars - 안전하다 -> 안전하면서, 안전하고. edit words/click stem button to save 안전 to permalist, all words with stem are counted as known
+// --add partial words (suffixes) to known words to make them display as plain text. e.g. 하면서 in 운동하면서 is plain text, 운동 as button
 // highlighted words
 // translate by sentence (sentence separation)
 // -cut sentence tool (click final word in sentence to divide)
@@ -34,9 +37,13 @@ const PassageViewer = ({ onExit, passage }) => {
   const [pairlist, setPairlist] = useState({});
   const pairlistArray: [string, string][] = Object.entries(pairlist);
 
+  // make sentence array for alternate view (sentence view)
   const wordArr = passage
-    .split(/([\w\p{Script=Hangul}]+|[^\w\s])/u)
+    .split(/([\w\p{Script=Hangul}]+|[^\w\s])/u) // need different regex for jp text
     .filter(Boolean);
+
+  //should probably be different dependent on lang of word
+  const isWord = (word) => /^[\p{L}]+$/u.test(word);
 
   const handleTranslate = async (word: string) => {
     if (pairlist[word]) return;
@@ -81,10 +88,13 @@ const PassageViewer = ({ onExit, passage }) => {
         </Typography>
         <Box className={classes.scroll}>
           {wordArr.map((word, index) =>
-            /^[\p{L}']+$/u.test(word) ? (
-              <Tooltip title={pairlist[word] || ""}>
+            //sorting of word/non word done outside return
+            // word === "." && wordArr[index + 1] === " " ? (
+            //   <Box />
+            // ) :
+            isWord(word) ? (
+              <Tooltip title={pairlist[word] || ""} key={index}>
                 <Button
-                  key={index}
                   style={{
                     fontSize: "1.5rem",
                     textTransform: "none",
