@@ -16,7 +16,10 @@ import {
 import { enReg, koReg, jaReg } from "../../utilities";
 import classes from "./PassageViewer.module.css";
 
-// work on English text first!
+// highlight text, press T to translate (selection, T button press)
+// - T button symbol with Tooltip 'Highlight text then press 'T' to translate your selection
+// auto add example sentence (context sentence of a translated word)
+// work on English text first! - single letters are not words
 // sentence separator
 // lingq-like (use pic, check site)
 // work for 한글 and Japanese chars - 안전하다 -> 안전하면서, 안전하고. edit words/click stem button to save 안전 to permalist, all words with stem are counted as known
@@ -37,7 +40,11 @@ const PassageViewer = ({ onExit, passage }) => {
   const [pairlist, setPairlist] = useState({});
   const pairlistArray: [string, string][] = Object.entries(pairlist);
 
+  const [selectedText, setSelectedText] = useState("");
+
   // make sentence array for alternate view (sentence view)
+  const sentenceArr = passage.split(". ");
+  //console.log(sentenceArr);
   const wordArr = passage
     .split(/([\w\p{Script=Hangul}]+|[^\w\s])/u) // need different regex for jp text
     .filter(Boolean);
@@ -47,6 +54,7 @@ const PassageViewer = ({ onExit, passage }) => {
 
   const handleTranslate = async (word: string) => {
     if (pairlist[word]) return;
+    console.log("translating...");
 
     setPairlist((prevPairlist) => ({
       ...prevPairlist,
@@ -74,7 +82,17 @@ const PassageViewer = ({ onExit, passage }) => {
     setLangs(([lang1, lang2, lang3]) => [lang2, lang1, lang3]);
   };
 
-  console.log(wordArr);
+  const handleSelection = () => {
+    const selection = window.getSelection();
+    setSelectedText(selection?.toString() || "");
+  };
+
+  const handleKeyDown = (event) => {
+    console.log("keydown");
+    if (event.key === "t" || event.key === "T") handleTranslate(selectedText);
+  };
+
+  console.log(selectedText);
 
   return (
     <Box className={classes.container}>
@@ -86,7 +104,17 @@ const PassageViewer = ({ onExit, passage }) => {
             {langNames[langs[1]]}
           </Button>
         </Typography>
-        <Box className={classes.scroll}>
+        <Box
+          className={classes.scroll}
+          onMouseUp={handleSelection}
+          onKeyDown={handleKeyDown}
+          tabIndex={0}
+        >
+          {sentenceArr.map((sentence, index) => (
+            <Button key={index} onClick={() => handleTranslate(sentence)}>
+              {sentence}
+            </Button>
+          ))}
           {wordArr.map((word, index) =>
             //sorting of word/non word done outside return
             // word === "." && wordArr[index + 1] === " " ? (
@@ -94,21 +122,24 @@ const PassageViewer = ({ onExit, passage }) => {
             // ) :
             isWord(word) ? (
               <Tooltip title={pairlist[word] || ""} key={index}>
-                <Button
+                <span
+                  className={classes.wordSpan}
                   style={{
                     fontSize: "1.5rem",
                     textTransform: "none",
                     minWidth: "20px",
-                    padding: "0",
+                    borderRadius: "3px",
+                    // color: word === "also" ? "green" : "",  // conditional colouring (known/unknown highlighting)
                   }}
-                  variant="text"
                   onClick={() => handleTranslate(word)}
                 >
                   {word}
-                </Button>
+                </span>
               </Tooltip>
             ) : (
-              <span style={{ fontSize: "1.5rem" }}>{word}</span>
+              <span style={{ fontSize: "1.5rem" }} key={index}>
+                {word}
+              </span>
             )
           )}
         </Box>
@@ -127,6 +158,7 @@ const PassageViewer = ({ onExit, passage }) => {
               <TableRow>
                 <TableCell>Word</TableCell>
                 <TableCell>Translation</TableCell>
+                <TableCell>Delete</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -134,6 +166,17 @@ const PassageViewer = ({ onExit, passage }) => {
                 <TableRow>
                   <TableCell>{word}</TableCell>
                   <TableCell>{translation}</TableCell>
+                  <TableCell>
+                    <Button
+                      onClick={() => {
+                        const newList = { ...pairlist };
+                        delete newList[word];
+                        setPairlist(newList);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -8,6 +8,13 @@
   margin: 20px;
   overflow: auto;
   height: 500px;
+  padding: 20px;
+}
+
+.wordSpan:hover {
+  color: black;
+  background-color: white;
+  cursor: pointer;
 }
 
 ::-webkit-scrollbar {
