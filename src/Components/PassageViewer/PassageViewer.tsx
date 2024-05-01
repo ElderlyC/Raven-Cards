@@ -13,6 +13,7 @@ import {
   TableContainer,
   Paper,
 } from "@mui/material";
+import TranslateIcon from "@mui/icons-material/Translate";
 import { enReg, koReg, jaReg } from "../../utilities";
 import classes from "./PassageViewer.module.css";
 
@@ -42,8 +43,10 @@ const PassageViewer = ({ onExit, passage }) => {
 
   const [selectedText, setSelectedText] = useState("");
 
+  const [sentenceView, setView] = useState(false);
+
   // make sentence array for alternate view (sentence view)
-  const sentenceArr = passage.split(". ");
+  const sentenceArr = passage.split(/\.\s+/);
   //console.log(sentenceArr);
   const wordArr = passage
     .split(/([\w\p{Script=Hangul}]+|[^\w\s])/u) // need different regex for jp text
@@ -54,6 +57,7 @@ const PassageViewer = ({ onExit, passage }) => {
 
   const handleTranslate = async (word: string) => {
     if (pairlist[word]) return;
+    if (!word) return;
     console.log("translating...");
 
     setPairlist((prevPairlist) => ({
@@ -99,6 +103,12 @@ const PassageViewer = ({ onExit, passage }) => {
       <Box sx={{ flex: 4 }}>
         <Typography variant="h2">Passage</Typography>
         <Typography variant="h6">
+          <Tooltip title="Highlight text then press T to translate your selection">
+            <Button onClick={() => handleTranslate(selectedText)}>
+              <TranslateIcon />
+            </Button>
+          </Tooltip>
+
           <span>Translating to </span>
           <Button size="large" onClick={handleLangShuffle}>
             {langNames[langs[1]]}
@@ -110,39 +120,53 @@ const PassageViewer = ({ onExit, passage }) => {
           onKeyDown={handleKeyDown}
           tabIndex={0}
         >
-          {sentenceArr.map((sentence, index) => (
-            <Button key={index} onClick={() => handleTranslate(sentence)}>
-              {sentence}
-            </Button>
-          ))}
-          {wordArr.map((word, index) =>
-            //sorting of word/non word done outside return
-            // word === "." && wordArr[index + 1] === " " ? (
-            //   <Box />
-            // ) :
-            isWord(word) ? (
-              <Tooltip title={pairlist[word] || ""} key={index}>
+          {sentenceView &&
+            sentenceArr.map((sentence, index) => (
+              <div style={{ textAlign: "left" }}>
                 <span
-                  className={classes.wordSpan}
                   style={{
                     fontSize: "1.5rem",
-                    textTransform: "none",
-                    minWidth: "20px",
                     borderRadius: "3px",
-                    // color: word === "also" ? "green" : "",  // conditional colouring (known/unknown highlighting)
                   }}
-                  onClick={() => handleTranslate(word)}
+                  className={classes.sentenceSpan}
+                  key={index}
+                  onClick={() => handleTranslate(sentence)}
                 >
+                  {sentence}
+                </span>
+              </div>
+            ))}
+          {!sentenceView &&
+            wordArr.map((word, index) =>
+              //sorting of word/non word done outside return
+              // word === "." && wordArr[index + 1] === " " ? (
+              //   <Box />
+              // ) :
+              isWord(word) ? (
+                <Tooltip title={pairlist[word] || ""} key={index}>
+                  <span
+                    className={classes.wordSpan}
+                    style={{
+                      fontSize: "1.5rem",
+                      minWidth: "20px",
+                      borderRadius: "3px",
+                      // color: word === "also" ? "green" : "",  // conditional colouring (known/unknown highlighting)
+                    }}
+                    onClick={() => handleTranslate(word)}
+                  >
+                    {word}
+                  </span>
+                </Tooltip>
+              ) : (
+                <span style={{ fontSize: "1.5rem" }} key={index}>
                   {word}
                 </span>
-              </Tooltip>
-            ) : (
-              <span style={{ fontSize: "1.5rem" }} key={index}>
-                {word}
-              </span>
-            )
-          )}
+              )
+            )}
         </Box>
+        <Button variant="contained" onClick={() => setView((p) => !p)}>
+          {sentenceView ? "Passage View" : "Sentence View"}
+        </Button>
         <Button onClick={onExit} variant="contained">
           Exit
         </Button>
