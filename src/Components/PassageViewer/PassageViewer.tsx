@@ -48,7 +48,10 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
   const [sentenceView, setView] = useState(false);
 
   // make sentence array for alternate view (sentence view)
-  const sentenceArr = passage.split(/\.\s+/);
+  const sentenceArr = passage
+    .split(/(?<=[.!?”])\s+|\s+(?=\[)/)
+    .filter((sentence) => sentence.length > 1);
+
   //console.log(sentenceArr);
   const wordArr = passage
     .split(/([\w\p{Script=Hangul}]+|[^\w\s])/u) // need different regex for jp text
@@ -60,7 +63,6 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
   const handleTranslate = async (word: string) => {
     if (pairlist[word]) return;
     if (!word) return;
-    console.log("translating...");
 
     setPairlist((prevPairlist) => ({
       ...prevPairlist,
@@ -96,8 +98,6 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
   const handleKeyDown = (event) => {
     if (event.key === "t" || event.key === "T") handleTranslate(selectedText);
   };
-
-  console.log("selectedText");
 
   return (
     <Box className={classes.container}>
