@@ -14,7 +14,6 @@ import ImportExport from "./Components/ImportExport/ImportExport";
 import Settings from "./Components/Settings/Settings";
 import { koReg, jaReg } from "./utilities";
 import ActionButtons from "./Components/ActionButtons/ActionButtons";
-import PassageForm from "./Components/Passage/PassageForm";
 import PassageViewer from "./Components/PassageViewer/PassageViewer";
 
 const darkTheme = createTheme({
@@ -55,8 +54,8 @@ function App() {
   const [reviewCards, setReviewCards] = useState<Deck>([]);
 
   const [initialWords, setInitWords] = useState("");
-  const [form, setForm] = useState(true); // default translation form
   const [passage, setPassage] = useState("");
+  const [sourceLang, setSourceLang] = useState("");
 
   const storedOptions = localStorage.getItem("options")
     ? JSON.parse(localStorage.getItem("options") as string)
@@ -158,8 +157,9 @@ function App() {
     }
   };
 
-  const handleConvert = (passage: string) => {
+  const handleConvert = (sourceLang: string, passage: string) => {
     setPassage(passage);
+    setSourceLang(sourceLang);
     setView("passage");
   };
 
@@ -189,17 +189,14 @@ function App() {
         <header className="App-header">
           {view === "home" ? (
             <div className="home">
-              {form && (
-                <TranslationForm
-                  onTranslation={handleAddToWordlist}
-                  smallScreen={smallScreen}
-                  displayLang={storedOptions.language}
-                  initialWords={initialWords}
-                  onTextChange={(text) => setInitWords(text)}
-                />
-              )}
-              {!form && <PassageForm onConvert={handleConvert} />}
-              <Button onClick={() => setForm((p) => !p)}>Mode</Button>
+              <TranslationForm
+                onTranslation={handleAddToWordlist}
+                smallScreen={smallScreen}
+                displayLang={storedOptions.language}
+                initialWords={initialWords}
+                onTextChange={(text) => setInitWords(text)}
+                onConvert={handleConvert}
+              />
 
               <div className="wordlist-container">
                 <Wordlist
@@ -262,7 +259,11 @@ function App() {
             </div>
           ) : view === "passage" ? (
             <div>
-              <PassageViewer onExit={goHome} passage={passage} />
+              <PassageViewer
+                onExit={goHome}
+                passage={passage}
+                sourceLang={sourceLang}
+              />
             </div>
           ) : (
             <div>

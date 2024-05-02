@@ -17,8 +17,6 @@ import TranslateIcon from "@mui/icons-material/Translate";
 import { enReg, koReg, jaReg } from "../../utilities";
 import classes from "./PassageViewer.module.css";
 
-// highlight text, press T to translate (selection, T button press)
-// - T button symbol with Tooltip 'Highlight text then press 'T' to translate your selection
 // auto add example sentence (context sentence of a translated word)
 // work on English text first! - single letters are not words
 // sentence separator
@@ -32,10 +30,14 @@ import classes from "./PassageViewer.module.css";
 // translated words are added to permalist, don't need to to be translated again
 // fixed column widths
 
-const PassageViewer = ({ onExit, passage }) => {
-  //split up 'words' based on passage language - "can't" "한국어를" "関西弁で"＋"喋る" (spaces + particles)
+//for known words, compare to an array of 'known words', can click a word to make it known
+//unknown words highlighted in blue
+//card words in yellow
 
-  const [langs, setLangs] = useState(["en", "ko", "ja"]);
+const PassageViewer = ({ onExit, passage, sourceLang }) => {
+  //split up 'words' based on passage language - "can't" "한국어를" "関西弁で"＋"喋る" (spaces + particles)
+  const langList = ["en", "ko", "ja"].filter((lang) => lang !== sourceLang);
+  const [langs, setLangs] = useState(langList);
   const langNames = { en: "English", ko: "Korean", ja: "Japanese" };
 
   const [pairlist, setPairlist] = useState({});
@@ -70,7 +72,7 @@ const PassageViewer = ({ onExit, passage }) => {
         translation: string;
       }>(
         "https://australia-southeast1-ko-en-cards.cloudfunctions.net/Ko-En-Cards",
-        { source: langs[0], target: langs[1], text: word }
+        { source: sourceLang, target: langs[0], text: word }
       );
 
       setPairlist((prevPairlist) => ({
@@ -83,7 +85,7 @@ const PassageViewer = ({ onExit, passage }) => {
   };
 
   const handleLangShuffle = () => {
-    setLangs(([lang1, lang2, lang3]) => [lang2, lang1, lang3]);
+    setLangs(([lang1, lang2]) => [lang2, lang1]);
   };
 
   const handleSelection = () => {
@@ -92,11 +94,10 @@ const PassageViewer = ({ onExit, passage }) => {
   };
 
   const handleKeyDown = (event) => {
-    console.log("keydown");
     if (event.key === "t" || event.key === "T") handleTranslate(selectedText);
   };
 
-  console.log(selectedText);
+  console.log("selectedText");
 
   return (
     <Box className={classes.container}>
@@ -109,9 +110,9 @@ const PassageViewer = ({ onExit, passage }) => {
             </Button>
           </Tooltip>
 
-          <span>Translating to </span>
+          <span>Translating {langNames[sourceLang]} to </span>
           <Button size="large" onClick={handleLangShuffle}>
-            {langNames[langs[1]]}
+            {langNames[langs[0]]}
           </Button>
         </Typography>
         <Box
@@ -186,8 +187,8 @@ const PassageViewer = ({ onExit, passage }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {pairlistArray.reverse().map(([word, translation]) => (
-                <TableRow>
+              {pairlistArray.reverse().map(([word, translation], index) => (
+                <TableRow key={index}>
                   <TableCell>{word}</TableCell>
                   <TableCell>{translation}</TableCell>
                   <TableCell>

@@ -3,6 +3,7 @@ import { WordPair } from "../../types";
 import { TextField, Button, Typography, Box } from "@mui/material";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 import SwapHoriz from "@mui/icons-material/SwapHoriz";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { enReg, koReg, jaReg } from "../../utilities";
 import { pageContent } from "./TranslationText";
 import axios from "axios";
@@ -14,6 +15,7 @@ type TranslationFormTypes = {
   smallScreen: boolean;
   initialWords: string;
   onTextChange: (text: string) => void;
+  onConvert: (sourceLang: string, passage: string) => void;
 };
 
 const TranslationForm: React.FC<TranslationFormTypes> = ({
@@ -22,21 +24,26 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
   smallScreen,
   initialWords,
   onTextChange,
+  onConvert,
 }) => {
   const [text, setText] = useState(initialWords || "");
   const [langs, setLangs] = useState(["ko", "en", "ja"]);
   const [loading, setLoading] = useState(false);
   const [changedIcon, setChangeIcon] = useState(false);
+  const [form, setForm] = useState(true); // default translation form
 
   const {
     title,
+    title2,
     language1,
     language2,
     language3,
     inputLabel,
     placeholder,
+    placeholder2,
     translating,
     translate,
+    convert,
   } = pageContent[displayLang];
 
   const langNames = { en: language1, ko: language2, ja: language3 };
@@ -44,21 +51,24 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!text) return;
-    setLoading(true);
-    try {
-      const response = await axios.post<{
-        translation: string;
-      }>(
-        "https://australia-southeast1-ko-en-cards.cloudfunctions.net/Ko-En-Cards",
-        { source: langs[0], target: langs[1], text: text }
-      );
-      onTranslation({ source: text, target: response.data.translation });
-    } catch (error) {
-      console.error(error);
+    if (!form) onConvert(langs[0], text);
+    else {
+      setLoading(true);
+      try {
+        const response = await axios.post<{
+          translation: string;
+        }>(
+          "https://australia-southeast1-ko-en-cards.cloudfunctions.net/Ko-En-Cards",
+          { source: langs[0], target: langs[1], text: text }
+        );
+        onTranslation({ source: text, target: response.data.translation });
+      } catch (error) {
+        console.error(error);
+      }
+      setLoading(false);
     }
     setText("");
     onTextChange("");
-    setLoading(false);
   };
 
   const handleShuffle = (index: number) => {
@@ -100,9 +110,22 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
     }
   }, [initialWords]);
 
+  useEffect(() => {
+    document.getElementById("form")?.focus();
+  }, [form]);
+
   return (
     <div className={classes.container}>
-      <Typography variant="h2">{title}</Typography>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Button disabled />
+        <Typography variant="h2" className={classes.title}>
+          {form ? title : title2}
+          <Button onClick={() => setForm((p) => !p)} sx={{ height: "100%" }}>
+            <ArrowForwardIcon fontSize="large" />
+          </Button>
+        </Typography>
+      </Box>
+
       <Box className={classes.langs}>
         <Typography variant="h5" fontWeight={"bold"}>
           <Button
@@ -133,10 +156,11 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
       <form onSubmit={handleSubmit}>
         <Box className={classes.scroll}>
           <TextField
+            id="form"
             fullWidth
             autoFocus={!smallScreen}
-            label={inputLabel}
-            placeholder={placeholder}
+            label={form ? inputLabel : ""}
+            placeholder={form ? placeholder : placeholder2}
             variant="outlined"
             color="primary"
             multiline
@@ -147,19 +171,35 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
             className={classes.textfield}
           />
         </Box>
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          size="large"
-          disabled={loading}
-          sx={{
-            width: "100%",
-            fontWeight: "bold",
-          }}
-        >
-          {loading ? translating : translate}
-        </Button>
+        {form ? (
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            size="large"
+            disabled={loading}
+            sx={{
+              width: "100%",
+              fontWeight: "bold",
+            }}
+          >
+            {loading ? translating : translate}
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            size="large"
+            disabled={!text}
+            sx={{
+              width: "100%",
+              fontWeight: "bold",
+            }}
+          >
+            {convert}
+          </Button>
+        )}
       </form>
     </div>
   );
