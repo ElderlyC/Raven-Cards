@@ -49,16 +49,17 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
 
   // make sentence array for alternate view (sentence view)
   const sentenceArr = passage
-    .split(/(?<=[.!?”])\s+|\s+(?=\[)/)
-    .filter((sentence) => sentence.length > 1);
+    .split(/([.!?“”])\s*|\s+\[/)
+    .filter((sentence) => sentence.trim().length > 0); // lookahead removed (not supported by safari)
 
   //console.log(sentenceArr);
   const wordArr = passage
-    .split(/([\w\p{Script=Hangul}]+|[^\w\s])/u) // need different regex for jp text
+    .split(/([\w가-힣]+|[^\w\s])/) // need different regex for jp text
+    // .split(/([\w\p{Script=Hangul}]+|[^\w\s])/u) //potentially the offending code
     .filter(Boolean);
 
   //should probably be different dependent on lang of word
-  const isWord = (word) => /^[\p{L}]+$/u.test(word);
+  const isWord = (word) => /^[a-zA-Z]+$/u.test(word);
 
   const handleTranslate = async (word: string) => {
     if (pairlist[word]) return;

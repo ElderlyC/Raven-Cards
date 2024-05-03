@@ -81,7 +81,7 @@ iframe#webpack-dev-server-client-overlay {
   .imageContainer {
     width: 90vw;
   }
-  .wordlist-container {
+  .home .wordlist-container {
     margin: 10px;
   }
   .wordlist-container button {
