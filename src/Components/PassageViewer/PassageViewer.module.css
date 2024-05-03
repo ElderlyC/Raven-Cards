@@ -2,6 +2,7 @@
   margin: 20px;
   max-width: 1200px;
   display: flex;
+  font-size: 1.5rem;
 }
 .scroll {
   border: 2px white solid;
@@ -9,6 +10,25 @@
   overflow: auto;
   height: 500px;
   padding: 20px;
+  text-align: left;
+}
+.sentenceSpan,
+.wordSpan {
+  border-radius: 3px;
+  min-width: 20px;
+}
+.sentenceDivider {
+  border: white 1px solid;
+}
+
+.wordList {
+  flex: 2;
+  margin: 0 20px 0 80px;
+  min-height: 300px;
+}
+.tableContainer {
+  max-height: 530px;
+  border: 1px white solid;
 }
 
 .sentenceSpan:hover,
@@ -28,18 +48,11 @@
   background-color: #1c1c1c;
 }
 
-.langs {
-  margin: 10px;
-}
-
-.textfield textarea {
-  font-size: 2rem;
-  line-height: 3rem;
-}
-
 @media (max-width: 740px) {
   .container {
     margin: 10px;
+    flex-direction: column;
+    font-size: 1rem;
   }
   .container h2 {
     font-size: 2rem;
@@ -47,9 +60,16 @@
   .container h5 {
     font-size: 1rem;
   }
-  .container textarea {
-    font-size: 1rem;
-    line-height: 1.2rem;
+  .scroll {
+    margin: 5px;
+    height: 200px;
+    padding: 5px;
+  }
+  .wordList {
+    margin: 5px;
+  }
+  .tableContainer {
+    max-height: 230px;
   }
   .container button {
     font-size: 0.8rem;
@@ -58,5 +78,8 @@
   }
   .langs {
     margin: 5px;
+  }
+  .listTitle {
+    margin: 10px 0;
   }
 }

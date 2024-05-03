@@ -14,7 +14,7 @@ import {
   Paper,
 } from "@mui/material";
 import TranslateIcon from "@mui/icons-material/Translate";
-import { enReg, koReg, jaReg } from "../../utilities";
+// import { enReg, koReg, jaReg } from "../../utilities";
 import classes from "./PassageViewer.module.css";
 
 // auto add example sentence (context sentence of a translated word)
@@ -47,19 +47,16 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
 
   const [sentenceView, setView] = useState(false);
 
-  // make sentence array for alternate view (sentence view)
   const sentenceArr = passage
-    .split(/([.!?“”])\s*|\s+\[/)
-    .filter((sentence) => sentence.trim().length > 0); // lookahead removed (not supported by safari)
+    .split(/([-a-zA-Z\s“,’—+]+[.!?”])/)
+    .filter((sentence) => sentence?.trim()?.length > 0); // lookahead removed (not supported by safari)
 
-  //console.log(sentenceArr);
   const wordArr = passage
-    .split(/([\w가-힣]+|[^\w\s])/) // need different regex for jp text
-    // .split(/([\w\p{Script=Hangul}]+|[^\w\s])/u) //potentially the offending code
+    .split(/([\w가-힣’]+)/) // need different regex for jp text
     .filter(Boolean);
 
-  //should probably be different dependent on lang of word
-  const isWord = (word) => /^[a-zA-Z]+$/u.test(word);
+  //should probably be different dependent on sourceLang or lang of word
+  const isWord = (word) => /^[a-zA-Z’]+$/u.test(word);
 
   const handleTranslate = async (word: string) => {
     if (pairlist[word]) return;
@@ -124,45 +121,33 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
         >
           {sentenceView &&
             sentenceArr.map((sentence, index) => (
-              <div style={{ textAlign: "left" }}>
+              <div key={index}>
                 <span
-                  style={{
-                    fontSize: "1.5rem",
-                    borderRadius: "3px",
-                  }}
                   className={classes.sentenceSpan}
-                  key={index}
                   onClick={() => handleTranslate(sentence)}
                 >
                   {sentence}
                 </span>
+                {index !== sentenceArr.length - 1 && (
+                  <div className={classes.sentenceDivider}></div>
+                )}
               </div>
             ))}
           {!sentenceView &&
             wordArr.map((word, index) =>
-              //sorting of word/non word done outside return
-              // word === "." && wordArr[index + 1] === " " ? (
-              //   <Box />
-              // ) :
               isWord(word) ? (
                 <Tooltip title={pairlist[word] || ""} key={index}>
                   <span
                     className={classes.wordSpan}
-                    style={{
-                      fontSize: "1.5rem",
-                      minWidth: "20px",
-                      borderRadius: "3px",
-                      // color: word === "also" ? "green" : "",  // conditional colouring (known/unknown highlighting)
-                    }}
+                    // color: word === "also" ? "green" : "",  // conditional colouring (known/unknown highlighting)
+                    style={{}}
                     onClick={() => handleTranslate(word)}
                   >
                     {word}
                   </span>
                 </Tooltip>
               ) : (
-                <span style={{ fontSize: "1.5rem" }} key={index}>
-                  {word}
-                </span>
+                <span key={index}>{word}</span>
               )
             )}
         </Box>
@@ -174,11 +159,11 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
         </Button>
       </Box>
 
-      <Box sx={{ flex: 2, margin: "20px 20px 20px 80px" }}>
-        <Typography variant="h4" margin={"20px 0"}>
+      <Box className={classes.wordList}>
+        <Typography variant="h2" className={classes.listTitle}>
           Word List
         </Typography>
-        <TableContainer sx={{ maxHeight: 535, border: "1px white solid" }}>
+        <TableContainer className={classes.tableContainer}>
           <Table stickyHeader>
             <TableHead>
               <TableRow>
