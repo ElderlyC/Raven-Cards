@@ -20,7 +20,7 @@ export const pageContent = {
     language3: "일본어",
     inputLabel: "번역할 내용",
     placeholder: "행별로 구분하여 단어/구를 입력하세요",
-    placeholder2: "변환할 단락를 입력하세요",
+    placeholder2: "변환할 단락을 입력하세요",
     translating: "번역 중...",
     translate: "번역하기",
     convert: "변환하기",

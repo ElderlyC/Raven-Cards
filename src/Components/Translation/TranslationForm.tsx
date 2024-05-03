@@ -101,6 +101,11 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
       setLangs(["en", "ko", "ja"]);
   };
 
+  const handleFormChange = () => {
+    setForm((p) => !p);
+    if (!smallScreen) document.getElementById("form")?.focus();
+  };
+
   useEffect(() => {
     if (initialWords) {
       const lastChar = initialWords.slice(-1);
@@ -110,17 +115,13 @@ const TranslationForm: React.FC<TranslationFormTypes> = ({
     }
   }, [initialWords]);
 
-  useEffect(() => {
-    document.getElementById("form")?.focus();
-  }, [form]);
-
   return (
     <div className={classes.container}>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Button disabled />
         <Typography variant="h2" className={classes.title}>
           {form ? title : title2}
-          <Button onClick={() => setForm((p) => !p)} sx={{ height: "100%" }}>
+          <Button onClick={handleFormChange} sx={{ height: "100%" }}>
             <ArrowForwardIcon fontSize="large" />
           </Button>
         </Typography>

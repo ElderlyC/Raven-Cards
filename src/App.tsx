@@ -257,15 +257,15 @@ function App() {
             <div>
               <Settings storedOptions={storedOptions} onSave={goHome} />
             </div>
-          ) : view === "passage" ? (
-            <div>
-              <PassageViewer
-                onExit={goHome}
-                passage={passage}
-                sourceLang={sourceLang}
-              />
-            </div>
           ) : (
+            // ) : view === "passage" ? (
+            //   <div>
+            //     <PassageViewer
+            //       onExit={goHome}
+            //       passage={passage}
+            //       sourceLang={sourceLang}
+            //     />
+            //   </div>
             <div>
               <Typography variant="h3">View not set [WIP]</Typography>
               <Button onClick={goHome}>Go Back!</Button>
