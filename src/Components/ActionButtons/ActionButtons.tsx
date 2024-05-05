@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Card, Deck } from "../../App";
-import { Button, Badge } from "@mui/material";
+import { Button, Badge, Typography } from "@mui/material";
 import QuizIcon from "@mui/icons-material/Quiz";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { pageContent } from "./ActionsText";
@@ -115,9 +115,21 @@ const ActionButtons = ({
           }}
           onClick={() => onChangeView("settings")}
         >
-          <SettingsIcon sx={{ marginRight: "4px" }} />
-          <span>{settings}</span>
-          <div style={{ marginLeft: "20px" }}></div>
+          <SettingsIcon
+            sx={{
+              marginRight: "4px",
+              "@media (max-width: 740px)": { marginRight: 0 },
+            }}
+          />
+          <Typography
+            sx={{
+              marginRight: "20px",
+              "@media (max-width: 740px)": { marginRight: 0 },
+            }}
+            variant="inherit"
+          >
+            {settings}
+          </Typography>
         </Button>
       </div>
     </div>

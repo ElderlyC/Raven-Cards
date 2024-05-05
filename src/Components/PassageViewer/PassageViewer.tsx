@@ -17,6 +17,9 @@ import TranslateIcon from "@mui/icons-material/Translate";
 // import { enReg, koReg, jaReg } from "../../utilities";
 import classes from "./PassageViewer.module.css";
 
+// fix main page on half width
+// bring sentence back into view when clicked again - delete then add again using variable
+
 // auto add example sentence (context sentence of a translated word)
 // work on English text first! - single letters are not words
 // sentence separator

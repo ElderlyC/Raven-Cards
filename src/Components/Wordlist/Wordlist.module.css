@@ -33,10 +33,16 @@
   max-height: 350px;
   overflow-y: auto;
 }
-
+@media (max-width: 1000px) {
+  .container h2 {
+    font-size: 2rem;
+    height: 47px;
+  }
+}
 @media (max-width: 740px) {
   .container h2 {
     font-size: 2rem;
+    height: auto;
   }
   .titles {
     height: 40px;
