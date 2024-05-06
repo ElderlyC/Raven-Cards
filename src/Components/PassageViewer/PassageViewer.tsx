@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import {
   Box,
@@ -17,18 +17,13 @@ import TranslateIcon from "@mui/icons-material/Translate";
 // import { enReg, koReg, jaReg } from "../../utilities";
 import classes from "./PassageViewer.module.css";
 
-// fix main page on half width
-// bring sentence back into view when clicked again - delete then add again using variable
-
+// add flashcard function
 // auto add example sentence (context sentence of a translated word)
 // work on English text first! - single letters are not words
-// sentence separator
 // lingq-like (use pic, check site)
 // work for 한글 and Japanese chars - 안전하다 -> 안전하면서, 안전하고. edit words/click stem button to save 안전 to permalist, all words with stem are counted as known
 // --add partial words (suffixes) to known words to make them display as plain text. e.g. 하면서 in 운동하면서 is plain text, 운동 as button
 // highlighted words
-// translate by sentence (sentence separation)
-// -cut sentence tool (click final word in sentence to divide)
 // words are separated not by spaces but non-letters
 // translated words are added to permalist, don't need to to be translated again
 // fixed column widths
@@ -44,13 +39,16 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
   const langNames = { en: "English", ko: "Korean", ja: "Japanese" };
 
   const [pairlist, setPairlist] = useState({});
+  //const [reverse, setReverse] = useState(true);
   const pairlistArray: [string, string][] = Object.entries(pairlist);
+  const [wordCount, setWordCount] = useState(pairlistArray.length);
 
   const [selectedText, setSelectedText] = useState("");
 
   const [sentenceView, setView] = useState(false);
 
   const sentenceArr = passage
+    .replace(/\n/g, " ")
     .split(/([-a-zA-Z\s“,’—+]+[.!?”])/)
     .filter((sentence) => sentence?.trim()?.length > 0); // lookahead removed (not supported by safari)
 
@@ -62,8 +60,16 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
   const isWord = (word) => /^[a-zA-Z’]+$/u.test(word);
 
   const handleTranslate = async (word: string) => {
-    if (pairlist[word]) return;
     if (!word) return;
+    if (pairlist[word]) {
+      const refresh = pairlist[word];
+      delete pairlist[word];
+      setPairlist((prevPairlist) => ({
+        ...prevPairlist,
+        [word]: refresh,
+      }));
+      return;
+    }
 
     setPairlist((prevPairlist) => ({
       ...prevPairlist,
@@ -99,6 +105,12 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
   const handleKeyDown = (event) => {
     if (event.key === "t" || event.key === "T") handleTranslate(selectedText);
   };
+
+  useEffect(() => {
+    setWordCount(pairlistArray.length);
+    const container = document.getElementById("tablecontainer");
+    if (container) container.scrollTo(0, container.scrollHeight);
+  }, [pairlistArray]);
 
   return (
     <Box className={classes.container}>
@@ -166,17 +178,17 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
         <Typography variant="h2" className={classes.listTitle}>
           Word List
         </Typography>
-        <TableContainer className={classes.tableContainer}>
+        <TableContainer className={classes.tableContainer} id="tablecontainer">
           <Table stickyHeader>
             <TableHead>
               <TableRow>
-                <TableCell>Word</TableCell>
+                <TableCell width={110}>Words ({wordCount})</TableCell>
                 <TableCell>Translation</TableCell>
                 <TableCell>Delete</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {pairlistArray.reverse().map(([word, translation], index) => (
+              {pairlistArray.map(([word, translation], index) => (
                 <TableRow key={index}>
                   <TableCell>{word}</TableCell>
                   <TableCell>{translation}</TableCell>

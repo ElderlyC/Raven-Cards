@@ -129,7 +129,14 @@ function App() {
           );
       } else {
         setMeaning(response.data.meaning);
-        response.data.examples && setExamples(response.data.examples);
+        response.data.examples
+          ? setExamples(response.data.examples)
+          : setExamples(() => {
+              const examples = response.data.object.examples;
+              examples[0].text = examples[1].translatedText;
+              examples[0].translatedText = examples[1].text;
+              return examples;
+            });
         setHanja(response.data.hanjaEntry);
       }
     } catch (error) {
