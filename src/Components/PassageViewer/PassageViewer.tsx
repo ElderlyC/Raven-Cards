@@ -31,7 +31,7 @@ import classes from "./PassageViewer.module.css";
 
 //for known words, compare to an array of 'known words', can click a word to make it known
 //unknown words highlighted in blue
-//card words in yellow
+//deck card words in yellow - pull from APP.tsx
 
 // image translation on home screen
 

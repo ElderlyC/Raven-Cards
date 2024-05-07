@@ -2,9 +2,9 @@ Minify Tasks
 hosting using google cloud functions!
 
 To Finish:
-23/4
-button swaps translation form with passage form
--input paragraph in passage mode
+image translation feature
+
+passage mode
 -known words (이다,本当に) are blank (known words array)
 -card words are highlighted in yellow (from Deck)
 -new words are highlighted blue

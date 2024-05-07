@@ -133,8 +133,10 @@ function App() {
           ? setExamples(response.data.examples)
           : setExamples(() => {
               const examples = response.data.object.examples;
-              examples[0].text = examples[1].translatedText;
-              examples[0].translatedText = examples[1].text;
+              if (examples.length > 1) {
+                examples[0].text = examples[1].translatedText;
+                examples[0].translatedText = examples[1].text;
+              }
               return examples;
             });
         setHanja(response.data.hanjaEntry);
