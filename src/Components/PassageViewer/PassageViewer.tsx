@@ -17,8 +17,9 @@ import TranslateIcon from "@mui/icons-material/Translate";
 // import { enReg, koReg, jaReg } from "../../utilities";
 import classes from "./PassageViewer.module.css";
 
-// add flashcard function
-// auto add example sentence (context sentence of a translated word)
+// add flashcard function [addcard component OR send pairs to wordlist]
+// -auto add example sentence (context sentence of a translated word)
+// Text file
 // work on English text first! - single letters are not words
 // lingq-like (use pic, check site)
 // work for 한글 and Japanese chars - 안전하다 -> 안전하면서, 안전하고. edit words/click stem button to save 안전 to permalist, all words with stem are counted as known
@@ -31,6 +32,8 @@ import classes from "./PassageViewer.module.css";
 //for known words, compare to an array of 'known words', can click a word to make it known
 //unknown words highlighted in blue
 //card words in yellow
+
+// image translation on home screen
 
 const PassageViewer = ({ onExit, passage, sourceLang }) => {
   //split up 'words' based on passage language - "can't" "한국어를" "関西弁で"＋"喋る" (spaces + particles)
@@ -47,9 +50,14 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
 
   const [sentenceView, setView] = useState(false);
 
+  const storedWords = localStorage.getItem("seenWords");
+  const [seenWords, setSeenWords] = useState(
+    storedWords ? JSON.parse(storedWords) : {}
+  );
+
   const sentenceArr = passage
     .replace(/\n/g, " ")
-    .split(/([-a-zA-Z\s“,’—+]+[.!?”])/)
+    .split(/([^.?!]+[.?!]+[”]?)/)
     .filter((sentence) => sentence?.trim()?.length > 0); // lookahead removed (not supported by safari)
 
   const wordArr = passage
@@ -88,6 +96,11 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
         ...prevPairlist,
         [word]: response.data.translation,
       }));
+      // Add to permalist here for future recognition, un/known typing
+      setSeenWords((list) => ({
+        ...list,
+        [word]: response.data.translation,
+      }));
     } catch (error) {
       console.error(error);
     }
@@ -111,6 +124,10 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
     const container = document.getElementById("tablecontainer");
     if (container) container.scrollTo(0, container.scrollHeight);
   }, [pairlistArray]);
+
+  useEffect(() => {
+    localStorage.setItem("seenWords", JSON.stringify(seenWords));
+  }, [seenWords]);
 
   return (
     <Box className={classes.container}>
@@ -136,27 +153,38 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
         >
           {sentenceView &&
             sentenceArr.map((sentence, index) => (
-              <div key={index}>
-                <span
-                  className={classes.sentenceSpan}
-                  onClick={() => handleTranslate(sentence)}
-                >
-                  {sentence}
-                </span>
-                {index !== sentenceArr.length - 1 && (
-                  <div className={classes.sentenceDivider}></div>
-                )}
-              </div>
+              <Tooltip
+                title={pairlist[sentence] || ""}
+                key={index}
+                placement="top"
+              >
+                <div>
+                  <span
+                    className={classes.sentenceSpan}
+                    onClick={() => handleTranslate(sentence)}
+                  >
+                    {sentence}
+                  </span>
+                  {index !== sentenceArr.length - 1 && (
+                    <div className={classes.sentenceDivider}></div>
+                  )}
+                </div>
+              </Tooltip>
             ))}
           {!sentenceView &&
             wordArr.map((word, index) =>
               isWord(word) ? (
-                <Tooltip title={pairlist[word] || ""} key={index}>
+                <Tooltip
+                  title={seenWords[word.toLowerCase()] || ""}
+                  key={index}
+                >
                   <span
                     className={classes.wordSpan}
-                    // color: word === "also" ? "green" : "",  // conditional colouring (known/unknown highlighting)
-                    style={{}}
-                    onClick={() => handleTranslate(word)}
+                    // conditional colouring (known/unknown highlighting)
+                    style={{
+                      color: seenWords[word.toLowerCase()] ? "green" : "",
+                    }}
+                    onClick={() => handleTranslate(word.toLowerCase())}
                   >
                     {word}
                   </span>

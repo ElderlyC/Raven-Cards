@@ -129,7 +129,7 @@ function App() {
           );
       } else {
         setMeaning(response.data.meaning);
-        response.data.examples
+        response.data.examples?.length > 0
           ? setExamples(response.data.examples)
           : setExamples(() => {
               const examples = response.data.object.examples;
