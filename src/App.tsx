@@ -128,17 +128,17 @@ function App() {
               : `${firstItem?.entry} ${firstItem?.subEntry}` || ""
           );
       } else {
+        const objEg = response.data.object.examples;
         setMeaning(response.data.meaning);
-        response.data.examples?.length > 0
-          ? setExamples(response.data.examples)
-          : setExamples(() => {
-              const examples = response.data.object.examples;
-              if (examples.length > 1) {
-                examples[0].text = examples[1].translatedText;
-                examples[0].translatedText = examples[1].text;
-              }
-              return examples;
-            });
+        if (response.data.examples?.length > 0)
+          setExamples(response.data.examples);
+        else if (objEg?.length > 1) {
+          setExamples(() => {
+            objEg[0].text = objEg[1].translatedText;
+            objEg[0].translatedText = objEg[1].text;
+            return objEg;
+          });
+        }
         setHanja(response.data.hanjaEntry);
       }
     } catch (error) {
