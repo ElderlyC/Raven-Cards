@@ -272,6 +272,8 @@ function App() {
                 onExit={goHome}
                 passage={passage}
                 sourceLang={sourceLang}
+                deck={initialDeck}
+                displayLang={storedOptions.language}
               />
             </div>
           ) : (

@@ -13,16 +13,20 @@ import {
   TableContainer,
   Paper,
 } from "@mui/material";
+import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 import TranslateIcon from "@mui/icons-material/Translate";
+import { pageContent } from "./PassageViewerText";
 // import { enReg, koReg, jaReg } from "../../utilities";
 import classes from "./PassageViewer.module.css";
 
 // add flashcard function [addcard component OR send pairs to wordlist]
 // -auto add example sentence (context sentence of a translated word)
-// Text file
+// Text file <translations>
+// collapsible wordlist
 // work on English text first! - single letters are not words
 // lingq-like (use pic, check site)
 // work for 한글 and Japanese chars - 안전하다 -> 안전하면서, 안전하고. edit words/click stem button to save 안전 to permalist, all words with stem are counted as known
+// --jp not considered words yet
 // --add partial words (suffixes) to known words to make them display as plain text. e.g. 하면서 in 운동하면서 is plain text, 운동 as button
 // highlighted words
 // words are separated not by spaces but non-letters
@@ -33,13 +37,24 @@ import classes from "./PassageViewer.module.css";
 //unknown words highlighted in blue
 //deck card words in yellow - pull from APP.tsx
 
+// custom font, text styling for enhanced reading
 // image translation on home screen
 
-const PassageViewer = ({ onExit, passage, sourceLang }) => {
+const PassageViewer = ({ onExit, passage, sourceLang, deck, displayLang }) => {
+  const textContent = pageContent[displayLang];
+  const cardListObj = deck.reduce((acc, card) => {
+    const { front, back } = card;
+    return { ...acc, [front]: back };
+  }, {});
+
   //split up 'words' based on passage language - "can't" "한국어를" "関西弁で"＋"喋る" (spaces + particles)
   const langList = ["en", "ko", "ja"].filter((lang) => lang !== sourceLang);
   const [langs, setLangs] = useState(langList);
-  const langNames = { en: "English", ko: "Korean", ja: "Japanese" };
+  const langNames = {
+    en: textContent.language1,
+    ko: textContent.language2,
+    ja: textContent.language3,
+  };
 
   const [pairlist, setPairlist] = useState({});
   //const [reverse, setReverse] = useState(true);
@@ -81,7 +96,7 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
 
     setPairlist((prevPairlist) => ({
       ...prevPairlist,
-      [word]: "Loading...",
+      [word]: textContent.loading,
     }));
 
     try {
@@ -132,16 +147,28 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
   return (
     <Box className={classes.container}>
       <Box sx={{ flex: 4 }}>
-        <Typography variant="h2">Passage</Typography>
-        <Typography variant="h6">
-          <Tooltip title="Highlight text then press T to translate your selection">
+        <Typography variant="h2">{textContent.passage}</Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Tooltip title={textContent.translateTooltip}>
             <Button onClick={() => handleTranslate(selectedText)}>
               <TranslateIcon />
             </Button>
           </Tooltip>
 
-          <span>Translating {langNames[sourceLang]} to </span>
-          <Button size="large" onClick={handleLangShuffle}>
+          <span style={{ margin: "5px" }}>{langNames[sourceLang]}</span>
+          {<TrendingFlatIcon sx={{ height: "100%" }} />}
+          <Button
+            size="large"
+            onClick={handleLangShuffle}
+            sx={{ textTransform: "none", fontSize: "1.3rem", padding: "5px" }}
+          >
             {langNames[langs[0]]}
           </Button>
         </Typography>
@@ -175,14 +202,22 @@ const PassageViewer = ({ onExit, passage, sourceLang }) => {
             wordArr.map((word, index) =>
               isWord(word) ? (
                 <Tooltip
-                  title={seenWords[word.toLowerCase()] || ""}
+                  title={
+                    cardListObj[word]
+                      ? cardListObj[word]
+                      : seenWords[word.toLowerCase()] || ""
+                  }
                   key={index}
                 >
                   <span
                     className={classes.wordSpan}
                     // conditional colouring (known/unknown highlighting)
                     style={{
-                      color: seenWords[word.toLowerCase()] ? "green" : "",
+                      color: cardListObj[word]
+                        ? "yellow"
+                        : seenWords[word.toLowerCase()]
+                        ? "#90caf9"
+                        : "",
                     }}
                     onClick={() => handleTranslate(word.toLowerCase())}
                   >
