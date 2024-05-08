@@ -53,7 +53,6 @@ const AddFlashcard: React.FC<AddCardProps> = ({
   onSendWords,
   onFinishCard,
 }) => {
-  console.log(examples);
   const [input1, setInput1] = useState(pair.source);
   const [input2, setInput2] = useState(pair.target);
   const [disableButton, setDisable] = useState(true);
