@@ -49,6 +49,7 @@ function App() {
   >([]);
   const [hanja, setHanja] = useState("");
   const [view, setView] = useState("home");
+  const [passageMode, setPassageMode] = useState(false);
 
   const [initialDeck, setInitialDeck] = useState<Deck>([]);
   const [reviewCards, setReviewCards] = useState<Deck>([]);
@@ -152,6 +153,13 @@ function App() {
     handleGenerateDefinition(pair.source);
   };
 
+  const handleAddFromPassage = (pair: WordPair) => {
+    //do smth plus
+    console.log("do a bit extra");
+    setPassageMode(true);
+    handleAddCard(pair);
+  };
+
   const handleFinishCard = () => {
     if (wordList.length === 1) goHome();
     else {
@@ -226,6 +234,7 @@ function App() {
           ) : view === "newcard" ? (
             <AddFlashcard
               editMode={false}
+              passageMode={passageMode}
               pair={cardPair}
               meaning={meaning}
               examples={examples}
@@ -271,6 +280,7 @@ function App() {
               <PassageViewer
                 onExit={goHome}
                 passage={passage}
+                onAddCard={handleAddFromPassage}
                 sourceLang={sourceLang}
                 deck={initialDeck}
                 displayLang={storedOptions.language}

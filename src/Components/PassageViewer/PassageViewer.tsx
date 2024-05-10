@@ -40,7 +40,14 @@ import classes from "./PassageViewer.module.css";
 // custom font, text styling for enhanced reading
 // image translation on home screen
 
-const PassageViewer = ({ onExit, passage, sourceLang, deck, displayLang }) => {
+const PassageViewer = ({
+  onExit,
+  passage,
+  onAddCard,
+  sourceLang,
+  deck,
+  displayLang,
+}) => {
   const textContent = pageContent[displayLang];
   const cardListObj = deck.reduce((acc, card) => {
     const { front, back } = card;
@@ -264,6 +271,14 @@ const PassageViewer = ({ onExit, passage, sourceLang, deck, displayLang }) => {
                       }}
                     >
                       Delete
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      onClick={() =>
+                        onAddCard({ source: word, target: translation })
+                      }
+                    >
+                      {"add"}
                     </Button>
                   </TableCell>
                 </TableRow>

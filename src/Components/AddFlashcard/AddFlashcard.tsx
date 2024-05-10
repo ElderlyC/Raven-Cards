@@ -27,6 +27,7 @@ import { pageContent } from "./AddFlashcardText";
 type AddCardProps = {
   image?: [zoom: number, verticalOffset: number, imageLink: string];
   editMode: boolean;
+  passageMode?: boolean;
   pair: WordPair;
   meaning: string;
   examples: { text: string; translatedText: string }[];
@@ -42,6 +43,7 @@ type AddCardProps = {
 const AddFlashcard: React.FC<AddCardProps> = ({
   image,
   editMode,
+  passageMode,
   pair,
   meaning,
   examples,
@@ -363,11 +365,19 @@ const AddFlashcard: React.FC<AddCardProps> = ({
                 size="large"
                 variant="contained"
                 disabled={existingCard || (meaning === "" && disableButton)}
-                onClick={handleSubmitCard}
+                onClick={handleSubmitCard} // do smth different so pressing add doesnt switch to the front page wordlist
               >
                 {textContent.addButton}
               </Button>
-              <Button size="large" variant="outlined" onClick={onEndEditing}>
+              <Button
+                size="large"
+                variant="outlined"
+                onClick={
+                  passageMode
+                    ? () => console.log("go to passage")
+                    : onEndEditing
+                }
+              >
                 {textContent.cancelButton}
               </Button>
             </Box>
