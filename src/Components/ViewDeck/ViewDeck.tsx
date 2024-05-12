@@ -117,7 +117,7 @@ const ViewDeck: React.FC<ViewDeckProps> = ({
           hanja={editCard.hanja}
           onEndEditing={() => setEditing(false)}
           deck={cardDeck}
-          onRemovePair={onRemovePair}
+          onRemovePair={onRemovePair} //pointless here?
           displayLang={displayLang}
         />
       ) : (

@@ -11,7 +11,6 @@ import {
   TableCell,
   TableBody,
   TableContainer,
-  Paper,
 } from "@mui/material";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 import TranslateIcon from "@mui/icons-material/Translate";
@@ -20,7 +19,10 @@ import { pageContent } from "./PassageViewerText";
 import classes from "./PassageViewer.module.css";
 
 // add flashcard function [addcard component OR send pairs to wordlist]
-// -auto add example sentence (context sentence of a translated word)
+// -using App.tsx code to generate cards, Cancel button routes back to here (PassageViewer)
+// -handle onSubmitCard inside AddFlashCard (adding new card on PassageMode)
+// -auto add example sentence? (context sentence of a translated word)
+
 // Text file <translations>
 // collapsible wordlist
 // work on English text first! - single letters are not words
