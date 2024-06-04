@@ -222,7 +222,7 @@ const PassageViewer = ({
                     className={classes.wordSpan}
                     // conditional colouring (known/unknown highlighting)
                     style={{
-                      color: cardListObj[word]
+                      color: cardListObj[word.toLowerCase()]
                         ? "yellow"
                         : seenWords[word.toLowerCase()]
                         ? "#90caf9"

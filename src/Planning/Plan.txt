@@ -4,6 +4,9 @@ hosting using google cloud functions!
 To Finish:
 image translation feature
 
+review
+-move def to under inputbox
+
 passage mode
 -known words (이다,本当に) are blank (known words array)
 -card words are highlighted in yellow (from Deck)

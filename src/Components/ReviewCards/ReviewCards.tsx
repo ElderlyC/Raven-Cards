@@ -186,21 +186,6 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
           error={error}
         />
       </Box>
-      <Button variant="outlined" onClick={handleSubmit}>
-        {enter}
-      </Button>
-      <Box>
-        <Tooltip title="Tab">
-          <Button variant="outlined" onClick={() => setHint((p) => !p)}>
-            {hint ? hintsOff : hintsOn}
-          </Button>
-        </Tooltip>
-        <Tooltip title="Shift+Enter">
-          <Button variant="outlined" onClick={() => handleNextCard("button")}>
-            {skip}
-          </Button>
-        </Tooltip>
-      </Box>
 
       {hint && (
         <div
@@ -229,6 +214,22 @@ const ReviewCards: React.FC<ReviewCardsProps> = ({
           )}
         </div>
       )}
+
+      <Button variant="outlined" onClick={handleSubmit}>
+        {enter}
+      </Button>
+      <Box>
+        <Tooltip title="Tab">
+          <Button variant="outlined" onClick={() => setHint((p) => !p)}>
+            {hint ? hintsOff : hintsOn}
+          </Button>
+        </Tooltip>
+        <Tooltip title="Shift+Enter">
+          <Button variant="outlined" onClick={() => handleNextCard("button")}>
+            {skip}
+          </Button>
+        </Tooltip>
+      </Box>
 
       <Typography
         color="lime"
