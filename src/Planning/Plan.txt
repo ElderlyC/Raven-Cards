@@ -6,6 +6,7 @@ why is app so slow? - non-dynamic lists
 delete card in 'add card'
 image translation feature
 auto card creator: hover+button press
+fix user auth
 
 review
 -move def to under inputbox
