@@ -98,6 +98,7 @@ const AddFlashcard: React.FC<AddCardProps> = ({
       },
     ];
     localStorage.setItem("deck", JSON.stringify([...deck, ...newCard]));
+    // PassageMode: do smth different so pressing add doesnt switch to the front page wordlist
     onRemovePair(input1);
     setImage("");
     onFinishCard && onFinishCard();

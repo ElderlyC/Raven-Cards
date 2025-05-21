@@ -18,7 +18,10 @@ import { pageContent } from "./PassageViewerText";
 // import { enReg, koReg, jaReg } from "../../utilities";
 import classes from "./PassageViewer.module.css";
 
-// add flashcard function [addcard component OR send pairs to wordlist]
+//auto add to main wordlist, display passage wordlist with optional delete
+//clicking arrow auto puts clipboard into input, highlights
+
+// auto send pairs to main wordlist
 // -using App.tsx code to generate cards, Cancel button routes back to here (PassageViewer)
 // -handle onSubmitCard inside AddFlashCard (adding new card on PassageMode)
 // -auto add example sentence? (context sentence of a translated word)
@@ -89,7 +92,8 @@ const PassageViewer = ({
     .filter(Boolean);
 
   //should probably be different dependent on sourceLang or lang of word
-  const isWord = (word) => /^[a-zA-Z’]+$/u.test(word);
+  const hangulRange = "\uAC00-\uD7AF";
+  const isWord = (word) => /^[a-zA-Z가-힣’]+$/.test(word);
 
   const handleTranslate = async (word: string) => {
     if (!word) return;
@@ -125,6 +129,7 @@ const PassageViewer = ({
         ...list,
         [word]: response.data.translation,
       }));
+      // Add to main wordlist here
     } catch (error) {
       console.error(error);
     }
@@ -274,14 +279,14 @@ const PassageViewer = ({
                     >
                       Delete
                     </Button>
-                    <Button
+                    {/* <Button
                       variant="outlined"
                       onClick={() =>
                         onAddCard({ source: word, target: translation })
                       }
                     >
                       {"add"}
-                    </Button>
+                    </Button> */}
                   </TableCell>
                 </TableRow>
               ))}

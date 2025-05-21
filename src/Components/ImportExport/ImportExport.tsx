@@ -14,6 +14,8 @@ import {
 import classes from "./ImportExport.module.css";
 import { pageContent } from "./ImportExportText";
 
+// export update date (date is part of json, displays last time u sent to firebase)
+
 type ImportExportProps = {
   displayLang: string;
   onSave: () => void;

@@ -1,8 +1,11 @@
 Minify Tasks
 hosting using google cloud functions!
 
-To Finish:
+To Do:
+why is app so slow? - non-dynamic lists
+delete card in 'add card'
 image translation feature
+auto card creator: hover+button press
 
 review
 -move def to under inputbox
